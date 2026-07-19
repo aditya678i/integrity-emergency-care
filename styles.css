@@ -723,9 +723,35 @@ body {
 
 /* Hospital Name Block */
 .dash-name-wrap {
-    padding: 8px 24px 20px 24px;
+    padding: 20px 24px 24px 24px;
     flex-shrink: 0;
     border-bottom: 1.5px solid #F9ECEC;
+    background: linear-gradient(135deg, #FDECEA 0%, #FFD0CF 40%, #FFBCBB 100%);
+    border-radius: 0 0 28px 28px;
+    position: relative;
+    overflow: hidden;
+}
+.dash-name-wrap::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(192,32,42,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.dash-name-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255,188,187,0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 .dash-name-marquee-container {
     overflow: hidden;
@@ -738,7 +764,7 @@ body {
     font-family: var(--font);
     font-size: 1.55rem;
     font-weight: 800;
-    color: #1C2434;
+    color: #C0202A;
     white-space: nowrap;
     padding-right: 60px;
 }

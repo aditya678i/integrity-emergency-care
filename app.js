@@ -235,12 +235,13 @@ function goToHospitalRegister() {
 }
 
 function goToRoleScreen() {
-    const hospitalScreen = document.getElementById('hospital-register-screen');
+    // Hide all possible current screens and show role screen
+    ['hospital-register-screen', 'hospital-dashboard-screen', 'change-info-screen'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active-view');
+    });
     const roleScreen = document.getElementById('role-screen');
-    if (hospitalScreen && roleScreen) {
-        hospitalScreen.classList.remove('active-view');
-        roleScreen.classList.add('active-view');
-    }
+    if (roleScreen) roleScreen.classList.add('active-view');
 }
 
 function goToEmergencyType() {
