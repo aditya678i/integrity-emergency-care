@@ -1589,3 +1589,242 @@ body {
 .lang-option.selected .lang-check-icon {
     display: block;
 }
+
+/* =====================================================
+   SCREEN 4 - PATIENT HOSPITALS SCREEN
+   ===================================================== */
+#patient-hospitals-screen {
+    background: linear-gradient(180deg, #E6F3FB 0%, #F5FAFD 15%, #FFFFFF 30%, #FFFFFF 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 0 24px 40px 24px;
+    overflow-y: auto;
+}
+
+.patient-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 24px;
+}
+
+.patient-back {
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lang-selector-static {
+    background-color: #3B82F6;
+    color: white;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: var(--font);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+}
+
+/* Location Pill */
+.patient-location-pill {
+    background-color: #CEE5FD;
+    border-radius: 20px;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.loc-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.loc-title {
+    color: #2b84f0;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.loc-address {
+    color: #4A90E2;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.loc-edit {
+    cursor: pointer;
+    background: none;
+    padding: 8px;
+}
+
+/* Hospitals List */
+#patient-hospitals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Hospital Card */
+.patient-hosp-card {
+    background-color: #E6F3FB;
+    border: 1px solid #CEE5FD;
+    border-radius: 24px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.hosp-name {
+    color: #3B82F6;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+}
+
+.hosp-img-container {
+    width: 100%;
+    height: 140px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.hosp-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #d1e5f8;
+}
+
+.hosp-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn-call {
+    flex: 1;
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: var(--font);
+}
+
+.btn-map {
+    flex: 1;
+    background-color: #CEE5FD;
+    color: #3B82F6;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: var(--font);
+}
+
+.hosp-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    color: #60A5FA;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.stat-val {
+    color: #3B82F6;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.patient-vent-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.vent-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.vent-label {
+    color: #60A5FA;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.vent-num {
+    color: #1D4ED8;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.btn-book-amb {
+    width: 100%;
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 20px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    font-family: var(--font);
+    position: relative;
+}
+
+.btn-book-amb .amb-icon {
+    margin-right: auto;
+}
+
+.btn-book-amb .arrow-icon {
+    position: absolute;
+    right: 20px;
+}

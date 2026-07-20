@@ -334,6 +334,68 @@ function goToEmergencyType() {
     }
 }
 
+function goToPatientHospitals() {
+    const emergencyTypeScreen = document.getElementById('emergency-type-screen');
+    const hospitalsScreen = document.getElementById('patient-hospitals-screen');
+    
+    if (emergencyTypeScreen && hospitalsScreen) {
+        emergencyTypeScreen.classList.remove('active-view');
+        hospitalsScreen.classList.add('active-view');
+        requestPatientLocation();
+    }
+}
+
+function requestPatientLocation() {
+    const locAddress = document.querySelector('.patient-location-pill .loc-address');
+    if (!locAddress) return;
+
+    if (navigator.geolocation) {
+        locAddress.textContent = "Requesting location...";
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                locAddress.textContent = "Fetching location...";
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.display_name) {
+                            // Extract a shorter address if possible (suburb/city)
+                            const addressParts = [];
+                            if (data.address.suburb) addressParts.push(data.address.suburb);
+                            if (data.address.city) addressParts.push(data.address.city);
+                            else if (data.address.state_district) addressParts.push(data.address.state_district);
+                            
+                            locAddress.textContent = addressParts.length > 0 ? addressParts.join(', ') : data.display_name;
+                        } else {
+                            locAddress.textContent = "Unknown location";
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Reverse geocoding error:', err);
+                        locAddress.textContent = "Location details unavailable";
+                    });
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+                locAddress.textContent = "Location access denied";
+            }
+        );
+    } else {
+        locAddress.textContent = "Geolocation not supported";
+    }
+}
+
+function goBackToEmergencyType() {
+    const hospitalsScreen = document.getElementById('patient-hospitals-screen');
+    const emergencyTypeScreen = document.getElementById('emergency-type-screen');
+    
+    if (hospitalsScreen && emergencyTypeScreen) {
+        hospitalsScreen.classList.remove('active-view');
+        emergencyTypeScreen.classList.add('active-view');
+    }
+}
+
 function goToRoleSelection() {
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
     const roleScreen = document.getElementById('role-screen');
