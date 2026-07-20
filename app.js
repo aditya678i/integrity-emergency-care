@@ -334,13 +334,23 @@ function goToEmergencyType() {
     }
 }
 
-function goToPatientHospitals() {
+let currentPatientEmergencyType = 'Other';
+
+function goToPatientHospitals(emergencyType = 'Other') {
+    currentPatientEmergencyType = emergencyType;
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
     const hospitalsScreen = document.getElementById('patient-hospitals-screen');
     
     if (emergencyTypeScreen && hospitalsScreen) {
         emergencyTypeScreen.classList.remove('active-view');
         hospitalsScreen.classList.add('active-view');
+        
+        // Show loading state for hospitals immediately
+        const hospitalListContainer = document.getElementById('patient-hospitals-list');
+        if (hospitalListContainer) {
+            hospitalListContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #888;">Fetching nearest hospitals...</div>';
+        }
+        
         requestPatientLocation();
     }
 }
@@ -356,6 +366,10 @@ function requestPatientLocation() {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
                 locAddress.textContent = "Fetching location...";
+                
+                // Fetch nearby hospitals using Overpass API
+                fetchNearbyHospitals(lat, lon);
+                
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                     .then(res => res.json())
                     .then(data => {
@@ -478,8 +492,8 @@ document.addEventListener('click', (e) => {
 // Initialize dynamically built dropdowns
 initDropdowns();
 
-// ── State: Hospital Profile & ICU Data ────────────────
-let hospitalProfile = {
+//  State: Hospital Profile & ICU Data 
+let hospitalProfile = JSON.parse(localStorage.getItem('hospitalProfile')) || {
     name: '',
     type: '',
     regNum: '',
@@ -490,8 +504,13 @@ let hospitalProfile = {
     phone: '',
     photo: null,
 };
-let hospitalICUs = []; // Start with no ICUs
+let hospitalICUs = JSON.parse(localStorage.getItem('hospitalICUs')) || []; // Start with no ICUs or loaded
 let editingICUIndex = -1; // -1 = new, else index to edit
+
+function persistHospitalData() {
+    localStorage.setItem('hospitalProfile', JSON.stringify(hospitalProfile));
+    localStorage.setItem('hospitalICUs', JSON.stringify(hospitalICUs));
+}
 
 // ── Dashboard Navigation ──────────────────────────────
 function goToDashboard() {
@@ -500,6 +519,8 @@ function goToDashboard() {
     const typeDisplay = document.getElementById('hosp-type-display');
     hospitalProfile.type = (typeDisplay && typeDisplay.classList.contains('has-values'))
         ? typeDisplay.textContent : '';
+        
+    persistHospitalData();
 
     const hospRegScreen = document.getElementById('hospital-register-screen');
     const dashScreen = document.getElementById('hospital-dashboard-screen');
@@ -663,6 +684,7 @@ function saveChangeInfo() {
     const addressEl = document.getElementById('ci-hosp-address');
     if (addressEl && addressEl.value.trim()) hospitalProfile.address = addressEl.value.trim();
 
+    persistHospitalData();
     goBackToDashboard();
 }
 
@@ -783,6 +805,7 @@ function addICUAndGoBack() {
     };
 
     hospitalICUs.push(icuObj);
+    persistHospitalData();
     renderCIICUList();
     goBackToChangeInfoFromAddICU();
 }
@@ -813,6 +836,7 @@ function deleteICU(index) {
     deletedICUData = hospitalICUs[index];
     deletedICUIndex = index;
     hospitalICUs.splice(index, 1);
+    persistHospitalData();
     renderCIICUList();
     showUndoSnackbar();
 }
@@ -820,6 +844,7 @@ function deleteICU(index) {
 function undoDeleteICU() {
     if (deletedICUData && deletedICUIndex !== -1) {
         hospitalICUs.splice(deletedICUIndex, 0, deletedICUData);
+        persistHospitalData();
         renderCIICUList();
         
         const snackbar = document.getElementById('icu-snackbar');
@@ -899,6 +924,8 @@ function confirmICUUpdate() {
     icu.ventBeds = getCount('upd-icu-vent');
     icu.noVentBeds = getCount('upd-icu-novent');
     icu.contact = contact;
+    
+    persistHospitalData();
 
     renderDashboard();
     goBackToDashboardFromUpdate();
