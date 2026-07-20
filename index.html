@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Integrity Emergency Care</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#C0202A">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +14,19 @@
     <!-- FontAwesome for standard icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- App Styles -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div id="google_translate_element" style="display:none;"></div>
     <div class="device-wrapper">
         <div class="app-container">
             <!-- Status Bar -->
@@ -42,7 +54,7 @@
 
                 <div class="role-inner">
                     <header class="role-header">
-                        <span class="role-title-en">You are</span>
+                        <span class="role-title-en notranslate">You are</span>
                         <span class="role-title-hi">आप कौन है</span>
                     </header>
 
@@ -65,7 +77,7 @@
                             </div>
                             
                             <div class="card-label-area">
-                                <span class="card-label-en">Patient</span>
+                                <span class="card-label-en notranslate">Patient</span>
                                 <span class="card-label-hi">मरीज़</span>
                             </div>
                         </button>
@@ -88,7 +100,7 @@
                             </div>
                             
                             <div class="card-label-area">
-                                <span class="card-label-en">Hospital</span>
+                                <span class="card-label-en notranslate">Hospital</span>
                                 <span class="card-label-hi">अस्पताल</span>
                             </div>
                         </button>
@@ -101,7 +113,7 @@
                 <div class="hosp-reg-inner">
                     <!-- Stylish Back button -->
                     <div class="hosp-back-btn" onclick="goToRoleScreen()">
-                        <i class="fa-solid fa-chevron-left"></i>
+                        <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                     </div>
 
                     <!-- Title -->
@@ -118,7 +130,7 @@
                         <!-- Hospital Type -->
                         <div class="hosp-input-group custom-multiselect">
                             <div class="hosp-input hosp-select multiselect-display" id="hosp-type-display" onclick="toggleMultiSelect(event)">Hospital Type</div>
-                            <i class="fa-solid fa-chevron-down hosp-select-arrow" onclick="toggleMultiSelect(event)" style="cursor: pointer;"></i>
+                            <svg onclick="toggleMultiSelect(event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                             <div class="multiselect-options" id="hosp-type-options">
                                 <label class="multiselect-option"><input type="checkbox" value="Government" onchange="updateMultiSelect()"> Government</label>
                                 <label class="multiselect-option"><input type="checkbox" value="Private" onchange="updateMultiSelect()"> Private</label>
@@ -140,7 +152,7 @@
                             <!-- State -->
                             <div class="hosp-input-group custom-select">
                                 <div class="hosp-input hosp-select custom-select-display" id="hosp-state-display" onclick="toggleCustomSelect('hosp-state-options', event)">State</div>
-                                <i class="fa-solid fa-chevron-down hosp-select-arrow" onclick="toggleCustomSelect('hosp-state-options', event)" style="cursor: pointer;"></i>
+                                <svg onclick="toggleCustomSelect('hosp-state-options', event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                                 <div class="custom-select-options" id="hosp-state-options">
                                     <!-- Dynamically filled -->
                                 </div>
@@ -149,7 +161,7 @@
                             <!-- City (dynamic) -->
                             <div class="hosp-input-group custom-select">
                                 <div class="hosp-input hosp-select custom-select-display" id="hosp-city-display" onclick="toggleCustomSelect('hosp-city-options', event)">City</div>
-                                <i class="fa-solid fa-chevron-down hosp-select-arrow" onclick="toggleCustomSelect('hosp-city-options', event)" style="cursor: pointer;"></i>
+                                <svg onclick="toggleCustomSelect('hosp-city-options', event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                                 <div class="custom-select-options" id="hosp-city-options">
                                     <!-- Dynamically filled -->
                                 </div>
@@ -183,11 +195,11 @@
                     <!-- Header -->
                     <div class="dash-header">
                         <div class="dash-back-btn" onclick="goToRoleScreen()">
-                            <i class="fa-solid fa-chevron-left"></i>
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                         </div>
                         <div class="dash-header-right">
                             <button class="dash-change-btn" onclick="goToChangeInfo()">
-                                <i class="fa-solid fa-gear"></i>
+                                <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
                                 Change Info
                             </button>
                         </div>
@@ -228,6 +240,11 @@
 
                         <!-- ICU Cards Container (filled dynamically) -->
                         <div class="dash-icu-list" id="dash-icu-list"></div>
+                        
+                        <!-- Add New ICU Bed Button (Dashboard) -->
+                        <button class="add-icu-solid-btn" onclick="goToAddICU('dashboard')" style="margin-top: 16px; margin-bottom: 24px;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add New ICU Bed
+                        </button>
                     </div>
                 </div>
             </div>
@@ -236,49 +253,101 @@
             <div id="change-info-screen" class="screen-view">
                 <div class="ci-inner">
                     <!-- Header -->
-                    <div class="ci-header">
-                        <div class="hosp-back-btn" onclick="goBackToDashboard()">
-                            <i class="fa-solid fa-chevron-left"></i>
+                    <div style="padding: 12px 24px 16px 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div class="hosp-back-btn" onclick="goBackToDashboard()" style="width: 36px; height: 36px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                                <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                            </div>
+                            <div class="ci-lang-selector" onclick="goToLanguageScreen()" style="height: 36px; box-sizing: border-box; display: flex; align-items: center; cursor: pointer;">
+                                ENG <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                            </div>
                         </div>
-                        <h2 class="ci-title">Change Info</h2>
+                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0;">Change Your Hospital Info</h2>
                     </div>
 
                     <!-- Scrollable form content -->
                     <div class="ci-scroll">
-                        <!-- Hospital Info Section -->
-                        <div class="ci-section-label">Hospital Details</div>
-
-                        <div class="hosp-input-group">
-                            <input class="hosp-input" type="text" placeholder="Hospital Name" id="ci-hosp-name">
-                        </div>
-                        <div class="hosp-input-group">
-                            <input class="hosp-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Emergency Phone Number" id="ci-hosp-phone">
-                        </div>
-
-                        <!-- Hospital Photo placeholder -->
-                        <div class="ci-photo-row">
-                            <div class="ci-photo-preview" id="ci-photo-preview">
-                                <i class="fa-solid fa-hospital" style="font-size:2rem; color:#E8A8AC;"></i>
-                            </div>
-                            <div class="ci-photo-info">
-                                <div class="ci-photo-label">Hospital Photo / Logo</div>
-                                <label class="ci-photo-btn" for="ci-photo-input">
-                                    <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Photo
-                                </label>
+                        <div class="hosp-form" style="margin-top: 10px;">
+                            
+                            <!-- Large Centered Photo Upload Box -->
+                            <div class="ci-large-upload-box" id="ci-photo-preview" onclick="document.getElementById('ci-photo-input').click()">
+                                <div class="ci-upload-content" id="ci-upload-content">
+                                    <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                    <span>Upload Your Hospital Logo / Photo</span>
+                                </div>
                                 <input type="file" id="ci-photo-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
                             </div>
+
+                            <!-- Hospital Name -->
+                            <div class="hosp-input-group">
+                                <input class="hosp-input" type="text" placeholder="Hospital Name" id="ci-hosp-name">
+                            </div>
+    
+                            <!-- Hospital Type -->
+                            <div class="hosp-input-group custom-multiselect">
+                                <div class="hosp-input hosp-select multiselect-display" id="ci-hosp-type-display" onclick="toggleMultiSelect(event, 'ci-hosp-type-options')">Hospital Type</div>
+                                <svg onclick="toggleMultiSelect(event, 'ci-hosp-type-options')" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                <div class="multiselect-options" id="ci-hosp-type-options">
+                                    <label class="multiselect-option"><input type="checkbox" value="Government" onchange="updateCiMultiSelect()"> Government</label>
+                                    <label class="multiselect-option"><input type="checkbox" value="Private" onchange="updateCiMultiSelect()"> Private</label>
+                                    <label class="multiselect-option"><input type="checkbox" value="Trust / Charitable" onchange="updateCiMultiSelect()"> Trust / Charitable</label>
+                                    <label class="multiselect-option"><input type="checkbox" value="Clinic" onchange="updateCiMultiSelect()"> Clinic</label>
+                                    <label class="multiselect-option"><input type="checkbox" value="Nursing Home" onchange="updateCiMultiSelect()"> Nursing Home</label>
+                                    <label class="multiselect-option"><input type="checkbox" value="Trauma Centre" onchange="updateCiMultiSelect()"> Trauma Centre</label>
+                                    <label class="multiselect-option"><input type="checkbox" value="Multi-Specialty" onchange="updateCiMultiSelect()"> Multi-Specialty</label>
+                                </div>
+                            </div>
+    
+                            <!-- Registration Number -->
+                            <div class="hosp-input-group">
+                                <input class="hosp-input" type="text" placeholder="Registration Number" id="ci-hosp-reg-num">
+                            </div>
+    
+                            <!-- Location Group -->
+                            <div class="hosp-location-group">
+                                <!-- State -->
+                                <div class="hosp-input-group custom-select">
+                                    <div class="hosp-input hosp-select custom-select-display" id="ci-hosp-state-display" onclick="toggleCustomSelect('ci-hosp-state-options', event)">State</div>
+                                    <svg onclick="toggleCustomSelect('ci-hosp-state-options', event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                    <div class="custom-select-options" id="ci-hosp-state-options">
+                                        <!-- Dynamically filled -->
+                                    </div>
+                                </div>
+    
+                                <!-- City -->
+                                <div class="hosp-input-group custom-select">
+                                    <div class="hosp-input hosp-select custom-select-display" id="ci-hosp-city-display" onclick="toggleCustomSelect('ci-hosp-city-options', event)">City</div>
+                                    <svg onclick="toggleCustomSelect('ci-hosp-city-options', event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                                    <div class="custom-select-options" id="ci-hosp-city-options">
+                                        <!-- Dynamically filled -->
+                                    </div>
+                                </div>
+    
+                                <!-- Pincode -->
+                                <div class="hosp-input-group">
+                                    <input class="hosp-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Pincode" id="ci-hosp-pin">
+                                </div>
+                            </div>
+    
+                            <!-- Address -->
+                            <div class="hosp-input-group hosp-address-group">
+                                <textarea class="hosp-input hosp-textarea" placeholder="Address" id="ci-hosp-address"></textarea>
+                                <div class="address-lines">
+                                    <div class="address-line line-1"></div>
+                                    <div class="address-line line-2"></div>
+                                    <div class="address-line line-3"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- ICU Section -->
+                            <div id="ci-icu-section" class="manage-icu-card" style="margin-top: 20px;">
+                                <div class="manage-icu-card-title">Manage ICU Beds</div>
+                                <div id="ci-icu-list" class="temp-icu-list"></div>
+                                <button class="add-icu-solid-btn" onclick="goToAddICU('change-info')">
+                                    <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add New ICU Bed
+                                </button>
+                            </div>
                         </div>
-
-                        <!-- ICU Section -->
-                        <div class="ci-section-label" style="margin-top:28px;">ICU Information</div>
-
-                        <!-- ICU list (edit/delete) -->
-                        <div id="ci-icu-list"></div>
-
-                        <!-- Add New ICU Button -->
-                        <button class="ci-add-icu-btn" type="button" onclick="openICUModal()">
-                            <i class="fa-solid fa-plus"></i> Add New ICU
-                        </button>
 
                         <!-- Save button -->
                         <button class="hosp-register-btn" type="button" style="margin-top:24px;" onclick="saveChangeInfo()">Save Changes</button>
@@ -286,44 +355,197 @@
                 </div>
             </div>
 
-            <!-- ICU Modal -->
-            <div class="modal-overlay" id="icu-modal-overlay" onclick="closeICUModal(event)">
-                <div class="modal-box" id="icu-modal-box">
-                    <div class="modal-header">
-                        <h3 class="modal-title" id="modal-title">Add New ICU</h3>
-                        <button class="modal-close-btn" onclick="closeICUModal()"><i class="fa-solid fa-xmark"></i></button>
+
+            <!-- SCREEN 8: ADD NEW ICU BED -->
+            <div id="add-icu-screen" class="screen-view">
+                <div class="ci-inner">
+                    <!-- Header -->
+                    <div style="padding: 12px 24px 16px 24px;">
+                        <div class="hosp-back-btn" onclick="goBackToChangeInfoFromAddICU()" style="margin-bottom: 20px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        </div>
+                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0;">Add New ICU Bed</h2>
                     </div>
-                    <div class="modal-body">
-                        <div class="hosp-input-group custom-multiselect" style="margin-bottom:16px;">
-                            <div class="hosp-input hosp-select multiselect-display" id="icu-name-display" onclick="toggleMultiSelect(event, 'icu-name-options')">ICU Name</div>
-                            <i class="fa-solid fa-chevron-down hosp-select-arrow" onclick="toggleMultiSelect(event, 'icu-name-options')" style="cursor:pointer;"></i>
-                            <div class="multiselect-options" id="icu-name-options">
-                                <label class="multiselect-option"><input type="checkbox" value="Cardiac ICU" onchange="updateICUNameSelect()"> Cardiac ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Surgical ICU" onchange="updateICUNameSelect()"> Surgical ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Neonatal ICU" onchange="updateICUNameSelect()"> Neonatal ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Burn ICU" onchange="updateICUNameSelect()"> Burn ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Medical ICU" onchange="updateICUNameSelect()"> Medical ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Trauma ICU" onchange="updateICUNameSelect()"> Trauma ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Pediatric ICU" onchange="updateICUNameSelect()"> Pediatric ICU</label>
-                                <label class="multiselect-option"><input type="checkbox" value="Neurological ICU" onchange="updateICUNameSelect()"> Neurological ICU</label>
+
+                    <!-- Scrollable content -->
+                    <div class="ci-scroll" style="padding-top: 8px;">
+                        <!-- ICU Bed Name -->
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 0 0 16px 0;">ICU Bed Name</h3>
+                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
+                            <input type="text" id="add-icu-name" class="icu-update-contact-input" style="width: 100%;" placeholder="e.g. General ICU">
+                        </div>
+
+                        <!-- ICU Bed Information -->
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">ICU Bed Information</h3>
+                        
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-total', -1)">-</button>
+                                <div class="icu-qty-val" id="add-icu-total">0</div>
+                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-total', 1)">+</button>
                             </div>
                         </div>
-                        <div class="hosp-input-group"><input class="hosp-input" type="text" inputmode="numeric" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Total ICU Beds" id="icu-total-beds"></div>
-                        <div class="hosp-input-group"><input class="hosp-input" type="text" inputmode="numeric" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Vacant ICU Beds" id="icu-vacant-beds"></div>
-                        <div class="hosp-input-group"><input class="hosp-input" type="text" inputmode="numeric" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Vacant Beds (With Ventilator)" id="icu-vent-beds"></div>
-                        <div class="hosp-input-group"><input class="hosp-input" type="text" inputmode="numeric" maxlength="4" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Vacant Beds (Without Ventilator)" id="icu-novent-beds"></div>
-                        <div class="hosp-input-group"><input class="hosp-input" type="text" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" placeholder="Emergency Contact Number" id="icu-contact"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="modal-cancel-btn" onclick="closeICUModal()">Cancel</button>
-                        <button class="modal-save-btn" onclick="saveICU()">Save ICU</button>
+
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds Vacant</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vacant', -1)">-</button>
+                                <div class="icu-qty-val" id="add-icu-vacant">0</div>
+                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vacant', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds Vacant<br>(with ventilator)</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vent', -1)">-</button>
+                                <div class="icu-qty-val" id="add-icu-vent">0</div>
+                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vent', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds Vacant<br>(without ventilator)</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-novent', -1)">-</button>
+                                <div class="icu-qty-val" id="add-icu-novent">0</div>
+                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-novent', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Emergency Contact</h3>
+                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
+                            <input type="tel" id="add-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        </div>
+
+                        <!-- Add ICU Bed Button -->
+                        <button class="hosp-register-btn" type="button" style="margin-top:24px;" onclick="addICUAndGoBack()">
+                            Add ICU Bed
+                        </button>
                     </div>
                 </div>
             </div>
 
+            <!-- SCREEN 9: UPDATE ICU BED (from Dashboard) -->
+            <div id="update-icu-screen" class="screen-view">
+                <div class="ci-inner">
+                    <!-- Header -->
+                    <div style="padding: 12px 24px 0 24px;">
+                        <div class="hosp-back-btn" onclick="goBackToDashboardFromUpdate()" style="margin-bottom: 24px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        </div>
+                        <h2 style="color: #C0202A; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Update Hospital Information</h2>
+                        <p style="color: #FA9A9F; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Please update your hospital details below.All changes will be reflected to patients in real-time</p>
+                    </div>
+
+                    <!-- Scrollable content -->
+                    <div class="ci-scroll" style="padding-top: 32px;">
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 0 0 16px 0;">ICU Bed Information</h3>
+                        
+                        <!-- Rows -->
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-total', -1)">-</button>
+                                <div class="icu-qty-val" id="upd-icu-total">0</div>
+                                <button class="icu-qty-plus" onclick="updateUpdateICUCount('upd-icu-total', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds Vacant</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-vacant', -1)">-</button>
+                                <div class="icu-qty-val" id="upd-icu-vacant">0</div>
+                                <button class="icu-qty-plus" onclick="updateUpdateICUCount('upd-icu-vacant', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds Vacant<br>(with ventilator)</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-vent', -1)">-</button>
+                                <div class="icu-qty-val" id="upd-icu-vent">0</div>
+                                <button class="icu-qty-plus" onclick="updateUpdateICUCount('upd-icu-vent', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="icu-update-row">
+                            <div class="icu-update-label">Total ICU Beds Vacant<br>(without ventilator)</div>
+                            <div class="icu-qty-widget">
+                                <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-novent', -1)">-</button>
+                                <div class="icu-qty-val" id="upd-icu-novent">0</div>
+                                <button class="icu-qty-plus" onclick="updateUpdateICUCount('upd-icu-novent', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Emergency Contact</h3>
+                        
+                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
+                            <input type="tel" id="upd-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        </div>
+
+                        <!-- Confirm Button -->
+                        <button class="hosp-register-btn" type="button" style="margin-top:32px; margin-bottom: 24px; background: #C0202A; color: white; width: 100%; border-radius: 20px;" onclick="confirmICUUpdate()">
+                            CONFIRM
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Undo Snackbar -->
+            <div id="icu-snackbar" class="snackbar">
+                <span id="snackbar-text">ICU Bed deleted</span>
+                <button id="snackbar-undo-btn" onclick="undoDeleteICU()">UNDO</button>
+            </div>
+
+            <!-- SCREEN 10: LANGUAGE SELECTION -->
+            <div id="language-screen" class="screen-view">
+                <div class="ci-inner">
+                    <!-- Header -->
+                    <div style="padding: 12px 24px 0 24px;">
+                        <div class="hosp-back-btn" onclick="goBackFromLanguage()" style="margin-bottom: 24px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        </div>
+                        <h2 style="color: #C0202A; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Choose the language</h2>
+                        <p style="color: #FA9A9F; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Select your preferred language below This helps us serve you better.</p>
+                    </div>
+
+                    <div class="ci-scroll" style="padding-top: 32px; padding-bottom: 80px;">
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 0 0 12px 0;">You Selected</h3>
+                        
+                        <div class="lang-selected-box notranslate">
+                            <span id="lang-selected-text">English</span>
+                            <svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#C0202A" style="display:block;"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>
+                        </div>
+
+                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 24px 0 12px 0;">All Languages</h3>
+                        
+                        <div class="lang-list-container">
+                            <div class="lang-search-box">
+                                <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="#C0202A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 12px;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                                <input type="text" placeholder="Search" class="lang-search-input" oninput="onLangSearch(this.value)">
+                            </div>
+                            
+                            <div class="lang-options-list notranslate" id="lang-options-list">
+                                <!-- Javascript will render options here -->
+                            </div>
+                        </div>
+
+                        <button class="hosp-register-btn" type="button" style="margin-top:32px; background: #C0202A; color: white; width: 100%; border-radius: 20px;" onclick="saveLanguage()">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div id="emergency-type-screen" class="screen-view">
                 <div class="back-btn" onclick="goToRoleSelection()">
-                    <i class="fa-solid fa-chevron-left"></i>
+                    <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                 </div>
                 
                 <h1 class="emergency-title">What best describes the<br>emergency?</h1>
@@ -455,5 +677,18 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
 </body>
 </html>

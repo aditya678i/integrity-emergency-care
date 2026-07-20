@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // If we are reloading to restore state after language change, skip splash animation!
+    if (sessionStorage.getItem('returnToLanguage') === 'true') {
+        const splashScreen = document.getElementById('splash-screen');
+        if (splashScreen) splashScreen.classList.remove('active-view');
+        const roleScreen = document.getElementById('role-screen');
+        if (roleScreen) roleScreen.classList.add('role-active');
+        return;
+    }
+
     // Hide status bar elements initially for the white splash
     const statusBar = document.querySelector('.status-bar');
     if(statusBar) statusBar.style.color = '#fff';
@@ -49,7 +58,7 @@ if (canvas) {
     const ctx = canvas.getContext('2d');
     const img = new Image();
     // Using absolute path for local loading or just fallback to relative if in same folder
-    img.src = 'assets/logo.png';
+    img.src = 'assets/splash-logo.png';
     // If the image fails to load, draw a fallback text
     img.onerror = () => {
         canvas.width = 280;
@@ -140,18 +149,33 @@ async function initDropdowns() {
             stateCityData[s.state] = s.districts;
         });
 
+        // Initialize for Registration Screen
         const stateOptionsEl = document.getElementById('hosp-state-options');
-        if (!stateOptionsEl) return;
-        stateOptionsEl.innerHTML = '';
+        if (stateOptionsEl) {
+            stateOptionsEl.innerHTML = '';
+            const states = Object.keys(stateCityData).sort();
+            states.forEach(state => {
+                const opt = document.createElement('div');
+                opt.className = 'custom-select-option';
+                opt.textContent = state;
+                opt.onclick = () => selectState(state);
+                stateOptionsEl.appendChild(opt);
+            });
+        }
         
-        const states = Object.keys(stateCityData).sort();
-        states.forEach(state => {
-            const opt = document.createElement('div');
-            opt.className = 'custom-select-option';
-            opt.textContent = state;
-            opt.onclick = () => selectState(state);
-            stateOptionsEl.appendChild(opt);
-        });
+        // Initialize for Update Info Screen
+        const ciStateOptionsEl = document.getElementById('ci-hosp-state-options');
+        if (ciStateOptionsEl) {
+            ciStateOptionsEl.innerHTML = '';
+            const states = Object.keys(stateCityData).sort();
+            states.forEach(state => {
+                const opt = document.createElement('div');
+                opt.className = 'custom-select-option';
+                opt.textContent = state;
+                opt.onclick = () => selectCiState(state);
+                ciStateOptionsEl.appendChild(opt);
+            });
+        }
     } catch (e) {
         console.error("Error loading states and cities", e);
     }
@@ -213,6 +237,60 @@ function selectCity(city) {
     }
 }
 
+// ── Update Info (CI) Dropdowns ──────────────────────────
+function selectCiState(state) {
+    const display = document.getElementById('ci-hosp-state-display');
+    if (display) {
+        display.textContent = state;
+        display.classList.add('has-values');
+    }
+    const options = document.getElementById('ci-hosp-state-options');
+    if (options) options.classList.remove('show');
+    
+    // Reset city and pincode
+    const cityDisplay = document.getElementById('ci-hosp-city-display');
+    if (cityDisplay) {
+        cityDisplay.textContent = 'City';
+        cityDisplay.classList.remove('has-values');
+    }
+    const pinEl = document.getElementById('ci-hosp-pin');
+    if (pinEl) pinEl.value = '';
+
+    // Render cities
+    const cityOptionsEl = document.getElementById('ci-hosp-city-options');
+    if (!cityOptionsEl) return;
+    cityOptionsEl.innerHTML = '';
+    let cities = stateCityData[state] || [];
+    cities = [...cities].sort();
+    
+    cities.forEach(city => {
+        const opt = document.createElement('div');
+        opt.className = 'custom-select-option';
+        opt.textContent = city;
+        opt.onclick = () => selectCiCity(city);
+        cityOptionsEl.appendChild(opt);
+    });
+}
+
+function selectCiCity(city) {
+    const display = document.getElementById('ci-hosp-city-display');
+    if (display) {
+        display.textContent = city;
+        display.classList.add('has-values');
+    }
+    const options = document.getElementById('ci-hosp-city-options');
+    if (options) options.classList.remove('show');
+
+    // Update Pincode
+    const pinEl = document.getElementById('ci-hosp-pin');
+    if (pinEl) {
+        pinEl.value = '';
+        if (cityPincodeData[city]) {
+            pinEl.value = cityPincodeData[city];
+        }
+    }
+}
+
 function toggleCustomSelect(id, e) {
     if (e) { e.stopPropagation(); }
     const options = document.getElementById(id);
@@ -241,7 +319,9 @@ function goToRoleScreen() {
         if (el) el.classList.remove('active-view');
     });
     const roleScreen = document.getElementById('role-screen');
-    if (roleScreen) roleScreen.classList.add('active-view');
+    if (roleScreen) {
+        roleScreen.classList.add('active-view');
+    }
 }
 
 function goToEmergencyType() {
@@ -297,6 +377,25 @@ function updateMultiSelect() {
     }
 }
 
+function updateCiMultiSelect() {
+    const options = document.getElementById('ci-hosp-type-options');
+    const checkboxes = options.querySelectorAll('input[type="checkbox"]');
+    const display = document.getElementById('ci-hosp-type-display');
+    
+    let selected = [];
+    checkboxes.forEach(cb => {
+        if (cb.checked) selected.push(cb.value);
+    });
+
+    if (selected.length > 0) {
+        display.textContent = selected.join(', ');
+        display.classList.add('has-values');
+    } else {
+        display.textContent = 'Hospital Type';
+        display.classList.remove('has-values');
+    }
+}
+
 // Close multiselect when clicking outside
 document.addEventListener('click', (e) => {
     // For multiselects
@@ -321,10 +420,15 @@ initDropdowns();
 let hospitalProfile = {
     name: '',
     type: '',
+    regNum: '',
+    state: '',
+    city: '',
+    pin: '',
+    address: '',
     phone: '',
     photo: null,
 };
-let hospitalICUs = []; // Array of ICU objects
+let hospitalICUs = []; // Start with no ICUs
 let editingICUIndex = -1; // -1 = new, else index to edit
 
 // ── Dashboard Navigation ──────────────────────────────
@@ -361,16 +465,37 @@ function goToChangeInfo() {
         dashScreen.classList.remove('active-view');
         ciScreen.classList.add('active-view');
     }
-    // Pre-fill Change Info form
-    const ciName = document.getElementById('ci-hosp-name');
-    const ciPhone = document.getElementById('ci-hosp-phone');
-    if (ciName) ciName.value = hospitalProfile.name;
-    if (ciPhone) ciPhone.value = hospitalProfile.phone;
-    // Restore photo if available
-    if (hospitalProfile.photo) {
-        const preview = document.getElementById('ci-photo-preview');
-        if (preview) preview.innerHTML = `<img src="${hospitalProfile.photo}" alt="Hospital photo">`;
+    // Clear all fields so it starts empty as requested
+    const fieldsToClear = [
+        'ci-hosp-name', 'ci-hosp-reg-num', 'ci-hosp-pin', 'ci-hosp-address'
+    ];
+    fieldsToClear.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    
+    const typeDisplay = document.getElementById('ci-hosp-type-display');
+    if (typeDisplay) { typeDisplay.textContent = 'Hospital Type'; typeDisplay.classList.remove('has-values'); }
+    const typeOpts = document.getElementById('ci-hosp-type-options');
+    if (typeOpts) { typeOpts.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false); }
+    
+    const stateDisplay = document.getElementById('ci-hosp-state-display');
+    if (stateDisplay) { stateDisplay.textContent = 'State'; stateDisplay.classList.remove('has-values'); }
+    
+    const cityDisplay = document.getElementById('ci-hosp-city-display');
+    if (cityDisplay) { cityDisplay.textContent = 'City'; cityDisplay.classList.remove('has-values'); }
+    
+    const preview = document.getElementById('ci-photo-preview');
+    if (preview) {
+        preview.innerHTML = `
+            <div class="ci-upload-content" id="ci-upload-content">
+                <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                <span>Upload Your Hospital Logo / Photo</span>
+            </div>
+            <input type="file" id="ci-photo-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
+        `;
     }
+    
     renderCIICUList();
 }
 
@@ -411,45 +536,71 @@ function renderDashboard() {
 function buildICUCard(icu, index) {
     const names = Array.isArray(icu.names) ? icu.names.join(' + ') : icu.name;
     return `
-    <div class="icu-card">
-        <div class="icu-card-header">
-            <div class="icu-card-name">${names}</div>
-            <div class="icu-card-badge">ICU</div>
+    <div style="margin-bottom: 32px;">
+        <!-- Title -->
+        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin: 0 0 12px 16px;">
+            ${names}
+        </h3>
+        <!-- Card -->
+        <div style="background: #FDECEA; border-radius: 24px; padding: 28px 24px 24px 24px;">
+            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds</div>
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.totalBeds || '0'}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant</div>
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.vacantBeds || '0'}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant<br>(with ventilator)</div>
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.ventBeds || '0'}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant<br>(without ventilator)</div>
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.noVentBeds || '0'}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Emergency phone No</div>
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.contact || '-'}</div>
+                </div>
+            </div>
+            <button onclick="editICUFromDash(${index})" style="width: 100%; background: #C0202A; color: #fff; font-family: var(--font); font-size: 1.25rem; font-weight: 600; padding: 14px 24px; border: none; border-radius: 20px; cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent;" onmousedown="this.style.opacity='0.7'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
+                Update
+            </button>
         </div>
-        <div class="icu-stats-grid">
-            <div class="icu-stat-item">
-                <div class="icu-stat-label">Total Beds</div>
-                <div class="icu-stat-value">${icu.totalBeds || '—'}</div>
-            </div>
-            <div class="icu-stat-item">
-                <div class="icu-stat-label">Vacant Beds</div>
-                <div class="icu-stat-value accent">${icu.vacantBeds || '—'}</div>
-            </div>
-            <div class="icu-stat-item">
-                <div class="icu-stat-label">With Ventilator</div>
-                <div class="icu-stat-value">${icu.ventBeds || '—'}</div>
-            </div>
-            <div class="icu-stat-item">
-                <div class="icu-stat-label">Without Ventilator</div>
-                <div class="icu-stat-value">${icu.noVentBeds || '—'}</div>
-            </div>
-        </div>
-        <div class="icu-card-contact">
-            <i class="fa-solid fa-phone"></i>
-            ${icu.contact || 'N/A'}
-        </div>
-        <button class="icu-card-update-btn" onclick="editICUFromDash(${index})">
-            Update
-        </button>
     </div>`;
 }
 
 // ── Change Info: Save ─────────────────────────────────
 function saveChangeInfo() {
     const nameEl = document.getElementById('ci-hosp-name');
-    const phoneEl = document.getElementById('ci-hosp-phone');
-    if (nameEl) hospitalProfile.name = nameEl.value.trim() || hospitalProfile.name;
-    if (phoneEl) hospitalProfile.phone = phoneEl.value.trim();
+    if (nameEl && nameEl.value.trim()) hospitalProfile.name = nameEl.value.trim();
+    
+    const typeDisplay = document.getElementById('ci-hosp-type-display');
+    if (typeDisplay && typeDisplay.classList.contains('has-values')) {
+        hospitalProfile.type = typeDisplay.textContent;
+    }
+    
+    const regNumEl = document.getElementById('ci-hosp-reg-num');
+    if (regNumEl && regNumEl.value.trim()) hospitalProfile.regNum = regNumEl.value.trim();
+    
+    const stateDisplay = document.getElementById('ci-hosp-state-display');
+    if (stateDisplay && stateDisplay.classList.contains('has-values')) {
+        hospitalProfile.state = stateDisplay.textContent;
+    }
+    
+    const cityDisplay = document.getElementById('ci-hosp-city-display');
+    if (cityDisplay && cityDisplay.classList.contains('has-values')) {
+        hospitalProfile.city = cityDisplay.textContent;
+    }
+    
+    const pinEl = document.getElementById('ci-hosp-pin');
+    if (pinEl && pinEl.value.trim()) hospitalProfile.pin = pinEl.value.trim();
+    
+    const addressEl = document.getElementById('ci-hosp-address');
+    if (addressEl && addressEl.value.trim()) hospitalProfile.address = addressEl.value.trim();
+
     goBackToDashboard();
 }
 
@@ -460,56 +611,168 @@ function handlePhotoUpload(event) {
     reader.onload = (e) => {
         hospitalProfile.photo = e.target.result;
         const preview = document.getElementById('ci-photo-preview');
-        if (preview) preview.innerHTML = `<img src="${e.target.result}" alt="Hospital photo">`;
+        if (preview) {
+            let img = preview.querySelector('img');
+            if (!img) {
+                img = document.createElement('img');
+                preview.appendChild(img);
+            }
+            img.src = e.target.result;
+            img.alt = "Hospital Logo";
+        }
     };
     reader.readAsDataURL(file);
 }
 
-// ── ICU Modal ─────────────────────────────────────────
-function openICUModal(editIndex) {
-    editingICUIndex = (editIndex !== undefined) ? editIndex : -1;
-    const modal = document.getElementById('icu-modal-overlay');
-    const title = document.getElementById('modal-title');
-    if (!modal) return;
+// ── ICU Management Screen ────────────────────────────
+let undoTimeout = null;
+let deletedICUData = null;
+let deletedICUIndex = -1;
+let addICUSource = 'change-info';
 
-    // Reset form
-    ['icu-total-beds','icu-vacant-beds','icu-vent-beds','icu-novent-beds','icu-contact'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-    // Reset ICU name checkboxes
-    const checkboxes = document.querySelectorAll('#icu-name-options input[type="checkbox"]');
-    checkboxes.forEach(cb => cb.checked = false);
-    const nameDisplay = document.getElementById('icu-name-display');
-    if (nameDisplay) { nameDisplay.textContent = 'ICU Name'; nameDisplay.classList.remove('has-values'); }
-
-    // If editing, pre-fill
-    if (editingICUIndex >= 0 && hospitalICUs[editingICUIndex]) {
-        if (title) title.textContent = 'Edit ICU';
-        const icu = hospitalICUs[editingICUIndex];
-        const names = Array.isArray(icu.names) ? icu.names : [icu.name];
-        checkboxes.forEach(cb => { if (names.includes(cb.value)) cb.checked = true; });
-        updateICUNameSelect();
-        const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
-        set('icu-total-beds', icu.totalBeds);
-        set('icu-vacant-beds', icu.vacantBeds);
-        set('icu-vent-beds', icu.ventBeds);
-        set('icu-novent-beds', icu.noVentBeds);
-        set('icu-contact', icu.contact);
-    } else {
-        if (title) title.textContent = 'Add New ICU';
+// Navigate: To Add ICU Bed
+function goToAddICU(source = 'change-info') {
+    addICUSource = source;
+    
+    // Hide possible origin screens
+    const ciScreen = document.getElementById('change-info-screen');
+    const dashScreen = document.getElementById('hospital-dashboard-screen');
+    
+    if (ciScreen) ciScreen.classList.remove('active-view');
+    if (dashScreen) dashScreen.classList.remove('active-view');
+    
+    const addScreen = document.getElementById('add-icu-screen');
+    if (addScreen) {
+        addScreen.classList.add('active-view');
     }
-
-    modal.classList.add('show');
+    // Reset Add ICU form
+    const nameEl = document.getElementById('add-icu-name');
+    if (nameEl) nameEl.value = '';
+    const contactEl = document.getElementById('add-icu-contact');
+    if (contactEl) contactEl.value = '';
+    ['add-icu-total', 'add-icu-vacant', 'add-icu-vent', 'add-icu-novent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.textContent = '0';
+            syncMinusButtonColor(id);
+        }
+    });
 }
 
-function closeICUModal(e) {
-    if (e && e.target !== document.getElementById('icu-modal-overlay')) return;
-    const modal = document.getElementById('icu-modal-overlay');
-    if (modal) modal.classList.remove('show');
-    // Also close any open dropdown inside modal
-    const opts = document.getElementById('icu-name-options');
-    if (opts) opts.classList.remove('show');
+
+// Navigate: Add ICU Bed -> Change Info
+// Navigate: Add ICU Bed -> Back
+function goBackToChangeInfoFromAddICU() {
+    const addScreen = document.getElementById('add-icu-screen');
+    if (addScreen) addScreen.classList.remove('active-view');
+    
+    if (addICUSource === 'dashboard') {
+        const dashScreen = document.getElementById('hospital-dashboard-screen');
+        if (dashScreen) dashScreen.classList.add('active-view');
+        renderDashboardICUs();
+    } else {
+        const ciScreen = document.getElementById('change-info-screen');
+        if (ciScreen) ciScreen.classList.add('active-view');
+    }
+}
+
+
+function syncMinusButtonColor(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const val = parseInt(el.textContent) || 0;
+    const minusBtn = el.previousElementSibling;
+    if (minusBtn && minusBtn.classList.contains('icu-qty-minus')) {
+        minusBtn.style.background = (val > 0) ? '#ED1C24' : '#FA9A9F';
+    }
+}
+
+// Quantity counter update
+function updateICUCount(id, delta) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const current = parseInt(el.textContent) || 0;
+    const next = Math.max(0, current + delta);
+    el.textContent = next;
+    syncMinusButtonColor(id);
+}
+
+// Add ICU from Add ICU Bed screen
+function addICUAndGoBack() {
+    const nameEl = document.getElementById('add-icu-name');
+    const name = nameEl ? nameEl.value.trim() : '';
+    if (!name) {
+        alert('Please enter an ICU Bed Name.');
+        return;
+    }
+
+    const getCount = (id) => parseInt(document.getElementById(id)?.textContent) || 0;
+    const contactEl = document.getElementById('add-icu-contact');
+    const contact = contactEl ? contactEl.value.trim() : '';
+
+    const icuObj = {
+        names: [name],
+        name: name,
+        contact: contact,
+        totalBeds:  getCount('add-icu-total'),
+        vacantBeds: getCount('add-icu-vacant'),
+        ventBeds:   getCount('add-icu-vent'),
+        noVentBeds: getCount('add-icu-novent')
+    };
+
+    hospitalICUs.push(icuObj);
+    renderCIICUList();
+    goBackToChangeInfoFromAddICU();
+}
+
+
+
+
+
+function showUndoSnackbar() {
+    const snackbar = document.getElementById('icu-snackbar');
+    const snackbarText = document.getElementById('snackbar-text');
+    if (!snackbar || !snackbarText || !deletedICUData) return;
+
+    const names = Array.isArray(deletedICUData.names) ? deletedICUData.names.join(' + ') : deletedICUData.name;
+    snackbarText.textContent = `${names} deleted`;
+    
+    snackbar.classList.add('show');
+    
+    if (undoTimeout) clearTimeout(undoTimeout);
+    undoTimeout = setTimeout(() => {
+        snackbar.classList.remove('show');
+        deletedICUData = null;
+        deletedICUIndex = -1;
+    }, 4000);
+}
+
+function deleteICU(index) {
+    deletedICUData = hospitalICUs[index];
+    deletedICUIndex = index;
+    hospitalICUs.splice(index, 1);
+    renderCIICUList();
+    showUndoSnackbar();
+}
+
+function undoDeleteICU() {
+    if (deletedICUData && deletedICUIndex !== -1) {
+        hospitalICUs.splice(deletedICUIndex, 0, deletedICUData);
+        renderCIICUList();
+        
+        const snackbar = document.getElementById('icu-snackbar');
+        if (snackbar) snackbar.classList.remove('show');
+        
+        if (undoTimeout) clearTimeout(undoTimeout);
+        deletedICUData = null;
+        deletedICUIndex = -1;
+    }
+}
+
+function commitICUChanges() {
+    hospitalICUs = JSON.parse(JSON.stringify(tempICUs));
+    goBackToChangeInfo();
+    renderCIICUList();
 }
 
 function updateICUNameSelect() {
@@ -529,63 +792,201 @@ function updateICUNameSelect() {
     }
 }
 
-function saveICU() {
-    const checkboxes = document.querySelectorAll('#icu-name-options input[type="checkbox"]:checked');
-    const names = Array.from(checkboxes).map(cb => cb.value);
-    if (names.length === 0) { alert('Please select at least one ICU name.'); return; }
-
-    const get = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
-    const icuObj = {
-        names,
-        name: names.join(' + '),
-        totalBeds:  get('icu-total-beds'),
-        vacantBeds: get('icu-vacant-beds'),
-        ventBeds:   get('icu-vent-beds'),
-        noVentBeds: get('icu-novent-beds'),
-        contact:    get('icu-contact'),
-    };
-
-    if (editingICUIndex >= 0) {
-        hospitalICUs[editingICUIndex] = icuObj;
-    } else {
-        hospitalICUs.push(icuObj);
-    }
-
-    const modal = document.getElementById('icu-modal-overlay');
-    if (modal) modal.classList.remove('show');
-    renderCIICUList();
-}
+let currentUpdateICUIndex = -1;
 
 function editICUFromDash(index) {
-    goToChangeInfo();
-    setTimeout(() => openICUModal(index), 100);
+    currentUpdateICUIndex = index;
+    const icu = hospitalICUs[index];
+    if (!icu) return;
+    
+    document.getElementById('upd-icu-total').textContent = icu.totalBeds || 0;
+    document.getElementById('upd-icu-vacant').textContent = icu.vacantBeds || 0;
+    document.getElementById('upd-icu-vent').textContent = icu.ventBeds || 0;
+    document.getElementById('upd-icu-novent').textContent = icu.noVentBeds || 0;
+    document.getElementById('upd-icu-contact').value = icu.contact || '';
+
+    ['upd-icu-total', 'upd-icu-vacant', 'upd-icu-vent', 'upd-icu-novent'].forEach(id => syncMinusButtonColor(id));
+
+    // Switch screen
+    document.querySelector('.screen-view.active-view')?.classList.remove('active-view');
+    document.getElementById('update-icu-screen').classList.add('active-view');
 }
 
-function deleteICU(index) {
-    hospitalICUs.splice(index, 1);
-    renderCIICUList();
+function goBackToDashboardFromUpdate() {
+    document.getElementById('update-icu-screen').classList.remove('active-view');
+    document.getElementById('hospital-dashboard-screen').classList.add('active-view');
+}
+
+function updateUpdateICUCount(id, delta) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const current = parseInt(el.textContent) || 0;
+    const next = Math.max(0, current + delta);
+    el.textContent = next;
+    syncMinusButtonColor(id);
+}
+
+function confirmICUUpdate() {
+    if (currentUpdateICUIndex === -1) return;
+    const getCount = (id) => parseInt(document.getElementById(id)?.textContent) || 0;
+    const contact = document.getElementById('upd-icu-contact').value.trim();
+    
+    const icu = hospitalICUs[currentUpdateICUIndex];
+    icu.totalBeds = getCount('upd-icu-total');
+    icu.vacantBeds = getCount('upd-icu-vacant');
+    icu.ventBeds = getCount('upd-icu-vent');
+    icu.noVentBeds = getCount('upd-icu-novent');
+    icu.contact = contact;
+
+    renderDashboard();
+    goBackToDashboardFromUpdate();
 }
 
 // ── Render Change Info ICU List ───────────────────────
 function renderCIICUList() {
     const list = document.getElementById('ci-icu-list');
     if (!list) return;
+    
     if (hospitalICUs.length === 0) {
         list.innerHTML = '';
         return;
     }
+    
     list.innerHTML = hospitalICUs.map((icu, i) => {
         const names = Array.isArray(icu.names) ? icu.names.join(' + ') : icu.name;
+        // Optionally style the first item's border to match reference exactly, or leave as default
         return `
-        <div class="ci-icu-item">
-            <div>
-                <div class="ci-icu-item-name">${names}</div>
-                <div class="ci-icu-item-sub">Total: ${icu.totalBeds || '—'} beds • Vacant: ${icu.vacantBeds || '—'}</div>
-            </div>
-            <div class="ci-icu-item-actions">
-                <button class="ci-icu-edit-btn" onclick="openICUModal(${i})" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                <button class="ci-icu-del-btn" onclick="deleteICU(${i})" title="Delete"><i class="fa-solid fa-trash"></i></button>
-            </div>
+        <div class="temp-icu-card">
+            <span class="temp-icu-card-name">${i + 1}. ${names}</span>
+            <button class="temp-icu-del" onclick="deleteICU(${i})"><svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
         </div>`;
     }).join('');
+}
+
+// ── Language Selection ─────────────────────────────────
+const languages = [
+    { id: 'en', name: 'English' },
+    { id: 'hi', name: 'हिंदी' },
+    { id: 'bn', name: 'বাংলা' },
+    { id: 'mr', name: 'मराठी' },
+    { id: 'te', name: 'తెలుగు' },
+    { id: 'gu', name: 'ગુજરાતી' },
+    { id: 'ta', name: 'தமிழ்' },
+    { id: 'kn', name: 'ಕನ್ನಡ' },
+    { id: 'ml', name: 'മലയാളം' },
+    { id: 'pa', name: 'ਪੰਜਾਬੀ' }
+];
+
+let selectedLangId = 'en';
+
+function goToLanguageScreen() {
+    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('language-screen').classList.add('active-view');
+    document.querySelector('.lang-search-input').value = '';
+    renderLanguageOptions();
+}
+
+function goBackFromLanguage() {
+    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('change-info-screen').classList.add('active-view');
+}
+
+function renderLanguageOptions(searchQuery = '') {
+    const list = document.getElementById('lang-options-list');
+    
+    // Update the "You Selected" text based on selectedLangId
+    const selectedLang = languages.find(l => l.id === selectedLangId) || languages[0];
+    document.getElementById('lang-selected-text').textContent = selectedLang.name;
+
+    const query = searchQuery.trim().toLowerCase();
+    const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
+
+    list.innerHTML = filteredLangs.map(lang => {
+        const isSelected = lang.id === selectedLangId;
+        return `
+            <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectLanguage('${lang.id}')">
+                <span>${lang.name}</span>
+                <div class="lang-radio-circle"></div>
+                <svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#C0202A"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>
+            </div>
+        `;
+    }).join('');
+}
+
+function selectLanguage(id) {
+    selectedLangId = id;
+    renderLanguageOptions(document.querySelector('.lang-search-input').value);
+}
+
+function saveLanguage() {
+    // Apply selected language to the button in Change Info screen
+    const selectedLang = languages.find(l => l.id === selectedLangId) || languages[0];
+    const btn = document.querySelector('.ci-lang-selector');
+    if(btn) {
+        // Find the language ID in uppercase (e.g. ENG, HIN) or just the short code
+        let code = selectedLang.id.toUpperCase();
+        if(code === 'EN') code = 'ENG';
+        if(code === 'HI') code = 'HIN';
+        if(code === 'BN') code = 'BEN';
+        if(code === 'MR') code = 'MAR';
+        if(code === 'TE') code = 'TEL';
+        if(code === 'GU') code = 'GUJ';
+        if(code === 'TA') code = 'TAM';
+        if(code === 'KN') code = 'KAN';
+        if(code === 'ML') code = 'MAL';
+        if(code === 'PA') code = 'PUN';
+        
+        btn.innerHTML = `${code} <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
+    }
+
+    // Trigger Google Translate
+    if (selectedLang.id === 'en') {
+        // The most reliable way to strip Google Translate's DOM mutations is a reload.
+        // We save the state so it's completely seamless.
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
+        
+        sessionStorage.setItem('hospitalICUs', JSON.stringify(hospitalICUs));
+        sessionStorage.setItem('returnToLanguage', 'true');
+        window.location.reload();
+        return; // Don't continue execution
+    } else {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+            select.value = selectedLang.id;
+            select.dispatchEvent(new Event('change'));
+        }
+    }
+
+    goBackFromLanguage();
+}
+
+// ── App Initialization & State Restoration ────────────────
+window.addEventListener('DOMContentLoaded', () => {
+    // Restore state if we just reloaded to clear translation
+    if (sessionStorage.getItem('returnToLanguage') === 'true') {
+        sessionStorage.removeItem('returnToLanguage');
+        
+        const savedICUs = sessionStorage.getItem('hospitalICUs');
+        if (savedICUs) {
+            try {
+                hospitalICUs = JSON.parse(savedICUs);
+                renderCIICUList();
+            } catch(e) {}
+        }
+
+        // Hide all screens and show change info directly
+        document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+        document.getElementById('change-info-screen').classList.add('active-view');
+        
+        // Ensure language is set back to English visually
+        const btn = document.querySelector('.ci-lang-selector');
+        if(btn) {
+            btn.innerHTML = `ENG <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
+        }
+    }
+});
+
+function onLangSearch(val) {
+    renderLanguageOptions(val);
 }
