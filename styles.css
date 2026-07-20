@@ -983,6 +983,19 @@ body {
     margin: 0;
 }
 .ci-lang-selector {
+    background: #C0202A;
+    color: #fff;
+    font-family: var(--font);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.patient-lang-selector {
     background: #3B82F6;
     color: #fff;
     font-family: var(--font);
