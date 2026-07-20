@@ -378,7 +378,7 @@ function requestPatientLocation() {
             },
             (error) => {
                 console.error('Geolocation error:', error);
-                locAddress.textContent = "Location access denied";
+                locAddress.textContent = "Location Denied - Tap to retry";
             }
         );
     } else {
