@@ -367,8 +367,16 @@ function requestPatientLocation() {
                 const lon = position.coords.longitude;
                 locAddress.textContent = "Fetching location...";
                 
+                // Sync with location picker if it exists
+                if (typeof currentPickerLat !== 'undefined') {
+                    currentPickerLat = lat;
+                    currentPickerLon = lon;
+                }
+                
                 // Fetch nearby hospitals using Overpass API
-                fetchNearbyHospitals(lat, lon);
+                if (typeof fetchNearbyHospitals === 'function') {
+                    fetchNearbyHospitals(lat, lon);
+                }
                 
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
                     .then(res => res.json())
