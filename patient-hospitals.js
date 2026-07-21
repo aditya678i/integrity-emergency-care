@@ -18,52 +18,25 @@ async function fetchNearbyHospitals(lat, lon) {
     const radius = 5000; // 5km search radius
     const query = `
         [out:json];
-        (
-          node["amenity"="hospital"](around:${radius},${lat},${lon});
-          way["amenity"="hospital"](around:${radius},${lat},${lon});
-          relation["amenity"="hospital"](around:${radius},${lat},${lon});
-          node["healthcare"="hospital"](around:${radius},${lat},${lon});
-          way["healthcare"="hospital"](around:${radius},${lat},${lon});
-        );
+        node["amenity"="hospital"](around:${radius},${lat},${lon});
         out center;
     `;
-    
-    // Multiple endpoints to fallback in case of rate limits or CORS
-    const endpoints = [
-        'https://overpass-api.de/api/interpreter',
-        'https://overpass.kumi.systems/api/interpreter',
-        'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
-    ];
-
-    let data = null;
-    let fetchError = null;
-
-    for (let endpoint of endpoints) {
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `data=${encodeURIComponent(query)}`
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} from ${endpoint}`);
-            }
-            
-            data = await response.json();
-            break; // Success! break out of fallback loop
-        } catch (error) {
-            console.warn(`Failed to fetch from ${endpoint}:`, error);
-            fetchError = error;
-        }
-    }
+    const url = 'https://overpass-api.de/api/interpreter';
 
     try {
-        if (!data || !data.elements) {
-            throw new Error(fetchError ? fetchError.message : "All endpoints failed");
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'data=' + encodeURIComponent(query)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        const data = await response.json();
         
         let hospitals = data.elements.map(el => {
             return {
@@ -95,12 +68,10 @@ async function fetchNearbyHospitals(lat, lon) {
         renderHospitalCards(hospitals, lat, lon);
         
     } catch (error) {
-        console.error("Error processing hospitals from OSM:", error);
+        console.error("Error fetching hospitals from OSM:", error);
         document.getElementById('patient-hospitals-list').innerHTML = `
             <div style="padding: 20px; text-align: center; color: red;">
-                <b>Failed to fetch hospitals.</b><br>
-                <small>${error.message}</small><br>
-                <small>Please try again or check your connection.</small>
+                Failed to fetch hospitals. Please check your internet connection.
             </div>
         `;
     }

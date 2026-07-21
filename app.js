@@ -376,13 +376,8 @@ function requestPatientLocation() {
                         if (data && data.display_name) {
                             // Extract a shorter address if possible (suburb/city)
                             const addressParts = [];
-                            if (data.address.neighbourhood) addressParts.push(data.address.neighbourhood);
-                            else if (data.address.suburb) addressParts.push(data.address.suburb);
-                            else if (data.address.road) addressParts.push(data.address.road);
-                            
+                            if (data.address.suburb) addressParts.push(data.address.suburb);
                             if (data.address.city) addressParts.push(data.address.city);
-                            else if (data.address.town) addressParts.push(data.address.town);
-                            else if (data.address.village) addressParts.push(data.address.village);
                             else if (data.address.state_district) addressParts.push(data.address.state_district);
                             
                             locAddress.textContent = addressParts.length > 0 ? addressParts.join(', ') : data.display_name;
