@@ -377,6 +377,7 @@ body {
     height: 72%;
     display: block;
     overflow: visible;
+    pointer-events: none;
 }
 
 /* Center fixes */
@@ -397,6 +398,7 @@ body {
     color: #111;
     text-align: center;
     letter-spacing: -0.2px;
+    pointer-events: none;
 }
 
 /* Make "Other" question mark look consistent */
