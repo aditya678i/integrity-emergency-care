@@ -338,11 +338,24 @@ function goToEmergencyType() {
 
 let currentPatientEmergencyType = 'Other';
 
+
+function getLangCodeDisplay(id) {
+    const map = {
+        'en': 'ENG',
+        'hi': 'HIN',
+        'bn': 'BEN',
+        'mr': 'MAR',
+        'te': 'TEL',
+        'gu': 'GUJ'
+    };
+    return map[id] || id.toUpperCase();
+}
+
 function goToPatientHospitals(emergencyType = 'Other') {
     triggerGoogleTranslate(patientLangId);
     const selector = document.querySelector('.patient-lang-selector');
     if (selector) {
-        selector.innerHTML = patientLangId.toUpperCase() + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+        selector.innerHTML = getLangCodeDisplay(patientLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     }
     currentPatientEmergencyType = emergencyType;
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
@@ -1045,7 +1058,7 @@ function renderPatientLanguageOptions(searchQuery = '') {
             <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectPatientLanguage('${lang.id}')">
                 <span>${lang.name}</span>
                 ${isSelected ? '<svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#2b84f0"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>' 
-                : '<div class="lang-circle" style="border-color: #2b84f0;"></div>'}
+                : '<div class="lang-radio-circle" style="border-color: #2b84f0;"></div>'}
             </div>
         `;
     }).join('');
@@ -1067,7 +1080,7 @@ function savePatientLanguage() {
     // Update the UI pill on patient hospitals screen
     const selector = document.querySelector('.patient-lang-selector');
     if (selector) {
-        selector.innerHTML = patientLangId.toUpperCase() + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+        selector.innerHTML = getLangCodeDisplay(patientLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     }
 
     goBackFromPatientLanguage();
