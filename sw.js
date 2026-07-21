@@ -1,9 +1,11 @@
-const CACHE_NAME = 'integrity-emergency-care-v2';
+const CACHE_NAME = 'integrity-emergency-care-v4';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/styles.css',
   '/app.js',
+  '/patient-hospitals.js',
+  '/location-picker.js',
   '/manifest.json',
   '/assets/splash-logo.png'
 ];
@@ -32,13 +34,12 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Network-first strategy: Always try to get the newest file from network. 
+// If network fails (offline), fall back to cache.
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });
