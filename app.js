@@ -494,18 +494,22 @@ document.addEventListener('click', (e) => {
 initDropdowns();
 
 //  State: Hospital Profile & ICU Data 
-let hospitalProfile = JSON.parse(localStorage.getItem('hospitalProfile')) || {
-    name: '',
-    type: '',
-    regNum: '',
-    state: '',
-    city: '',
-    pin: '',
-    address: '',
-    phone: '',
-    photo: null,
+let hospitalProfile = {
+    name: '', type: '', regNum: '', state: '', city: '', pin: '', address: '', phone: '', photo: null,
 };
-let hospitalICUs = JSON.parse(localStorage.getItem('hospitalICUs')) || []; // Start with no ICUs or loaded
+let hospitalICUs = [];
+try {
+    const hp = localStorage.getItem('hospitalProfile');
+    if (hp && hp !== 'undefined') {
+        hospitalProfile = JSON.parse(hp);
+    }
+    const hi = localStorage.getItem('hospitalICUs');
+    if (hi && hi !== 'undefined') {
+        hospitalICUs = JSON.parse(hi);
+    }
+} catch (e) {
+    console.warn("Failed to parse localStorage data:", e);
+}
 let editingICUIndex = -1; // -1 = new, else index to edit
 
 function persistHospitalData() {

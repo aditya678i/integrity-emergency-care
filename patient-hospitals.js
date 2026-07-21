@@ -91,8 +91,16 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
         let matchedICU = null;
         let hospContact = '';
         
-        const registeredProfile = JSON.parse(localStorage.getItem('hospitalProfile'));
-        const registeredICUs = JSON.parse(localStorage.getItem('hospitalICUs')) || [];
+        let registeredProfile = null;
+        let registeredICUs = [];
+        try {
+            const hp = localStorage.getItem('hospitalProfile');
+            if (hp && hp !== 'undefined') registeredProfile = JSON.parse(hp);
+            const hi = localStorage.getItem('hospitalICUs');
+            if (hi && hi !== 'undefined') registeredICUs = JSON.parse(hi);
+        } catch(e) {
+            console.warn("Failed to parse hospital data from localStorage", e);
+        }
 
         if (registeredProfile && registeredProfile.name && hosp.name.toLowerCase().includes(registeredProfile.name.toLowerCase())) {
             isRegistered = true;
