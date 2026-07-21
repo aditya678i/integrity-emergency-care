@@ -304,6 +304,7 @@ function toggleCustomSelect(id, e) {
 
 // ── Hospital Navigation ──────────────────────────────
 function goToHospitalRegister() {
+    triggerGoogleTranslate(hospitalLangId);
     const roleScreen = document.getElementById('role-screen');
     const hospitalScreen = document.getElementById('hospital-register-screen');
     if (roleScreen && hospitalScreen) {
@@ -325,6 +326,7 @@ function goToRoleScreen() {
 }
 
 function goToEmergencyType() {
+    triggerGoogleTranslate(patientLangId);
     const roleScreen = document.getElementById('role-screen');
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
     
@@ -337,6 +339,11 @@ function goToEmergencyType() {
 let currentPatientEmergencyType = 'Other';
 
 function goToPatientHospitals(emergencyType = 'Other') {
+    triggerGoogleTranslate(patientLangId);
+    const selector = document.querySelector('.patient-lang-selector');
+    if (selector) {
+        selector.innerHTML = patientLangId.toUpperCase() + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    }
     currentPatientEmergencyType = emergencyType;
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
     const hospitalsScreen = document.getElementById('patient-hospitals-screen');
@@ -527,6 +534,7 @@ function persistHospitalData() {
 
 // ── Dashboard Navigation ──────────────────────────────
 function goToDashboard() {
+    triggerGoogleTranslate(hospitalLangId);
     // Collect registration data
     hospitalProfile.name = document.getElementById('hosp-name').value.trim() || 'My Hospital';
     const typeDisplay = document.getElementById('hosp-type-display');
@@ -979,13 +987,36 @@ const languages = [
     { id: 'pa', name: 'ਪੰਜਾਬੀ' }
 ];
 
-let selectedLangId = 'en';
+
+let hospitalLangId = localStorage.getItem('hospitalLangId') || 'en';
+let patientLangId = localStorage.getItem('patientLangId') || 'en';
+
+function triggerGoogleTranslate(langCode) {
+    const select = document.querySelector('.goog-te-combo');
+    if (select && select.value !== langCode) {
+        select.value = langCode;
+        select.dispatchEvent(new Event('change'));
+    }
+}
+
+
+
+let currentLangContext = 'hospital'; // or 'patient'
 
 function goToLanguageScreen() {
+    currentLangContext = 'hospital';
     document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
     document.getElementById('language-screen').classList.add('active-view');
     document.querySelector('.lang-search-input').value = '';
     renderLanguageOptions();
+}
+
+function goToPatientLanguageScreen() {
+    currentLangContext = 'patient';
+    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('patient-language-screen').classList.add('active-view');
+    document.querySelector('.patient-lang-search-input').value = '';
+    renderPatientLanguageOptions();
 }
 
 function goBackFromLanguage() {
@@ -993,18 +1024,67 @@ function goBackFromLanguage() {
     document.getElementById('change-info-screen').classList.add('active-view');
 }
 
+function goBackFromPatientLanguage() {
+    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('patient-hospitals-screen').classList.add('active-view');
+}
+
+function renderPatientLanguageOptions(searchQuery = '') {
+    const list = document.getElementById('patient-lang-options-list');
+    
+    // Update the "You Selected" text based on patientLangId
+    const selectedLang = languages.find(l => l.id === patientLangId) || languages[0];
+    document.getElementById('patient-lang-selected-text').textContent = selectedLang.name;
+
+    const query = searchQuery.trim().toLowerCase();
+    const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
+
+    list.innerHTML = filteredLangs.map(lang => {
+        const isSelected = lang.id === patientLangId;
+        return `
+            <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectPatientLanguage('${lang.id}')">
+                <span>${lang.name}</span>
+                ${isSelected ? '<svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#2b84f0"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>' 
+                : '<div class="lang-circle" style="border-color: #2b84f0;"></div>'}
+            </div>
+        `;
+    }).join('');
+}
+
+function onPatientLangSearch(query) {
+    renderPatientLanguageOptions(query);
+}
+
+function selectPatientLanguage(langId) {
+    patientLangId = langId;
+    renderPatientLanguageOptions(document.querySelector('.patient-lang-search-input').value);
+}
+
+function savePatientLanguage() {
+    localStorage.setItem('patientLangId', patientLangId);
+    triggerGoogleTranslate(patientLangId);
+    
+    // Update the UI pill on patient hospitals screen
+    const selector = document.querySelector('.patient-lang-selector');
+    if (selector) {
+        selector.innerHTML = patientLangId.toUpperCase() + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    }
+
+    goBackFromPatientLanguage();
+}
+
 function renderLanguageOptions(searchQuery = '') {
     const list = document.getElementById('lang-options-list');
     
-    // Update the "You Selected" text based on selectedLangId
-    const selectedLang = languages.find(l => l.id === selectedLangId) || languages[0];
+    // Update the "You Selected" text based on hospitalLangId
+    const selectedLang = languages.find(l => l.id === hospitalLangId) || languages[0];
     document.getElementById('lang-selected-text').textContent = selectedLang.name;
 
     const query = searchQuery.trim().toLowerCase();
     const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
 
     list.innerHTML = filteredLangs.map(lang => {
-        const isSelected = lang.id === selectedLangId;
+        const isSelected = lang.id === hospitalLangId;
         return `
             <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectLanguage('${lang.id}')">
                 <span>${lang.name}</span>
@@ -1016,50 +1096,13 @@ function renderLanguageOptions(searchQuery = '') {
 }
 
 function selectLanguage(id) {
-    selectedLangId = id;
+    hospitalLangId = id;
     renderLanguageOptions(document.querySelector('.lang-search-input').value);
 }
 
 function saveLanguage() {
-    // Apply selected language to the button in Change Info screen
-    const selectedLang = languages.find(l => l.id === selectedLangId) || languages[0];
-    const btn = document.querySelector('.ci-lang-selector');
-    if(btn) {
-        // Find the language ID in uppercase (e.g. ENG, HIN) or just the short code
-        let code = selectedLang.id.toUpperCase();
-        if(code === 'EN') code = 'ENG';
-        if(code === 'HI') code = 'HIN';
-        if(code === 'BN') code = 'BEN';
-        if(code === 'MR') code = 'MAR';
-        if(code === 'TE') code = 'TEL';
-        if(code === 'GU') code = 'GUJ';
-        if(code === 'TA') code = 'TAM';
-        if(code === 'KN') code = 'KAN';
-        if(code === 'ML') code = 'MAL';
-        if(code === 'PA') code = 'PUN';
-        
-        btn.innerHTML = `${code} <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
-    }
-
-    // Trigger Google Translate
-    if (selectedLang.id === 'en') {
-        // The most reliable way to strip Google Translate's DOM mutations is a reload.
-        // We save the state so it's completely seamless.
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + window.location.hostname + "; path=/;";
-        
-        sessionStorage.setItem('hospitalICUs', JSON.stringify(hospitalICUs));
-        sessionStorage.setItem('returnToLanguage', 'true');
-        window.location.reload();
-        return; // Don't continue execution
-    } else {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-            select.value = selectedLang.id;
-            select.dispatchEvent(new Event('change'));
-        }
-    }
-
+    localStorage.setItem('hospitalLangId', hospitalLangId);
+    triggerGoogleTranslate(hospitalLangId);
     goBackFromLanguage();
 }
 
