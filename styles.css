@@ -1801,29 +1801,45 @@ body {
 
 .btn-book-amb {
     width: 100%;
-    background-color: #3B82F6;
+    background-color: #385fe8;
     color: white;
     border: none;
-    border-radius: 16px;
-    padding: 14px 20px;
-    font-size: 1.1rem;
+    border-radius: 9999px;
+    padding: 6px 6px 6px 20px;
+    font-size: 1.25rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
+    justify-content: space-between;
     cursor: pointer;
     font-family: var(--font);
-    position: relative;
+    box-shadow: 0 6px 16px rgba(56, 95, 232, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-book-amb:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(56, 95, 232, 0.2);
+}
+
+.btn-book-amb .amb-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .btn-book-amb .amb-icon {
-    margin-right: auto;
+    margin-right: 0;
 }
 
-.btn-book-amb .arrow-icon {
-    position: absolute;
-    right: 20px;
+.btn-book-amb .arrow-box {
+    background-color: white;
+    color: #385fe8;
+    border-radius: 9999px;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* =========================================

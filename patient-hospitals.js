@@ -212,9 +212,21 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
             ${statsHTML}
 
             <button class="btn-book-amb" style="margin-top: 16px;">
-                <svg class="svg-icon amb-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor"><path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v12h3.14a3 3 0 0 0 5.72 0h4.28a3 3 0 0 0 5.72 0H20V12l-1-5zm-9-1a2 2 0 0 1 4 0v1h-4V6zm-3 8H5v-2h2v2zm5 0H9v-2h2v2zm5 0h-2v-2h2v2zm-6 6a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm8 0a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/></svg>
-                Book Ambulance
-                <svg class="svg-icon arrow-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+                <div class="amb-content">
+                    <svg class="svg-icon amb-icon" viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="6" width="12" height="10" rx="1.5"></rect>
+                        <path d="M14 9h4l3 3v4h-7"></path>
+                        <circle cx="7" cy="17" r="2"></circle>
+                        <circle cx="17" cy="17" r="2"></circle>
+                        <path d="M6 11h4M8 9v4"></path>
+                    </svg>
+                    <span>Book Ambulance</span>
+                </div>
+                <div class="arrow-box">
+                    <svg class="svg-icon arrow-icon" viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 17L17 7M7 7h10v10"/>
+                    </svg>
+                </div>
             </button>
         `;
         container.appendChild(card);
