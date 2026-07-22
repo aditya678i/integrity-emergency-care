@@ -304,7 +304,7 @@ function toggleCustomSelect(id, e) {
 
 // ── Hospital Navigation ──────────────────────────────
 function goToHospitalRegister() {
-    triggerGoogleTranslate(selectedLangId);
+    triggerGoogleTranslate(hospitalLangId);
     const roleScreen = document.getElementById('role-screen');
     const hospitalScreen = document.getElementById('hospital-register-screen');
     if (roleScreen && hospitalScreen) {
@@ -326,7 +326,7 @@ function goToRoleScreen() {
 }
 
 function goToEmergencyType() {
-    triggerGoogleTranslate(selectedLangId);
+    triggerGoogleTranslate(patientLangId);
     const roleScreen = document.getElementById('role-screen');
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
     
@@ -340,22 +340,15 @@ let currentPatientEmergencyType = 'Other';
 
 
 function getLangCodeDisplay(id) {
-    const map = {
-        'en': 'ENG',
-        'hi': 'HIN',
-        'bn': 'BEN',
-        'mr': 'MAR',
-        'te': 'TEL',
-        'gu': 'GUJ'
-    };
-    return map[id] || id.toUpperCase();
+    const lang = languages.find(l => l.id === id);
+    return lang ? lang.name : id.toUpperCase();
 }
 
 function goToPatientHospitals(emergencyType = 'Other') {
-    triggerGoogleTranslate(selectedLangId);
-    const selector = document.querySelector('.ci-lang-selector');
+    triggerGoogleTranslate(patientLangId);
+    const selector = document.querySelector('.patient-lang-selector');
     if (selector) {
-        selector.innerHTML = getLangCodeDisplay(selectedLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+        selector.innerHTML = getLangCodeDisplay(patientLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     }
     currentPatientEmergencyType = emergencyType;
     const emergencyTypeScreen = document.getElementById('emergency-type-screen');
@@ -547,7 +540,7 @@ function persistHospitalData() {
 
 // ── Dashboard Navigation ──────────────────────────────
 function goToDashboard() {
-    triggerGoogleTranslate(selectedLangId);
+    triggerGoogleTranslate(hospitalLangId);
     // Collect registration data
     hospitalProfile.name = document.getElementById('hosp-name').value.trim() || 'My Hospital';
     const typeDisplay = document.getElementById('hosp-type-display');
@@ -1001,7 +994,8 @@ const languages = [
 ];
 
 
-let selectedLangId = localStorage.getItem('selectedLangId') || 'en';
+let hospitalLangId = localStorage.getItem('hospitalLangId') || 'en';
+let patientLangId = localStorage.getItem('patientLangId') || 'en';
 
 function triggerGoogleTranslate(langCode) {
     const select = document.querySelector('.goog-te-combo');
@@ -1011,42 +1005,87 @@ function triggerGoogleTranslate(langCode) {
     }
 }
 
+let currentLangContext = 'hospital';
+
 function goToLanguageScreen() {
+    currentLangContext = 'hospital';
     document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
     document.getElementById('language-screen').classList.add('active-view');
     document.querySelector('.lang-search-input').value = '';
     renderLanguageOptions();
 }
 
-function goBackFromLanguage() {
-    // Go back to the dashboard or patient screen depending on where we came from?
-    // Originally this just went to change-info-screen or patient-hospitals-screen.
-    // If we are reverting to a unified language screen, we can just use history.back() or check the state.
-    // Or we can just go back to the previous screen by storing it.
-    // Let's just use the default logic from before.
+function goToPatientLanguageScreen() {
+    currentLangContext = 'patient';
     document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('patient-language-screen').classList.add('active-view');
+    document.querySelector('.patient-lang-search-input').value = '';
+    renderPatientLanguageOptions();
+}
+
+function goBackFromLanguage() {
+    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('change-info-screen').classList.add('active-view');
+}
+
+function goBackFromPatientLanguage() {
+    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
+    document.getElementById('patient-hospitals-screen').classList.add('active-view');
+}
+
+function renderPatientLanguageOptions(searchQuery = '') {
+    const list = document.getElementById('patient-lang-options-list');
     
-    // Determine which screen to go back to based on a global flag or simply going back to the role screen
-    // Since we don't have the previous screen stored cleanly, let's just use the current emergency type or role.
-    if (currentPatientEmergencyType) {
-        document.getElementById('patient-hospitals-screen').classList.add('active-view');
-    } else {
-        document.getElementById('change-info-screen').classList.add('active-view');
+    const selectedLang = languages.find(l => l.id === patientLangId) || languages[0];
+    document.getElementById('patient-lang-selected-text').textContent = selectedLang.name;
+
+    const query = searchQuery.trim().toLowerCase();
+    const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
+
+    list.innerHTML = filteredLangs.map(lang => {
+        const isSelected = lang.id === patientLangId;
+        return `
+            <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectPatientLanguage('${lang.id}')">
+                <span>${lang.name}</span>
+                ${isSelected ? '<svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#2b84f0"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>' 
+                : '<div class="lang-radio-circle" style="border-color: #2b84f0;"></div>'}
+            </div>
+        `;
+    }).join('');
+}
+
+function onPatientLangSearch(query) {
+    renderPatientLanguageOptions(query);
+}
+
+function selectPatientLanguage(langId) {
+    patientLangId = langId;
+    renderPatientLanguageOptions(document.querySelector('.patient-lang-search-input').value);
+}
+
+function savePatientLanguage() {
+    localStorage.setItem('patientLangId', patientLangId);
+    
+    const selector = document.querySelector('.patient-lang-selector');
+    if (selector) {
+        selector.innerHTML = getLangCodeDisplay(patientLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     }
+
+    triggerGoogleTranslate(patientLangId);
+    goBackFromPatientLanguage();
 }
 
 function renderLanguageOptions(searchQuery = '') {
     const list = document.getElementById('lang-options-list');
     
-    // Update the "You Selected" text based on selectedLangId
-    const selectedLang = languages.find(l => l.id === selectedLangId) || languages[0];
+    const selectedLang = languages.find(l => l.id === hospitalLangId) || languages[0];
     document.getElementById('lang-selected-text').textContent = selectedLang.name;
 
     const query = searchQuery.trim().toLowerCase();
     const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
 
     list.innerHTML = filteredLangs.map(lang => {
-        const isSelected = lang.id === selectedLangId;
+        const isSelected = lang.id === hospitalLangId;
         return `
             <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectLanguage('${lang.id}')">
                 <span>${lang.name}</span>
@@ -1058,20 +1097,19 @@ function renderLanguageOptions(searchQuery = '') {
 }
 
 function selectLanguage(id) {
-    selectedLangId = id;
+    hospitalLangId = id;
     renderLanguageOptions(document.querySelector('.lang-search-input').value);
 }
 
 function saveLanguage() {
-    localStorage.setItem('selectedLangId', selectedLangId);
+    localStorage.setItem('hospitalLangId', hospitalLangId);
     
-    // Update the UI pill on both screens
     const hospitalSelector = document.querySelector('.ci-lang-selector');
     if (hospitalSelector) {
-        hospitalSelector.innerHTML = getLangCodeDisplay(selectedLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+        hospitalSelector.innerHTML = getLangCodeDisplay(hospitalLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
     }
 
-    triggerGoogleTranslate(selectedLangId);
+    triggerGoogleTranslate(hospitalLangId);
     goBackFromLanguage();
 }
 

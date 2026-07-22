@@ -261,8 +261,8 @@
                             <div class="hosp-back-btn" onclick="goBackToDashboard()" style="width: 36px; height: 36px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
                                 <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                             </div>
-                            <div class="ci-lang-selector" onclick="goToLanguageScreen()" style="height: 36px; box-sizing: border-box; display: flex; align-items: center; cursor: pointer;">
-                                ENG <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                            <div class="ci-lang-selector notranslate" onclick="goToLanguageScreen()" style="height: 36px; box-sizing: border-box; display: flex; align-items: center; cursor: pointer;">
+                                English <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                             </div>
                         </div>
                         <h2 class="ci-title" style="font-size: 1.6rem; margin: 0;">Change Your Hospital Info</h2>
@@ -544,6 +544,46 @@
                 </div>
             </div>
 
+            <!-- SCREEN: PATIENT LANGUAGE SELECTION -->
+            <div id="patient-language-screen" class="screen-view">
+                <div class="ci-inner">
+                    <!-- Header -->
+                    <div style="padding: 12px 24px 0 24px;">
+                        <div class="hosp-back-btn" onclick="goBackFromPatientLanguage()" style="margin-bottom: 24px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                        </div>
+                        <h2 style="color: #2b84f0; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Choose the language</h2>
+                        <p style="color: #93c5fd; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Select your preferred language below This helps us serve you better.</p>
+                    </div>
+
+                    <div class="ci-scroll" style="padding-top: 32px; padding-bottom: 80px;">
+                        <h3 style="color: #2b84f0; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 0 0 12px 0;">You Selected</h3>
+                        
+                        <div class="lang-selected-box notranslate">
+                            <span id="patient-lang-selected-text">English</span>
+                            <svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#2b84f0" style="display:block;"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>
+                        </div>
+
+                        <h3 style="color: #2b84f0; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 24px 0 12px 0;">All Languages</h3>
+                        
+                        <div class="lang-list-container">
+                            <div class="lang-search-box">
+                                <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="#2b84f0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 12px;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                                <input type="text" placeholder="Search" class="patient-lang-search-input" oninput="onPatientLangSearch(this.value)">
+                            </div>
+                            
+                            <div class="lang-options-list notranslate" id="patient-lang-options-list">
+                                <!-- Javascript will render options here -->
+                            </div>
+                        </div>
+
+                        <button class="hosp-register-btn" type="button" style="margin-top:32px; background: #2b84f0; color: white; width: 100%; border-radius: 20px;" onclick="savePatientLanguage()">
+                            Continue
+                        </button>
+                    </div>
+                </div>
+            </div>
+
 
 
             <div id="emergency-type-screen" class="screen-view">
@@ -677,8 +717,8 @@
                     <div class="hosp-back-btn patient-back" onclick="goBackToEmergencyType()" style="margin-left: -8px; -webkit-tap-highlight-color: transparent;">
                         <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                     </div>
-                    <div class="ci-lang-selector" style="height: 36px; box-sizing: border-box; cursor: pointer;" onclick="goToLanguageScreen()">
-                        ENG <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                    <div class="patient-lang-selector notranslate" style="height: 36px; box-sizing: border-box; cursor: pointer;" onclick="goToPatientLanguageScreen()">
+                        English <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                     </div>
                 </div>
 
