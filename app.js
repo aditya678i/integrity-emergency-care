@@ -323,6 +323,8 @@ function goToRoleScreen() {
     if (roleScreen) {
         roleScreen.classList.add('active-view');
     }
+    // Restore the patient language when returning from the hospital section
+    triggerGoogleTranslate(patientLangId);
 }
 
 function goToEmergencyType() {
