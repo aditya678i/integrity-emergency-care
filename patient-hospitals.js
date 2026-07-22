@@ -213,7 +213,7 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
 
             <button class="btn-book-amb" style="margin-top: 16px;">
                 <div class="amb-content">
-                    <svg class="svg-icon amb-icon" viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="svg-icon amb-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="6" width="12" height="10" rx="1.5"></rect>
                         <path d="M14 9h4l3 3v4h-7"></path>
                         <circle cx="7" cy="17" r="2"></circle>
@@ -223,7 +223,7 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
                     <span>Book Ambulance</span>
                 </div>
                 <div class="arrow-box">
-                    <svg class="svg-icon arrow-icon" viewBox="0 0 24 24" width="1.5em" height="1.5em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="svg-icon arrow-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M7 17L17 7M7 7h10v10"/>
                     </svg>
                 </div>

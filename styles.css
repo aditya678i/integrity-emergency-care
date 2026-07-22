@@ -1801,31 +1801,31 @@ body {
 
 .btn-book-amb {
     width: 100%;
-    background-color: #385fe8;
+    background-color: #3B82F6;
     color: white;
     border: none;
-    border-radius: 9999px;
-    padding: 6px 6px 6px 20px;
-    font-size: 1.25rem;
-    font-weight: 700;
+    border-radius: 12px;
+    padding: 6px 6px 6px 16px;
+    font-size: 1rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
     font-family: var(--font);
-    box-shadow: 0 6px 16px rgba(56, 95, 232, 0.25);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-book-amb:active {
     transform: scale(0.98);
-    box-shadow: 0 2px 8px rgba(56, 95, 232, 0.2);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
 .btn-book-amb .amb-content {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .btn-book-amb .amb-icon {
@@ -1834,12 +1834,20 @@ body {
 
 .btn-book-amb .arrow-box {
     background-color: white;
-    color: #385fe8;
-    border-radius: 9999px;
-    padding: 10px 24px;
+    color: #3B82F6;
+    border-radius: 8px;
+    padding: 8px 16px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.btn-book-amb .arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+.btn-book-amb:hover .arrow-icon {
+    transform: translate(3px, -3px);
 }
 
 /* =========================================
