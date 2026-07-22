@@ -304,7 +304,7 @@ function toggleCustomSelect(id, e) {
 
 // ── Hospital Navigation ──────────────────────────────
 function goToHospitalRegister() {
-    triggerGoogleTranslate(hospitalLangId);
+    triggerGoogleTranslate('en');
     const roleScreen = document.getElementById('role-screen');
     const hospitalScreen = document.getElementById('hospital-register-screen');
     if (roleScreen && hospitalScreen) {
@@ -540,7 +540,7 @@ function persistHospitalData() {
 
 // ── Dashboard Navigation ──────────────────────────────
 function goToDashboard() {
-    triggerGoogleTranslate(hospitalLangId);
+    triggerGoogleTranslate('en');
     // Collect registration data
     hospitalProfile.name = document.getElementById('hosp-name').value.trim() || 'My Hospital';
     const typeDisplay = document.getElementById('hosp-type-display');
@@ -994,7 +994,6 @@ const languages = [
 ];
 
 
-let hospitalLangId = localStorage.getItem('hospitalLangId') || 'en';
 let patientLangId = localStorage.getItem('patientLangId') || 'en';
 
 function triggerGoogleTranslate(langCode) {
@@ -1005,15 +1004,7 @@ function triggerGoogleTranslate(langCode) {
     }
 }
 
-let currentLangContext = 'hospital';
-
-function goToLanguageScreen() {
-    currentLangContext = 'hospital';
-    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
-    document.getElementById('language-screen').classList.add('active-view');
-    document.querySelector('.lang-search-input').value = '';
-    renderLanguageOptions();
-}
+let currentLangContext = 'patient';
 
 function goToPatientLanguageScreen() {
     currentLangContext = 'patient';
@@ -1021,11 +1012,6 @@ function goToPatientLanguageScreen() {
     document.getElementById('patient-language-screen').classList.add('active-view');
     document.querySelector('.patient-lang-search-input').value = '';
     renderPatientLanguageOptions();
-}
-
-function goBackFromLanguage() {
-    document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
-    document.getElementById('change-info-screen').classList.add('active-view');
 }
 
 function goBackFromPatientLanguage() {
@@ -1075,43 +1061,6 @@ function savePatientLanguage() {
     goBackFromPatientLanguage();
 }
 
-function renderLanguageOptions(searchQuery = '') {
-    const list = document.getElementById('lang-options-list');
-    
-    const selectedLang = languages.find(l => l.id === hospitalLangId) || languages[0];
-    document.getElementById('lang-selected-text').textContent = selectedLang.name;
-
-    const query = searchQuery.trim().toLowerCase();
-    const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
-
-    list.innerHTML = filteredLangs.map(lang => {
-        const isSelected = lang.id === hospitalLangId;
-        return `
-            <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectLanguage('${lang.id}')">
-                <span>${lang.name}</span>
-                ${isSelected ? '<svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#C0202A"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>' 
-                : '<div class="lang-radio-circle"></div>'}
-            </div>
-        `;
-    }).join('');
-}
-
-function selectLanguage(id) {
-    hospitalLangId = id;
-    renderLanguageOptions(document.querySelector('.lang-search-input').value);
-}
-
-function saveLanguage() {
-    localStorage.setItem('hospitalLangId', hospitalLangId);
-    
-    const hospitalSelector = document.querySelector('.ci-lang-selector');
-    if (hospitalSelector) {
-        hospitalSelector.innerHTML = getLangCodeDisplay(hospitalLangId) + ' <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
-    }
-
-    triggerGoogleTranslate(hospitalLangId);
-    goBackFromLanguage();
-}
 
 // ── App Initialization & State Restoration ────────────────
 window.addEventListener('DOMContentLoaded', () => {
