@@ -1536,19 +1536,19 @@ body {
  *  LANGUAGE SCREEN (SCREEN 10)
  * ------------------------------------- */
 .lang-selected-box {
-    border: 1.5px solid #C0202A;
+    border: 1.5px solid #2b84f0;
     border-radius: 24px;
     padding: 14px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #C0202A;
+    color: #2b84f0;
     font-family: var(--font);
     font-weight: 600;
     font-size: 1.1rem;
 }
 .lang-list-container {
-    border: 1.5px solid #C0202A;
+    border: 1.5px solid #2b84f0;
     border-radius: 16px;
     overflow: hidden;
 }
@@ -1556,18 +1556,18 @@ body {
     display: flex;
     align-items: center;
     padding: 12px 20px;
-    border-bottom: 1px solid #f1b3b6;
+    border-bottom: 1px solid #93c5fd;
 }
 .lang-search-input {
     border: none;
     outline: none;
     width: 100%;
     font-family: var(--font);
-    color: #C0202A;
+    color: #2b84f0;
     font-size: 1rem;
 }
 .lang-search-input::placeholder {
-    color: #C0202A;
+    color: #2b84f0;
     opacity: 0.8;
 }
 .lang-option {
@@ -1575,25 +1575,25 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #C0202A;
+    color: #2b84f0;
     font-family: var(--font);
     font-weight: 500;
     font-size: 1.05rem;
     cursor: pointer;
-    border-bottom: 1px solid #f1b3b6;
+    border-bottom: 1px solid #93c5fd;
     -webkit-tap-highlight-color: transparent;
 }
 .lang-option:last-child {
     border-bottom: none;
 }
 .lang-option.selected {
-    background-color: #FDECEA;
+    background-color: #EFF6FF;
 }
 .lang-radio-circle {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1.5px solid #f1b3b6;
+    border: 1.5px solid #93c5fd;
 }
 .lang-option.selected .lang-radio-circle {
     display: none;
