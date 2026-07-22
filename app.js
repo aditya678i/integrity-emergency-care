@@ -415,12 +415,28 @@ function requestPatientLocation() {
             },
             (error) => {
                 console.error('Geolocation error:', error);
-                locAddress.textContent = "Location Denied - Tap to retry";
+                locAddress.textContent = "Location Denied - Using Default";
+                
+                // Fallback to default location or previously picked location
+                const lat = typeof currentPickerLat !== 'undefined' ? currentPickerLat : 28.6139;
+                const lon = typeof currentPickerLon !== 'undefined' ? currentPickerLon : 77.2090;
+                
+                if (typeof fetchNearbyHospitals === 'function') {
+                    fetchNearbyHospitals(lat, lon);
+                }
             },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
     } else {
-        locAddress.textContent = "Geolocation not supported";
+        locAddress.textContent = "Geolocation not supported - Using Default";
+        
+        // Fallback to default location
+        const lat = typeof currentPickerLat !== 'undefined' ? currentPickerLat : 28.6139;
+        const lon = typeof currentPickerLon !== 'undefined' ? currentPickerLon : 77.2090;
+        
+        if (typeof fetchNearbyHospitals === 'function') {
+            fetchNearbyHospitals(lat, lon);
+        }
     }
 }
 
