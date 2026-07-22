@@ -1010,7 +1010,6 @@ function goToPatientLanguageScreen() {
     currentLangContext = 'patient';
     document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
     document.getElementById('patient-language-screen').classList.add('active-view');
-    document.querySelector('.patient-lang-search-input').value = '';
     renderPatientLanguageOptions();
 }
 
@@ -1019,16 +1018,13 @@ function goBackFromPatientLanguage() {
     document.getElementById('patient-hospitals-screen').classList.add('active-view');
 }
 
-function renderPatientLanguageOptions(searchQuery = '') {
+function renderPatientLanguageOptions() {
     const list = document.getElementById('patient-lang-options-list');
     
     const selectedLang = languages.find(l => l.id === patientLangId) || languages[0];
     document.getElementById('patient-lang-selected-text').textContent = selectedLang.name;
 
-    const query = searchQuery.trim().toLowerCase();
-    const filteredLangs = languages.filter(l => l.name.toLowerCase().includes(query) || (l.id === 'en' && 'english'.includes(query)));
-
-    list.innerHTML = filteredLangs.map(lang => {
+    list.innerHTML = languages.map(lang => {
         const isSelected = lang.id === patientLangId;
         return `
             <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectPatientLanguage('${lang.id}')">
@@ -1040,13 +1036,9 @@ function renderPatientLanguageOptions(searchQuery = '') {
     }).join('');
 }
 
-function onPatientLangSearch(query) {
-    renderPatientLanguageOptions(query);
-}
-
 function selectPatientLanguage(langId) {
     patientLangId = langId;
-    renderPatientLanguageOptions(document.querySelector('.patient-lang-search-input').value);
+    renderPatientLanguageOptions();
 }
 
 function savePatientLanguage() {

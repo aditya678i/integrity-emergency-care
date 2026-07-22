@@ -1552,24 +1552,7 @@ body {
     border-radius: 16px;
     overflow: hidden;
 }
-.lang-search-box {
-    display: flex;
-    align-items: center;
-    padding: 12px 20px;
-    border-bottom: 1px solid #93c5fd;
-}
-.lang-search-input {
-    border: none;
-    outline: none;
-    width: 100%;
-    font-family: var(--font);
-    color: #2b84f0;
-    font-size: 1rem;
-}
-.lang-search-input::placeholder {
-    color: #2b84f0;
-    opacity: 0.8;
-}
+
 .lang-option {
     padding: 16px 20px;
     display: flex;
