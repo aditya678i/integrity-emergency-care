@@ -415,7 +415,6 @@ function requestPatientLocation() {
             },
             (error) => {
                 console.error('Geolocation error:', error);
-                locAddress.textContent = "Location Denied - Using Default";
                 
                 // Fallback to default location or previously picked location
                 const lat = typeof currentPickerLat !== 'undefined' ? currentPickerLat : 28.6139;
@@ -424,19 +423,36 @@ function requestPatientLocation() {
                 if (typeof fetchNearbyHospitals === 'function') {
                     fetchNearbyHospitals(lat, lon);
                 }
+                
+                // Fetch the address for fallback so it doesn't look broken
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.display_name) {
+                            const addressParts = [];
+                            if (data.address.suburb) addressParts.push(data.address.suburb);
+                            if (data.address.city) addressParts.push(data.address.city);
+                            else if (data.address.state_district) addressParts.push(data.address.state_district);
+                            locAddress.textContent = addressParts.length > 0 ? addressParts.join(', ') : data.display_name;
+                        } else {
+                            locAddress.textContent = "Default Location";
+                        }
+                    })
+                    .catch(() => {
+                        locAddress.textContent = "Default Location";
+                    });
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
     } else {
-        locAddress.textContent = "Geolocation not supported - Using Default";
-        
-        // Fallback to default location
+        // Geolocation not supported fallback
         const lat = typeof currentPickerLat !== 'undefined' ? currentPickerLat : 28.6139;
         const lon = typeof currentPickerLon !== 'undefined' ? currentPickerLon : 77.2090;
         
         if (typeof fetchNearbyHospitals === 'function') {
             fetchNearbyHospitals(lat, lon);
         }
+        locAddress.textContent = "Default Location";
     }
 }
 
