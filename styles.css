@@ -1843,11 +1843,7 @@ body {
 }
 
 .btn-book-amb .arrow-icon {
-    transition: transform 0.3s ease;
-}
-
-.btn-book-amb:hover .arrow-icon {
-    transform: translate(3px, -3px);
+    /* No hover effect */
 }
 
 /* =========================================
