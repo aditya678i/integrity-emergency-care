@@ -2012,17 +2012,32 @@ body {
     box-shadow: 0 4px 12px rgba(43, 132, 240, 0.3);
 }
 
+.hosp-input:focus {
+    border-color: #B22222;
+    box-shadow: 0 0 0 3px rgba(178,34,34,0.1);
+}
+
+/* Override browser autofill blue background */
+.hosp-input:-webkit-autofill,
+.hosp-input:-webkit-autofill:hover, 
+.hosp-input:-webkit-autofill:focus, 
+.hosp-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #FDF1F3 inset !important;
+    -webkit-text-fill-color: #B22222 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 /* OTP Button Styles */
 .btn-otp {
     position: absolute;
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    background: #eef2fa;
-    color: #2b84f0;
+    background: #FBE6E8;
+    color: #C0202A;
     border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
+    border-radius: 999px;
+    padding: 8px 16px;
     font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
@@ -2030,7 +2045,7 @@ body {
 }
 
 .btn-otp:hover {
-    background: #e0e7f7;
+    background: #F7D2D6;
 }
 
 .hosp-register-btn.disabled {
