@@ -825,7 +825,7 @@ function goBackToChangeInfoFromAddICU() {
     if (addICUSource === 'dashboard') {
         const dashScreen = document.getElementById('hospital-dashboard-screen');
         if (dashScreen) dashScreen.classList.add('active-view');
-        renderDashboardICUs();
+        renderDashboard();
     } else {
         const ciScreen = document.getElementById('change-info-screen');
         if (ciScreen) ciScreen.classList.add('active-view');
