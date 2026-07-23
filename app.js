@@ -1037,6 +1037,24 @@ let patientLangId = localStorage.getItem('patientLangId') || 'en';
 
 function triggerGoogleTranslate(langCode) {
     const select = document.querySelector('.goog-te-combo');
+    
+    // Toggle notranslate for specific Hindi words so they stay Hindi when English is selected,
+    // but can be translated into regional languages.
+    const elementsToProtect = [
+        document.querySelector('.role-title-hi'),
+        document.querySelector('#patient-select-btn .card-label-hi'),
+        document.querySelector('#hospital-select-btn .card-label-hi')
+    ];
+    
+    elementsToProtect.forEach(el => {
+        if (!el) return;
+        if (langCode === 'en' || langCode === '') {
+            el.classList.add('notranslate');
+        } else {
+            el.classList.remove('notranslate');
+        }
+    });
+
     if (select && select.value !== langCode) {
         select.value = langCode;
         select.dispatchEvent(new Event('change'));
