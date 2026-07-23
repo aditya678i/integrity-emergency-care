@@ -800,6 +800,8 @@ function goToAddICU(source = 'change-info') {
     if (nameEl) nameEl.value = '';
     const contactEl = document.getElementById('add-icu-contact');
     if (contactEl) contactEl.value = '';
+    const ambulanceEl = document.getElementById('add-icu-ambulance');
+    if (ambulanceEl) ambulanceEl.value = '';
     ['add-icu-total', 'add-icu-vacant', 'add-icu-vent', 'add-icu-novent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -859,11 +861,14 @@ function addICUAndGoBack() {
     const getCount = (id) => parseInt(document.getElementById(id)?.textContent) || 0;
     const contactEl = document.getElementById('add-icu-contact');
     const contact = contactEl ? contactEl.value.trim() : '';
+    const ambulanceEl = document.getElementById('add-icu-ambulance');
+    const ambulanceNumber = ambulanceEl ? ambulanceEl.value.trim() : '';
 
     const icuObj = {
         names: [name],
         name: name,
         contact: contact,
+        ambulanceNumber: ambulanceNumber,
         totalBeds:  getCount('add-icu-total'),
         vacantBeds: getCount('add-icu-vacant'),
         ventBeds:   getCount('add-icu-vent'),
@@ -957,6 +962,7 @@ function editICUFromDash(index) {
     document.getElementById('upd-icu-vent').textContent = icu.ventBeds || 0;
     document.getElementById('upd-icu-novent').textContent = icu.noVentBeds || 0;
     document.getElementById('upd-icu-contact').value = icu.contact || '';
+    document.getElementById('upd-icu-ambulance').value = icu.ambulanceNumber || '';
 
     ['upd-icu-total', 'upd-icu-vacant', 'upd-icu-vent', 'upd-icu-novent'].forEach(id => syncMinusButtonColor(id));
 
@@ -983,6 +989,7 @@ function confirmICUUpdate() {
     if (currentUpdateICUIndex === -1) return;
     const getCount = (id) => parseInt(document.getElementById(id)?.textContent) || 0;
     const contact = document.getElementById('upd-icu-contact').value.trim();
+    const ambulanceNumber = document.getElementById('upd-icu-ambulance').value.trim();
     
     const icu = hospitalICUs[currentUpdateICUIndex];
     icu.totalBeds = getCount('upd-icu-total');
@@ -990,6 +997,7 @@ function confirmICUUpdate() {
     icu.ventBeds = getCount('upd-icu-vent');
     icu.noVentBeds = getCount('upd-icu-novent');
     icu.contact = contact;
+    icu.ambulanceNumber = ambulanceNumber;
     
     persistHospitalData();
 
