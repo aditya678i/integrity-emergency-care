@@ -315,7 +315,7 @@ function goToHospitalRegister() {
 
 function goToRoleScreen() {
     // Hide all possible current screens and show role screen
-    ['hospital-register-screen', 'hospital-dashboard-screen', 'change-info-screen'].forEach(id => {
+    ['hospital-register-screen', 'hospital-dashboard-screen', 'change-info-screen', 'hospital-login-screen'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.remove('active-view');
     });
@@ -1230,5 +1230,14 @@ function loginWithAdminCode() {
         }
     } else {
         alert('Invalid Admin Code or no registered hospital found on this device. Please check and try again.');
+    }
+}
+
+function goBackToHospitalRegister() {
+    const hospLoginScreen = document.getElementById('hospital-login-screen');
+    const hospRegScreen = document.getElementById('hospital-register-screen');
+    if (hospRegScreen && hospLoginScreen) {
+        hospLoginScreen.classList.remove('active-view');
+        hospRegScreen.classList.add('active-view');
     }
 }
