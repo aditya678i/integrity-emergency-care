@@ -1117,3 +1117,14 @@ window.addEventListener('DOMContentLoaded', () => {
 function onLangSearch(val) {
     renderLanguageOptions(val);
 }
+
+// Expose openAmbCallModal to window for inline onclick handler
+window.openAmbCallModal = function(contactNumber) {
+    document.getElementById('hosp-amb-number').innerText = '+91 ' + contactNumber.replace('+91', '').trim();
+    document.getElementById('hosp-amb-link').href = 'tel:' + contactNumber;
+    document.getElementById('ambulance-call-modal').classList.add('open');
+};
+
+window.closeAmbCallModal = function() {
+    document.getElementById('ambulance-call-modal').classList.remove('open');
+};
