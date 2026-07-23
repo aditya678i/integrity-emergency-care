@@ -1883,15 +1883,16 @@ body {
 
 /* On desktop, center it instead of bottom sheet if desired, or keep as bottom sheet. We'll keep bottom sheet style for consistency */
 @media (min-width: 480px) {
-    .modal-overlay {
+    /* Keep ambulance call modal as a bottom sheet */
+    .modal-overlay:not(#ambulance-call-modal) {
         align-items: center;
         justify-content: center;
     }
-    .modal-bottom-sheet {
+    .modal-overlay:not(#ambulance-call-modal) .modal-bottom-sheet {
         border-radius: 20px;
         transform: translateY(20px) scale(0.95);
     }
-    .modal-overlay.open .modal-bottom-sheet {
+    .modal-overlay.open:not(#ambulance-call-modal) .modal-bottom-sheet {
         transform: translateY(0) scale(1);
     }
 }
