@@ -713,6 +713,10 @@ function buildICUCard(icu, index) {
                     <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Emergency phone No</div>
                     <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.contact || '-'}</div>
                 </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Ambulance Number</div>
+                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.ambulanceNumber || '-'}</div>
+                </div>
             </div>
             <button onclick="editICUFromDash(${index})" style="width: 100%; background: #C0202A; color: #fff; font-family: var(--font); font-size: 1.25rem; font-weight: 600; padding: 14px 24px; border: none; border-radius: 20px; cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent;" onmousedown="this.style.opacity='0.7'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
                 Update
