@@ -1197,6 +1197,12 @@ function verifyOTPAndRegister() {
         return;
     }
     
+    // Save email explicitly to localStorage
+    const emailInput = document.getElementById('hosp-reg-email');
+    if (emailInput && emailInput.value) {
+        localStorage.setItem('hospitalRegEmail', emailInput.value.trim());
+    }
+    
     // If successful, proceed to dashboard
     alert('OTP Verified successfully!');
     goToDashboard();
@@ -1269,5 +1275,74 @@ function goBackToHospitalRegister() {
     if (hospRegScreen && hospLoginScreen) {
         hospLoginScreen.classList.remove('active-view');
         hospRegScreen.classList.add('active-view');
+    }
+}
+
+// ---------------------------------------------------------
+// Forgot Admin Code Logic
+// ---------------------------------------------------------
+
+function goToForgotCode() {
+    const hospLoginScreen = document.getElementById('hospital-login-screen');
+    const forgotCodeScreen = document.getElementById('forgot-code-screen');
+    if (hospLoginScreen && forgotCodeScreen) {
+        hospLoginScreen.classList.remove('active-view');
+        forgotCodeScreen.classList.add('active-view');
+        
+        // Reset form
+        document.getElementById('forgot-code-email').value = '';
+        document.getElementById('forgot-code-result').style.display = 'none';
+        document.getElementById('btn-generate-forgot-code').style.display = 'block';
+    }
+}
+
+function goBackToHospitalLogin() {
+    const forgotCodeScreen = document.getElementById('forgot-code-screen');
+    const hospLoginScreen = document.getElementById('hospital-login-screen');
+    if (forgotCodeScreen && hospLoginScreen) {
+        forgotCodeScreen.classList.remove('active-view');
+        hospLoginScreen.classList.add('active-view');
+    }
+}
+
+function handleForgotCodeGenerate() {
+    const emailInput = document.getElementById('forgot-code-email').value.trim();
+    if (!emailInput || !emailInput.includes('@')) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    const regEmail = localStorage.getItem('hospitalRegEmail');
+    if (!regEmail || regEmail.toLowerCase() !== emailInput.toLowerCase()) {
+        alert('Email not found in our records. Please ensure it matches the one used during registration.');
+        return;
+    }
+
+    // Generate new code
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = 'HOSP-';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    // Update local storage
+    localStorage.setItem('hospitalAdminCode', code);
+
+    // Show result
+    const newCodeInput = document.getElementById('new-generated-code');
+    if (newCodeInput) newCodeInput.value = code;
+    
+    document.getElementById('forgot-code-result').style.display = 'block';
+    document.getElementById('btn-generate-forgot-code').style.display = 'none';
+}
+
+function copyNewAdminCode() {
+    const input = document.getElementById('new-generated-code');
+    if (input && input.value) {
+        navigator.clipboard.writeText(input.value).then(() => {
+            alert('New Admin Code copied to clipboard: ' + input.value);
+        }).catch(err => {
+            alert('Failed to copy: ' + err);
+        });
     }
 }

@@ -240,6 +240,50 @@
 
                     <!-- Login Button -->
                     <button id="btn-hosp-login" class="hosp-register-btn" type="button" onclick="loginWithAdminCode()" style="margin-top: 32px;">Login</button>
+                    
+                    <!-- Forgot Code Link -->
+                    <div style="text-align: center; margin-top: 24px;">
+                        <span onclick="goToForgotCode()" style="color: #C0202A; font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.95rem;">Forgot Admin Code?</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 4.2: FORGOT ADMIN CODE -->
+            <div id="forgot-code-screen" class="screen-view">
+                <div class="hosp-reg-inner">
+                    <!-- Stylish Back button -->
+                    <div class="hosp-back-btn" onclick="goBackToHospitalLogin()">
+                        <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="hosp-reg-title">Forgot Admin Code</h1>
+
+                    <!-- Form -->
+                    <div class="hosp-form" style="margin-top: 40px;">
+                        <!-- Email ID -->
+                        <div class="hosp-input-group">
+                            <input class="hosp-input" type="email" placeholder="Enter Registered Email ID" id="forgot-code-email">
+                        </div>
+                        
+                        <div id="forgot-code-result" style="display: none; margin-top: 24px;">
+                            <div style="font-size: 0.95rem; color: #333; margin-bottom: 8px;">Your New Admin Code:</div>
+                            <div class="hosp-input-group" style="position: relative;">
+                                <input class="hosp-input" type="text" id="new-generated-code" readonly style="padding-right: 90px; background: #fdf8f8; cursor: text; user-select: all; font-weight: bold; color: #C0202A; font-size: 1.1rem;">
+                                <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex;">
+                                    <button class="btn-otp" type="button" onclick="copyNewAdminCode()" style="background: #e0e0e0; color: #555; padding: 6px 8px;" title="Copy Code">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.8rem; color: #9A141A; margin-top: 4px; padding-left: 8px;">
+                                *Please save this new code securely.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generate Code Button -->
+                    <button id="btn-generate-forgot-code" class="hosp-register-btn" type="button" onclick="handleForgotCodeGenerate()" style="margin-top: 32px;">Generate New Code</button>
                 </div>
             </div>
 
