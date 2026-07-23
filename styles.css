@@ -2049,7 +2049,7 @@ body {
 }
 
 .hosp-register-btn.disabled {
-    background: #a3c2f7;
+    background: #E8A8AC;
     cursor: not-allowed;
     pointer-events: none;
 }
