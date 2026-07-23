@@ -182,6 +182,7 @@
                             </div>
                         </div>
 
+
                         <!-- Address -->
                         <div class="hosp-input-group hosp-address-group">
                             <textarea class="hosp-input hosp-textarea" placeholder="Address" id="hosp-address"></textarea>
@@ -191,10 +192,54 @@
                                 <div class="address-line line-3"></div>
                             </div>
                         </div>
+
+                        <!-- Hospital Admin Code -->
+                        <div class="hosp-input-group" style="position: relative; margin-top: 16px;">
+                            <input class="hosp-input" type="text" placeholder="Hospital Admin Code" id="hosp-admin-code" readonly style="padding-right: 90px; background: #fdf8f8; cursor: text; user-select: all;">
+                            <div style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: flex; gap: 4px;">
+                                <button id="btn-generate-code" class="btn-otp" type="button" onclick="generateAdminCode()" style="background: #FBE6E8; color: #C0202A; padding: 6px 10px;">Generate</button>
+                                <button id="btn-copy-code" class="btn-otp" type="button" onclick="copyAdminCode()" style="background: #e0e0e0; color: #555; padding: 6px 8px; display: none;" title="Copy Code">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: #9A141A; margin-top: 4px; padding-left: 8px;">
+                            *Generate this code to log in later. Keep it safe!
+                        </div>
                     </div>
 
                     <!-- Register Button -->
                     <button id="btn-hosp-register" class="hosp-register-btn disabled" type="button" onclick="verifyOTPAndRegister()" disabled>Register</button>
+                    
+                    <!-- Login Link -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <span style="color: #666; font-size: 0.95rem;">Already Registered?</span>
+                        <span onclick="goToHospitalLogin()" style="color: #C0202A; font-weight: 700; cursor: pointer; text-decoration: underline; margin-left: 4px;">Login here</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN 4.1: HOSPITAL LOGIN -->
+            <div id="hospital-login-screen" class="screen-view">
+                <div class="hosp-reg-inner">
+                    <!-- Stylish Back button -->
+                    <div class="hosp-back-btn" onclick="goToRoleScreen()">
+                        <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="hosp-reg-title">Hospital Login</h1>
+
+                    <!-- Form -->
+                    <div class="hosp-form" style="margin-top: 40px;">
+                        <!-- Admin Code -->
+                        <div class="hosp-input-group">
+                            <input class="hosp-input" type="text" placeholder="Enter Hospital Admin Code" id="login-admin-code">
+                        </div>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button id="btn-hosp-login" class="hosp-register-btn" type="button" onclick="loginWithAdminCode()" style="margin-top: 32px;">Login</button>
                 </div>
             </div>
 

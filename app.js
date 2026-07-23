@@ -581,6 +581,11 @@ function goToDashboard() {
     hospitalProfile.type = (typeDisplay && typeDisplay.classList.contains('has-values'))
         ? typeDisplay.textContent : '';
         
+    const adminCodeInput = document.getElementById('hosp-admin-code');
+    if (adminCodeInput && adminCodeInput.value) {
+        localStorage.setItem('hospitalAdminCode', adminCodeInput.value);
+    }
+        
     persistHospitalData();
 
     const hospRegScreen = document.getElementById('hospital-register-screen');
@@ -1165,4 +1170,62 @@ function verifyOTPAndRegister() {
     // If successful, proceed to dashboard
     alert('OTP Verified successfully!');
     goToDashboard();
+}
+
+// ---------------------------------------------------------
+// Hospital Admin Code & Login Logic
+// ---------------------------------------------------------
+
+function generateAdminCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = 'HOSP-';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    const input = document.getElementById('hosp-admin-code');
+    if (input) {
+        input.value = code;
+        const copyBtn = document.getElementById('btn-copy-code');
+        if (copyBtn) copyBtn.style.display = 'inline-flex';
+    }
+}
+
+function copyAdminCode() {
+    const input = document.getElementById('hosp-admin-code');
+    if (input && input.value) {
+        navigator.clipboard.writeText(input.value).then(() => {
+            alert('Admin Code copied to clipboard: ' + input.value);
+        }).catch(err => {
+            alert('Failed to copy: ' + err);
+        });
+    }
+}
+
+function goToHospitalLogin() {
+    const hospRegScreen = document.getElementById('hospital-register-screen');
+    const hospLoginScreen = document.getElementById('hospital-login-screen');
+    if (hospRegScreen && hospLoginScreen) {
+        hospRegScreen.classList.remove('active-view');
+        hospLoginScreen.classList.add('active-view');
+    }
+}
+
+function loginWithAdminCode() {
+    const input = document.getElementById('login-admin-code');
+    if (!input || !input.value.trim()) {
+        alert('Please enter your Admin Code.');
+        return;
+    }
+    const storedCode = localStorage.getItem('hospitalAdminCode');
+    if (storedCode && input.value.trim().toUpperCase() === storedCode) {
+        const hospLoginScreen = document.getElementById('hospital-login-screen');
+        const dashScreen = document.getElementById('hospital-dashboard-screen');
+        if (hospLoginScreen && dashScreen) {
+            hospLoginScreen.classList.remove('active-view');
+            dashScreen.classList.add('active-view');
+            renderDashboard();
+        }
+    } else {
+        alert('Invalid Admin Code or no registered hospital found on this device. Please check and try again.');
+    }
 }
