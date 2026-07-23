@@ -15,90 +15,28 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 }
 
 async function fetchNearbyHospitals(lat, lon) {
-    const radius = 5000; // 5km search radius
-    const query = `
-        [out:json];
-        node["amenity"="hospital"](around:${radius},${lat},${lon});
-        out center;
-    `;
-    const url = 'https://overpass-api.de/api/interpreter';
-
+    let hospitals = [];
+    
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: 'data=' + encodeURIComponent(query)
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        let hospitals = data.elements.map(el => {
-            return {
-                id: el.id,
-                name: el.tags.name || "Unknown Hospital",
-                lat: el.lat || el.center?.lat,
-                lon: el.lon || el.center?.lon,
-                distance: calculateDistance(lat, lon, el.lat || el.center?.lat, el.lon || el.center?.lon)
-            };
-        });
-        
-        // Filter out unknown hospitals
-        hospitals = hospitals.filter(h => h.name !== "Unknown Hospital");
-        
-        // Sort by nearest
-        hospitals.sort((a, b) => a.distance - b.distance);
-        
-        // If empty, mock a hospital just so we show something if they are not in a mapped area
-        if (hospitals.length === 0) {
-            hospitals.push({
-                id: 1,
-                name: "City Central Hospital",
-                lat: lat + 0.01,
-                lon: lon + 0.01,
-                distance: 1.2
-            });
-        }
-        
-        renderHospitalCards(hospitals, lat, lon);
-        
-    } catch (error) {
-        console.error("Error fetching hospitals from OSM:", error);
-        
-        // Mock fallback if Overpass fails (so UI doesn't break)
-        let mockHospitals = [
-            { id: 1, name: "City Central Hospital", lat: lat + 0.01, lon: lon + 0.01, distance: 1.2 },
-            { id: 2, name: "Mercy General", lat: lat - 0.015, lon: lon + 0.02, distance: 2.5 },
-            { id: 3, name: "Sunrise Clinic", lat: lat + 0.02, lon: lon - 0.01, distance: 3.1 }
-        ];
-        
         // Try to include the locally registered hospital if present
-        try {
-            const hp = localStorage.getItem('hospitalProfile');
-            if (hp && hp !== 'undefined') {
-                const profile = JSON.parse(hp);
-                if (profile.name) {
-                    mockHospitals.unshift({
-                        id: 999,
-                        name: profile.name,
-                        lat: lat + 0.005,
-                        lon: lon + 0.005,
-                        distance: 0.8
-                    });
-                }
+        const hp = localStorage.getItem('hospitalProfile');
+        if (hp && hp !== 'undefined') {
+            const profile = JSON.parse(hp);
+            if (profile.name) {
+                hospitals.push({
+                    id: 999,
+                    name: profile.name,
+                    lat: lat + 0.005,
+                    lon: lon + 0.005,
+                    distance: 0.8 // Simulated distance for the mock setup
+                });
             }
-        } catch(e) {}
-        
-        // Sort
-        mockHospitals.sort((a, b) => a.distance - b.distance);
-        
-        renderHospitalCards(mockHospitals, lat, lon);
+        }
+    } catch(e) {
+        console.error("Error reading registered hospital data:", e);
     }
+    
+    renderHospitalCards(hospitals, lat, lon);
 }
 
 function renderHospitalCards(osmHospitals, userLat, userLon) {
