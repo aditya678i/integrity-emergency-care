@@ -2011,3 +2011,30 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(43, 132, 240, 0.3);
 }
+
+/* OTP Button Styles */
+.btn-otp {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #eef2fa;
+    color: #2b84f0;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-otp:hover {
+    background: #e0e7f7;
+}
+
+.hosp-register-btn.disabled {
+    background: #a3c2f7;
+    cursor: not-allowed;
+    pointer-events: none;
+}

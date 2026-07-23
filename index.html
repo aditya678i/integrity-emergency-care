@@ -145,9 +145,15 @@
                             </div>
                         </div>
 
-                        <!-- Registration Number -->
-                        <div class="hosp-input-group">
-                            <input class="hosp-input" type="text" placeholder="Registration Number" id="hosp-reg-num">
+                        <!-- Email Address -->
+                        <div class="hosp-input-group" style="position: relative;">
+                            <input class="hosp-input" type="email" placeholder="Hospital Email Address" id="hosp-reg-email">
+                            <button id="btn-send-otp" class="btn-otp" type="button" onclick="sendOTP()">Send OTP</button>
+                        </div>
+                        
+                        <!-- OTP Input (Hidden by default) -->
+                        <div id="otp-section" class="hosp-input-group" style="display: none; margin-top: 16px;">
+                            <input class="hosp-input" type="text" placeholder="Enter 4-digit OTP" id="hosp-reg-otp" maxlength="4" style="text-align: center; letter-spacing: 4px; font-weight: bold;">
                         </div>
 
                         <!-- Location Group (State, City, Pincode with small gap) -->
@@ -188,7 +194,7 @@
                     </div>
 
                     <!-- Register Button -->
-                    <button class="hosp-register-btn" type="button" onclick="goToDashboard()">Register</button>
+                    <button id="btn-hosp-register" class="hosp-register-btn disabled" type="button" onclick="verifyOTPAndRegister()" disabled>Register</button>
                 </div>
             </div>
 
@@ -298,9 +304,9 @@
                                 </div>
                             </div>
     
-                            <!-- Registration Number -->
+                            <!-- Email Address -->
                             <div class="hosp-input-group">
-                                <input class="hosp-input" type="text" placeholder="Registration Number" id="ci-hosp-reg-num">
+                                <input class="hosp-input" type="email" placeholder="Hospital Email Address" id="ci-hosp-email">
                             </div>
     
                             <!-- Location Group -->

@@ -1128,3 +1128,41 @@ window.openAmbCallModal = function(contactNumber) {
 window.closeAmbCallModal = function() {
     document.getElementById('ambulance-call-modal').classList.remove('open');
 };
+
+// --- Mock OTP Logic ---
+let currentMockOTP = null;
+
+function sendOTP() {
+    const emailInput = document.getElementById('hosp-reg-email');
+    const email = emailInput.value.trim();
+    if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    // Generate random 4-digit OTP
+    currentMockOTP = Math.floor(1000 + Math.random() * 9000).toString();
+    
+    // Show OTP input section
+    document.getElementById('otp-section').style.display = 'block';
+    
+    // Enable the register button
+    const registerBtn = document.getElementById('btn-hosp-register');
+    registerBtn.classList.remove('disabled');
+    registerBtn.disabled = false;
+
+    // Show mock alert for the user
+    alert(`Mock Email Sent to ${email}\n\nYour OTP is: ${currentMockOTP}\n\n(Note: In a real app, this would be sent via EmailJS or a backend server.)`);
+}
+
+function verifyOTPAndRegister() {
+    const enteredOTP = document.getElementById('hosp-reg-otp').value.trim();
+    if (enteredOTP !== currentMockOTP) {
+        alert('Invalid OTP. Please try again.');
+        return;
+    }
+    
+    // If successful, proceed to dashboard
+    alert('OTP Verified successfully!');
+    goToDashboard();
+}
