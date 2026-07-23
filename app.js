@@ -1187,6 +1187,9 @@ function generateAdminCode() {
         input.value = code;
         const copyBtn = document.getElementById('btn-copy-code');
         if (copyBtn) copyBtn.style.display = 'inline-flex';
+        
+        const generateBtn = document.getElementById('btn-generate-code');
+        if (generateBtn) generateBtn.style.display = 'none';
     }
 }
 
