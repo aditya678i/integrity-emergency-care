@@ -342,6 +342,7 @@ body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
+    min-width: 0;
 }
 
 /* Center the 10th item (Other) in the middle column */
@@ -358,6 +359,7 @@ body {
     transition: transform 0.2s, background-color 0.2s;
     margin-bottom: 4px;
     box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .emergency-item:hover .emergency-squircle {
@@ -398,6 +400,8 @@ body {
     text-align: center;
     letter-spacing: -0.2px;
     pointer-events: none;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Make "Other" question mark look consistent */
