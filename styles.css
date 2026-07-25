@@ -282,7 +282,7 @@ body {
     color: #111;
     text-align: center;
     line-height: 1.25;
-    margin-top: 30px; /* Reduced to pull text up further */
+    margin-top: 44px; /* Increased to add gap after back arrow */
     margin-bottom: 20px; /* Reduced to bring grid closer */
     letter-spacing: -0.3px;
 }
@@ -290,9 +290,9 @@ body {
 .emergency-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 18px; /* Increased horizontal gap */
-    row-gap: 12px;
-    width: 86%; /* Slightly increased width to accommodate the larger gap */
+    column-gap: 16px; /* Slightly reduced to fit larger boxes */
+    row-gap: 14px;
+    width: 94%; /* Increased to make boxes larger */
     margin: 0 auto;
 }
 
