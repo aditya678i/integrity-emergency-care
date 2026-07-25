@@ -1072,7 +1072,7 @@ function renderPatientLanguageOptions() {
             <div class="lang-option ${isSelected ? 'selected' : ''}" onclick="selectPatientLanguage('${lang.id}')">
                 <span>${lang.name}</span>
                 ${isSelected ? '<svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#2b84f0"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>' 
-                : '<div class="lang-radio-circle" style="border-color: #2b84f0;"></div>'}
+                : '<div class="lang-radio-circle" style="border-color: #93c5fd;"></div>'}
             </div>
         `;
     }).join('');

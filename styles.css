@@ -1504,7 +1504,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #2b84f0;
+    color: #000;
     font-family: var(--font);
     font-weight: 600;
     font-size: 1.1rem;
@@ -1520,7 +1520,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #2b84f0;
+    color: #000;
     font-family: var(--font);
     font-weight: 500;
     font-size: 1.05rem;

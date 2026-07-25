@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
     <!-- App Styles -->
-    <link rel="stylesheet" href="styles.css?v=36">
+    <link rel="stylesheet" href="styles.css?v=38">
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
@@ -581,26 +581,26 @@
 
             <!-- SCREEN 10: LANGUAGE SELECTION -->
             <!-- SCREEN: PATIENT LANGUAGE SELECTION -->
-            <div id="patient-language-screen" class="screen-view">
+            <div id="patient-language-screen" class="screen-view" style="background: linear-gradient(180deg, #E6F0FF 0%, #FFFFFF 30%);">
                 <div class="ci-inner">
                     <!-- Header -->
                     <div style="padding: 12px 24px 0 24px;">
-                        <div class="hosp-back-btn" onclick="goBackFromPatientLanguage()" style="margin-bottom: 24px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                        <div class="hosp-back-btn" onclick="goBackFromPatientLanguage()" style="margin-bottom: 24px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent; color: #000;">
                             <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                         </div>
-                        <h2 style="color: #2b84f0; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Choose the language</h2>
-                        <p style="color: #93c5fd; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Select your preferred language below This helps us serve you better.</p>
+                        <h2 style="color: #000; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Choose the language</h2>
+                        <p style="color: #555555; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Select your preferred language below This helps us serve you better.</p>
                     </div>
 
                     <div class="ci-scroll" style="padding-top: 32px; padding-bottom: 80px;">
-                        <h3 style="color: #2b84f0; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 0 0 12px 0;">You Selected</h3>
+                        <h3 style="color: #000; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 0 0 12px 0;">You Selected</h3>
                         
-                        <div class="lang-selected-box notranslate">
+                        <div class="lang-selected-box notranslate" style="background: #fff;">
                             <span id="patient-lang-selected-text">English</span>
                             <svg class="svg-icon lang-check-icon" viewBox="0 0 24 24" width="24px" height="24px" fill="#2b84f0" style="display:block;"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.2 14.6l-4.4-4.4 1.4-1.4 3 3 6.6-6.6 1.4 1.4z"/></svg>
                         </div>
 
-                        <h3 style="color: #2b84f0; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 24px 0 12px 0;">All Languages</h3>
+                        <h3 style="color: #000; font-family: var(--font); font-size: 1.15rem; font-weight: 800; margin: 24px 0 12px 0;">All Languages</h3>
                         
                         <div class="lang-list-container">
                             <div class="lang-options-list notranslate" id="patient-lang-options-list">
@@ -811,9 +811,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=36"></script>
-    <script src="patient-hospitals.js?v=36"></script>
-    <script src="app.js?v=36"></script>
+    <script src="location-picker.js?v=38"></script>
+    <script src="patient-hospitals.js?v=38"></script>
+    <script src="app.js?v=38"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {
