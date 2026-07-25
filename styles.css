@@ -202,7 +202,7 @@ body {
 .role-btn-new {
     width: 260px; height: 80px;
     border-radius: 999px;
-    display: flex; align-items: center;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
     cursor: pointer; outline: none;
     font-family: var(--font); font-size: 1.5rem; font-weight: 500; color: #000;
     transform: translateY(20px); opacity: 0;
@@ -226,8 +226,7 @@ body {
 }
 
 .role-btn-icon {
-    width: 60px; height: 60px;
-    margin-left: 18px; margin-right: 18px;
+    width: 60px; height: 60px; margin: 0;
     display: flex; align-items: center; justify-content: center;
 }
 .role-btn-icon img {
@@ -235,7 +234,7 @@ body {
 }
 
 .role-btn-text {
-    flex: 1; text-align: left;
+    flex: 0 1 auto; text-align: left;
 }
 
 .role-active .role-title-new,
