@@ -42,9 +42,8 @@
             </div>
 
             <!-- SCREEN 1: SPLASH -->
-            <div id="splash-screen" class="screen-view active-view">
+            <div id="splash-screen" class="screen-view active-view" style="background-color: #FFFFFF;">
                 <div class="white-loader-overlay"></div>
-                <div class="gradient-bg-overlay"></div>
                 <div class="logo-box">
                     <img id="main-logo-img" src="assets/splash.png" alt="Integrity Emergency Care" />
                 </div>
@@ -843,13 +842,13 @@
     <script src="patient-hospitals.js"></script>
     <script src="app.js"></script>
     <script>
+        // Unregister service workers to prevent aggressive caching during development
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then((registration) => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, (err) => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                    console.log('Service worker unregistered to fix cache issues.');
+                }
             });
         }
     </script>
