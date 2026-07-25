@@ -1036,8 +1036,16 @@ function triggerGoogleTranslate(langCode) {
 
 let currentLangContext = 'patient';
 
+let previousScreenBeforeLanguage = null;
+
 function goToPatientLanguageScreen() {
     currentLangContext = 'patient';
+    const activeScreen = document.querySelector('.screen-view.active-view');
+    if (activeScreen) {
+        previousScreenBeforeLanguage = activeScreen.id;
+    } else {
+        previousScreenBeforeLanguage = 'role-screen';
+    }
     document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
     document.getElementById('patient-language-screen').classList.add('active-view');
     renderPatientLanguageOptions();
@@ -1045,7 +1053,11 @@ function goToPatientLanguageScreen() {
 
 function goBackFromPatientLanguage() {
     document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-view'));
-    document.getElementById('patient-hospitals-screen').classList.add('active-view');
+    if (previousScreenBeforeLanguage) {
+        document.getElementById(previousScreenBeforeLanguage).classList.add('active-view');
+    } else {
+        document.getElementById('patient-hospitals-screen').classList.add('active-view');
+    }
 }
 
 function renderPatientLanguageOptions() {
