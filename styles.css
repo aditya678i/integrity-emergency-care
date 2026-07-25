@@ -108,22 +108,22 @@ body {
 .logo-box {
     position: relative; width: 280px; height: 280px;
     display: flex; justify-content: center; align-items: center; z-index: 20;
-    transform: scale(0.5) translateY(50px); opacity: 0;
-    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease-out;
+    transform: scale(0.95); opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1), opacity 0.6s ease-out;
 }
-.logo-box.animate-in { opacity: 1; transform: scale(1) translateY(0); }
+.logo-box.animate-in { opacity: 1; transform: scale(1); }
 
 #main-logo-img {
     width: 100%; height: auto; display: block;
-    filter: drop-shadow(0 15px 25px rgba(192, 32, 42, 0.4));
-    animation: floating-logo 3s ease-in-out infinite;
-    animation-delay: 1.2s; /* Start floating after bounce in */
+    filter: drop-shadow(0 8px 16px rgba(192, 32, 42, 0.2));
+    animation: app-logo-pulse 2.5s ease-in-out infinite;
+    animation-delay: 0.6s;
 }
 
-@keyframes floating-logo {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
+@keyframes app-logo-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+    100% { transform: scale(1); }
 }
 
 @keyframes logo-shine {
