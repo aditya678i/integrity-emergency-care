@@ -54,6 +54,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Canvas logic removed because we now use a direct img tag with CSS animations for the splash logo.
 
+// Patient Flow Functions
+let selectedEmergencyType = null;
+
+function selectEmergencyType(element, type) {
+    const items = document.querySelectorAll('.emergency-item');
+    items.forEach(item => item.classList.remove('selected'));
+    element.classList.add('selected');
+    selectedEmergencyType = type;
+    
+    const confirmBtn = document.getElementById('confirm-emergency-btn');
+    if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.style.opacity = '1';
+    }
+}
+
+function confirmEmergency() {
+    if (selectedEmergencyType) {
+        goToPatientHospitals(selectedEmergencyType);
+    }
+}
+
 // Navigation Functions
 // ── State → City → Pincode Data ──────────────────────
 let stateCityData = {};

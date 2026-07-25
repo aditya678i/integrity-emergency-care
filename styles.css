@@ -282,17 +282,17 @@ body {
     color: #111;
     text-align: center;
     line-height: 1.25;
-    margin-top: 100px; /* Space for status bar and back button, pushed down as requested */
-    margin-bottom: 32px;
+    margin-top: 50px; /* Reduced to pull text up */
+    margin-bottom: 24px; /* Reduced to bring grid closer */
     letter-spacing: -0.3px;
 }
 
 .emergency-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    row-gap: 16px;
     column-gap: 12px;
-    width: 90%;
+    row-gap: 12px;
+    width: 82%; /* Reduced to make boxes smaller and fit on screen */
     margin: 0 auto;
 }
 
@@ -300,9 +300,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
     cursor: pointer;
-    min-width: 0;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.emergency-item.selected .emergency-squircle {
+    background-color: #6BB5EE;
+    border: 3px solid #1A73E8;
+    transform: scale(0.95);
 }
 
 /* Center the 10th item (Other) in the middle column */
