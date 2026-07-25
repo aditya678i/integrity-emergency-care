@@ -1,4 +1,4 @@
-const CACHE_NAME = 'integrity-emergency-care-v29';
+const CACHE_NAME = 'integrity-emergency-care-v30';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
