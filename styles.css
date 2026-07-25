@@ -282,8 +282,8 @@ body {
     color: #111;
     text-align: center;
     line-height: 1.25;
-    margin-top: 50px; /* Reduced to pull text up */
-    margin-bottom: 24px; /* Reduced to bring grid closer */
+    margin-top: 30px; /* Reduced to pull text up further */
+    margin-bottom: 20px; /* Reduced to bring grid closer */
     letter-spacing: -0.3px;
 }
 
