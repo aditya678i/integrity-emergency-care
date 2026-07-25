@@ -52,46 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 800); // Initial solid white duration
 });
 
-// Canvas rendering for the logo
-const canvas = document.getElementById('logo-canvas');
-if (canvas) {
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    // Using absolute path for local loading or just fallback to relative if in same folder
-    img.src = 'assets/splash-logo.png';
-    // If the image fails to load, draw a fallback text
-    img.onerror = () => {
-        canvas.width = 280;
-        canvas.height = 280;
-        ctx.fillStyle = '#0E62E4';
-        ctx.font = 'bold 36px "Plus Jakarta Sans", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('INTEGRITY', 140, 140);
-        ctx.font = '500 16px "Plus Jakarta Sans", sans-serif';
-        ctx.fillText('Emergency Care', 140, 175);
-    };
-    img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        
-        // Remove white background dynamically
-        try {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-            for (let i = 0; i < data.length; i += 4) {
-                // If pixel is white or very close to white, make it transparent
-                if (data[i] > 240 && data[i+1] > 240 && data[i+2] > 240) {
-                    data[i+3] = 0; // Alpha to 0
-                }
-            }
-            ctx.putImageData(imageData, 0, 0);
-        } catch (e) {
-            console.error("Could not remove white background:", e);
-        }
-    };
-}
+// Canvas logic removed because we now use a direct img tag with CSS animations for the splash logo.
 
 // Navigation Functions
 // ── State → City → Pincode Data ──────────────────────
