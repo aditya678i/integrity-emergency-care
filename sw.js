@@ -1,4 +1,4 @@
-const CACHE_NAME = 'integrity-emergency-care-v25';
+const CACHE_NAME = 'integrity-emergency-care-v26';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -7,7 +7,7 @@ const ASSETS_TO_CACHE = [
   '/patient-hospitals.js',
   '/location-picker.js',
   '/manifest.json',
-  '/assets/splash-logo.png'
+  '/assets/splash.png'
 ];
 
 self.addEventListener('install', event => {
