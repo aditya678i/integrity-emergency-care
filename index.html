@@ -44,57 +44,33 @@
             <div id="role-screen" class="screen-view">
                 <div class="role-bg-gradients"></div>
 
-                <div class="role-inner">
-                    <header class="role-header">
-                        <span class="role-title-en notranslate">You are</span>
-                        <span class="role-title-hi notranslate">आप कौन हैं ?</span>
-                    </header>
+                <!-- Language Toggle Button -->
+                <div class="role-lang-toggle" onclick="openLanguageMenu()">
+                    <i class="fa-solid fa-language"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7em;"></i>
+                </div>
 
-                    <div class="role-options">
+                <div class="role-inner-new">
+                    <h1 class="role-title-new">
+                        <span class="notranslate">You are</span>
+                        <span class="role-title-hi notranslate" style="display:none;">आप कौन हैं?</span>
+                    </h1>
 
-                        <!-- Patient Card -->
-                        <button id="patient-select-btn" class="role-card patient-card" type="button" onclick="goToEmergencyType()">
-                            <div class="card-bg-layer">
-                                <div class="bg-circle"></div>
-                                <div class="bg-pill"></div>
-                            </div>
-                            
-                            <div class="card-icon-area">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="150 290 290 280" class="card-icon-svg">
-                                    <circle fill="#385fe8" cx="269.06" cy="361.81" r="50.89"/>
-                                    <path fill="#385fe8" d="M347.64,446.36c-.5,0-1,.02-1.5.07-6.43.57-11.87,4.67-14.21,10.69l-14.86,38.29-5-8.81c-2.99-5.26-8.6-8.52-14.65-8.52h-43.61c-9.29,0-16.85,7.56-16.85,16.85s7.56,16.85,16.85,16.85h33.8l9.42,16.56h-131.66v-31.95c0-39.84,23.46-72.14,52.39-72.14h102.59c19.56,0,33.11,22.11,27.28,22.11Z"/>
-                                    <path fill="#231f20" d="M306.91,528.33h24.31l-3.57,9.22c-1.15,2.97-3.91,5.01-7.1,5.25-.2.01-.4.02-.61.02-2.95,0-5.7-1.59-7.18-4.18l-5.86-10.31Z"/>
-                                    <path fill="#385fe8" d="M421.64,490.63h-47.56l-1.7-2.77-17.69-28.95c-1.64-2.68-4.65-4.2-7.78-3.92-3.13.28-5.83,2.31-6.96,5.24l-21.4,55.14-13.93-24.53c-1.47-2.58-4.21-4.18-7.18-4.18h-43.61c-4.56,0-8.26,3.7-8.26,8.26s3.7,8.26,8.26,8.26h38.8l14.29,25.15,5.86,10.31c1.47,2.59,4.22,4.18,7.18,4.18.2,0,.41,0,.61-.02,3.18-.24,5.95-2.28,7.1-5.25l3.57-9.22,18.07-46.57,13.1,21.43c1.5,2.45,4.18,3.95,7.05,3.95h52.2c4.56,0,8.26-3.7,8.26-8.26s-3.7-8.26-8.26-8.26Z"/>
-                                </svg>
-                            </div>
-                            
-                            <div class="card-label-area">
-                                <span class="card-label-en notranslate">Patient</span>
-                                <span class="card-label-hi notranslate">मरीज</span>
-                            </div>
+                    <div class="role-options-new">
+                        <button id="patient-select-btn" class="role-btn-new patient-btn-new" type="button" onclick="goToEmergencyType()">
+                            <img src="assets/patient_icon.svg" class="role-btn-icon" alt="">
+                            <span class="role-btn-text">
+                                <span class="notranslate">Patient</span>
+                                <span class="role-btn-hi notranslate" style="display:none;">मरीज</span>
+                            </span>
                         </button>
 
-                        <!-- Hospital Card -->
-                        <button id="hospital-select-btn" class="role-card hospital-card" type="button" onclick="goToHospitalRegister()">
-                            <div class="card-bg-layer">
-                                <div class="bg-circle"></div>
-                                <div class="bg-pill"></div>
-                            </div>
-                            
-                            <div class="card-icon-area">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="105 355 390 295" class="card-icon-svg">
-                                    <path fill="#f4f4f4" stroke="#231f20" stroke-miterlimit="10" stroke-width="5" d="M317.36,422.12v-22.29h-13.37v22.29h-22.29v13.38h22.29v22.29h13.37v-22.29h22.29v-13.38h-22.29ZM372.51,365.49h-123.67c-8.48,0-15.35,6.87-15.35,15.35v259.84h154.37v-259.84c0-8.48-6.87-15.35-15.35-15.35ZM346.64,637.45h-71.93v-76.18c0-8.48,6.88-15.35,15.36-15.35h41.21c8.48,0,15.36,6.87,15.36,15.35v76.18ZM310.67,475.91c-26.01,0-47.1-21.09-47.1-47.1s21.09-47.11,47.1-47.11,47.11,21.09,47.11,47.11-21.09,47.1-47.11,47.1Z"/>
-                                    <path fill="#f4f4f4" stroke="#231f20" stroke-miterlimit="10" stroke-width="5" d="M487.29,457.62h-79.04c-8.48,0-15.35,6.87-15.35,15.35v167.71h109.74v-167.71c0-8.48-6.87-15.35-15.35-15.35ZM475.2,583.23c0,2.18-1.76,3.94-3.94,3.94h-46.98c-2.18,0-3.95-1.76-3.95-3.94v-8.2c0-2.18,1.77-3.94,3.95-3.94h46.98c2.18,0,3.94,1.76,3.94,3.94v8.2ZM475.2,545.21c0,2.18-1.76,3.94-3.94,3.94h-46.98c-2.18,0-3.95-1.76-3.95-3.94v-8.2c0-2.18,1.77-3.94,3.95-3.94h46.98c2.18,0,3.94,1.76,3.94,3.94v8.2ZM475.2,507.18c0,2.18-1.76,3.95-3.94,3.95h-46.98c-2.18,0-3.95-1.77-3.95-3.95v-8.19c0-2.18,1.77-3.95,3.95-3.95h46.98c2.18,0,3.94,1.77,3.94,3.95v8.19Z"/>
-                                    <path fill="#f4f4f4" stroke="#231f20" stroke-miterlimit="10" stroke-width="5" d="M213.1,457.62h-79.04c-8.48,0-15.35,6.87-15.35,15.35v167.71h109.74v-167.71c0-8.48-6.87-15.35-15.35-15.35ZM201.02,583.23c0,2.18-1.77,3.94-3.95,3.94h-46.98c-2.18,0-3.95-1.76-3.95-3.94v-8.2c0-2.18,1.77-3.94,3.95-3.94h46.98c2.18,0,3.95,1.76,3.95,3.94v8.2ZM201.02,545.21c0,2.18-1.77,3.94-3.95,3.94h-46.98c-2.18,0-3.95-1.76-3.95-3.94v-8.2c0-2.18,1.77-3.94,3.95-3.94h46.98c2.18,0,3.95,1.76,3.95,3.94v8.2ZM201.02,507.18c0,2.18-1.77,3.95-3.95,3.95h-46.98c-2.18,0-3.95-1.77-3.95-3.95v-8.19c0-2.18,1.77-3.95,3.95-3.95h46.98c2.18,0,3.95,1.77,3.95,3.95v8.19Z"/>
-                                    <polygon fill="#e8e8e8" stroke="#231f20" stroke-miterlimit="10" points="339.65 422.12 339.65 435.5 317.36 435.5 317.36 457.79 303.99 457.79 303.99 435.5 281.7 435.5 281.7 422.12 303.99 422.12 303.99 399.83 317.36 399.83 317.36 422.12 339.65 422.12"/>
-                                    <polygon fill="#ea2626" stroke="#9e0000" stroke-miterlimit="10" stroke-width="3" points="339.65 422.12 339.65 435.5 317.36 435.5 317.36 457.79 303.99 457.79 303.99 435.5 281.7 435.5 281.7 422.12 303.99 422.12 303.99 399.83 317.36 399.83 317.36 422.12 339.65 422.12"/>
-                                </svg>
-                            </div>
-                            
-                            <div class="card-label-area">
-                                <span class="card-label-en notranslate">Hospital</span>
-                                <span class="card-label-hi notranslate">अस्पताल</span>
-                            </div>
+                        <button id="hospital-select-btn" class="role-btn-new hospital-btn-new" type="button" onclick="goToHospitalRegister()">
+                            <img src="assets/hospital_icon.svg" class="role-btn-icon" alt="">
+                            <span class="role-btn-text">
+                                <span class="notranslate">Hospital</span>
+                                <span class="role-btn-hi notranslate" style="display:none;">अस्पताल</span>
+                            </span>
                         </button>
                     </div>
                 </div>

@@ -1307,3 +1307,18 @@ function copyNewAdminCode() {
         });
     }
 }
+
+function openLanguageMenu() {
+    const el = document.getElementById('google_translate_element');
+    if (el) {
+        if (el.style.display === 'none') {
+            el.style.display = 'block';
+            el.style.position = 'absolute';
+            el.style.top = '60px';
+            el.style.right = '20px';
+            el.style.zIndex = '9999';
+        } else {
+            el.style.display = 'none';
+        }
+    }
+}
