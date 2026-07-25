@@ -6,6 +6,12 @@
     <title>Integrity Emergency Care</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#C0202A">
+    
+    <!-- Disable Caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -809,13 +815,23 @@
     <script src="patient-hospitals.js"></script>
     <script src="app.js"></script>
     <script>
-        // Unregister service workers to prevent aggressive caching during development
+        // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(function(registrations) {
                 for(let registration of registrations) {
                     registration.unregister();
                     console.log('Service worker unregistered to fix cache issues.');
                 }
+            });
+        }
+        
+        // Clear all CacheStorage caches globally
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                for (let name of names) {
+                    caches.delete(name);
+                }
+                console.log('All caches cleared.');
             });
         }
     </script>
