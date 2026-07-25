@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
     <!-- App Styles -->
-    <link rel="stylesheet" href="styles.css?v=42">
+    <link rel="stylesheet" href="styles.css?v=43">
 </head>
 <body>
     <div id="google_translate_element" style="display:none;"></div>
@@ -721,6 +721,13 @@
                         <span class="emergency-label">Poisoning</span>
                     </div>
                 </div>
+
+                <div style="text-align: center; margin-top: 16px;">
+                    <a href="#" onclick="goToPatientHospitals('Other'); return false;" style="color: #666; text-decoration: underline; font-size: 0.95rem; font-family: var(--font);">Can't find your emergency? View all nearby hospitals and ICUs</a>
+                </div>
+                <div style="padding: 0 16px;">
+                    <button id="confirm-emergency-btn" class="hosp-register-btn" onclick="confirmEmergency()" disabled style="margin-top: 24px; margin-bottom: 24px; opacity: 0.5; transition: opacity 0.2s;">Continue</button>
+                </div>
             </div>
 
             <!-- ========================================== -->
@@ -801,9 +808,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=42"></script>
-    <script src="patient-hospitals.js?v=42"></script>
-    <script src="app.js?v=42"></script>
+    <script src="location-picker.js?v=43"></script>
+    <script src="patient-hospitals.js?v=43"></script>
+    <script src="app.js?v=43"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {

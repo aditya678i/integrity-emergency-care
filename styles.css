@@ -290,9 +290,9 @@ body {
 .emergency-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 12px;
+    column-gap: 18px; /* Increased horizontal gap */
     row-gap: 12px;
-    width: 82%; /* Reduced to make boxes smaller and fit on screen */
+    width: 86%; /* Slightly increased width to accommodate the larger gap */
     margin: 0 auto;
 }
 
