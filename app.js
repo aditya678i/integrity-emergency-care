@@ -950,6 +950,11 @@ function goToAddICU(source = 'change-info') {
     if (contactEl) contactEl.value = '';
     const ambulanceEl = document.getElementById('add-icu-ambulance');
     if (ambulanceEl) ambulanceEl.value = '';
+    
+    // Reset Emergency Conditions
+    currentICUConditions = [];
+    const conditionsText = document.getElementById('add-icu-conditions-text');
+    if (conditionsText) conditionsText.textContent = 'Emergency Conditions Treated';
     ['add-icu-total', 'add-icu-vacant', 'add-icu-vent', 'add-icu-novent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -1017,6 +1022,7 @@ function addICUAndGoBack() {
         name: name,
         contact: contact,
         ambulanceNumber: ambulanceNumber,
+        conditions: [...currentICUConditions],
         totalBeds:  getCount('add-icu-total'),
         vacantBeds: getCount('add-icu-vacant'),
         ventBeds:   getCount('add-icu-vent'),
@@ -1621,3 +1627,67 @@ function openLanguageMenu() {
     // Instead of opening a new menu, navigate to the patient language screen
     goToPatientLanguageScreen();
 }
+
+// ==========================================
+// EMERGENCY CONDITIONS LOGIC
+// ==========================================
+
+var currentICUConditions = [];
+
+const ALL_EMERGENCY_CONDITIONS = [
+    { id: 'brain', title: 'Brain', sub: 'Stroke, Seizure, Trauma, etc.' },
+    { id: 'asthma', title: 'Asthma', sub: 'Severe Attacks, Respiratory Failure, etc.' },
+    { id: 'accident', title: 'Accident', sub: 'Trauma, Fractures, Internal Injury, etc.' },
+    { id: 'lungs', title: 'Lungs', sub: 'Pneumonia, COPD, Embolism, etc.' },
+    { id: 'bleeding', title: 'Bleeding', sub: 'Internal Hemorrhage, Trauma, etc.' },
+    { id: 'burns', title: 'Burns', sub: 'Severe Thermal/Chemical Burns, etc.' },
+    { id: 'pregnancy', title: 'Pregnancy', sub: 'Eclampsia, Complications, etc.' },
+    { id: 'unconsciousness', title: 'Unconsciousness', sub: 'Coma, Shock, etc.' },
+    { id: 'poisoning', title: 'Poisoning', sub: 'Toxin Ingestion, Overdose, etc.' }
+];
+
+function openConditionsModal() {
+    const listEl = document.getElementById('icu-conditions-list');
+    if (!listEl) return;
+    
+    // Generate list
+    listEl.innerHTML = ALL_EMERGENCY_CONDITIONS.map(cond => {
+        const isChecked = currentICUConditions.includes(cond.title) ? 'checked' : '';
+        return `
+            <label style="display: flex; align-items: flex-start; gap: 12px; font-family: var(--font); cursor: pointer; padding: 4px 0;">
+                <input type="checkbox" value="${cond.title}" class="icu-condition-checkbox" style="width: 22px; height: 22px; margin-top: 2px;" ${isChecked}>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.15rem; color: #000;">${cond.title}</div>
+                    <div style="font-size: 0.95rem; color: #666;">(${cond.sub})</div>
+                </div>
+            </label>
+        `;
+    }).join('');
+    
+    document.getElementById('icu-conditions-modal').style.display = 'flex';
+}
+
+function closeConditionsModal() {
+    document.getElementById('icu-conditions-modal').style.display = 'none';
+}
+
+function saveConditions() {
+    const checkboxes = document.querySelectorAll('.icu-condition-checkbox');
+    currentICUConditions = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+        
+    const textEl = document.getElementById('add-icu-conditions-text');
+    if (textEl) {
+        if (currentICUConditions.length === 0) {
+            textEl.textContent = 'Emergency Conditions Treated';
+        } else if (currentICUConditions.length === 1) {
+            textEl.textContent = '1 Condition Selected';
+        } else {
+            textEl.textContent = `${currentICUConditions.length} Conditions Selected`;
+        }
+    }
+    
+    closeConditionsModal();
+}
+
