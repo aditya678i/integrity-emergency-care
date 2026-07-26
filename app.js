@@ -1659,7 +1659,7 @@ function toggleConditionsDropdown() {
             const isChecked = currentICUConditions.includes(cond.title) ? 'checked' : '';
             return `
                 <label style="display: flex; align-items: flex-start; gap: 12px; font-family: var(--font); cursor: pointer; padding: 4px 0;">
-                    <input type="checkbox" value="${cond.title}" class="icu-condition-checkbox" style="width: 20px; height: 20px; margin-top: 2px;" onchange="saveConditions()" ${isChecked}>
+                    <input type="checkbox" value="${cond.title}" class="icu-condition-checkbox" style="width: 20px; height: 20px; margin-top: 2px; accent-color: #EF4444;" onchange="saveConditions()" ${isChecked}>
                     <div>
                         <div style="font-weight: 800; font-size: 1.05rem; color: #000;">${cond.title}</div>
                         <div style="font-size: 0.85rem; color: #666;">(${cond.sub})</div>
