@@ -1332,7 +1332,7 @@ function handleForgotCodeGenerate() {
     btn.style.whiteSpace = 'nowrap';
     btn.style.overflow = 'hidden';
     
-    // Start animation (shrink and hide text)
+    // Start animation (shrink and hide text) AT THE SAME TIME as showing the code
     btn.style.color = 'transparent';
     btn.style.width = btnHeight + 'px';
     btn.style.height = btnHeight + 'px';
@@ -1340,49 +1340,56 @@ function handleForgotCodeGenerate() {
     btn.style.borderRadius = '50%';
     btn.style.padding = '0';
     btn.style.margin = '32px auto 0 auto';
+    btn.style.animation = 'none'; // Clear pulse
+    btn.onclick = null; // Disable click during transition
     
-    // Update click handler for the tick button
-    btn.onclick = function() {
-        goBackToHospitalLogin();
-        const loginInput = document.getElementById('login-admin-code');
-        if (loginInput) loginInput.value = code;
-    };
+    // Show result immediately!
+    const newCodeInput = document.getElementById('new-generated-code');
+    if (newCodeInput) newCodeInput.value = code;
     
+    const resultDiv = document.getElementById('forgot-code-result');
+    resultDiv.style.opacity = '0';
+    resultDiv.style.display = 'block';
+    resultDiv.style.transition = 'opacity 0.4s ease';
+    void resultDiv.offsetWidth; // Reflow
+    resultDiv.style.opacity = '1';
+
     setTimeout(() => {
         // Show tick
         btn.innerHTML = `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transform: scale(0); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: 0 auto; display: block;"><path d="M20 6L9 17l-5-5"/></svg>`;
-        
-        // Trigger reflow
         void btn.offsetWidth;
-        
-        // Pop the tick
         const svg = btn.querySelector('svg');
         if(svg) svg.style.transform = 'scale(1)';
         
+        // Wait 2 seconds with the tick
         setTimeout(() => {
-            // Show result
-            const newCodeInput = document.getElementById('new-generated-code');
-            if (newCodeInput) newCodeInput.value = code;
+            // Expand to Confirm button
+            btn.style.width = '100%';
+            btn.style.height = 'auto';
+            btn.style.minWidth = '0';
+            btn.style.borderRadius = '999px';
+            btn.style.padding = '16px';
             
-            const resultDiv = document.getElementById('forgot-code-result');
-            resultDiv.style.opacity = '0';
-            resultDiv.style.display = 'block';
-            resultDiv.style.transition = 'opacity 0.4s ease';
+            // Hide tick, show text
+            btn.innerHTML = 'Confirm';
+            btn.style.color = '#fff';
             
-            // Trigger reflow
-            void resultDiv.offsetWidth;
-            resultDiv.style.opacity = '1';
-            
-            // Add pulse effect to the button to encourage clicking
-            btn.style.animation = 'pulse-tick 2s infinite ease-in-out';
-            if(!document.getElementById('pulse-style')) {
-                const style = document.createElement('style');
-                style.id = 'pulse-style';
-                style.innerHTML = `@keyframes pulse-tick { 0% { box-shadow: 0 0 0 0 rgba(178,34,34,0.4); } 70% { box-shadow: 0 0 0 10px rgba(178,34,34,0); } 100% { box-shadow: 0 0 0 0 rgba(178,34,34,0); } }`;
-                document.head.appendChild(style);
-            }
-        }, 500);
-    }, 400);
+            // Allow click to confirm
+            btn.onclick = function() {
+                goBackToHospitalLogin();
+                const loginInput = document.getElementById('login-admin-code');
+                if (loginInput) loginInput.value = code;
+                
+                // Reset button back to original state for next time
+                setTimeout(() => {
+                    btn.innerHTML = 'Generate New Code';
+                    btn.style = 'margin-top: 32px; transition: all 0.4s ease; display: block; width: 100%; padding: 16px; border-radius: 999px; background: #B22222; color: #fff; font-family: var(--font); font-size: 1.1rem; font-weight: 600; border: none; cursor: pointer;';
+                    btn.onclick = handleForgotCodeGenerate;
+                    document.getElementById('forgot-code-result').style.display = 'none';
+                }, 500);
+            };
+        }, 2000);
+    }, 400); // Wait for shrink to finish before showing tick
 }
 
 function copyNewAdminCode() {
