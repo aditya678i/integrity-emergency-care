@@ -1392,7 +1392,7 @@ body {
  *  UPDATE ICU SCREEN (SCREEN 9)
  * ------------------------------------- */
 .icu-update-row {
-    background: #FDECEA;
+    background: transparent;
     border-radius: 30px;
     padding: 12px 24px;
     display: flex;
@@ -1401,7 +1401,7 @@ body {
     margin-bottom: 16px;
 }
 .icu-update-label {
-    color: #C0202A;
+    color: #000;
     font-family: var(--font);
     font-weight: 800;
     font-size: 1.05rem;
