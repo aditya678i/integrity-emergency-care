@@ -287,7 +287,7 @@ function toggleCustomSelect(id, e) {
 
 // ── Hospital Navigation ──────────────────────────────
 function goToHospitalRegister() {
-    triggerGoogleTranslate('en');
+    triggerGoogleTranslate(patientLangId);
     const roleScreen = document.getElementById('role-screen');
     const hospitalScreen = document.getElementById('hospital-register-screen');
     const verifyScreen = document.getElementById('hospital-verification-screen');
@@ -565,7 +565,7 @@ function persistHospitalData() {
 
 // ── Dashboard Navigation ──────────────────────────────
 function goToDashboard(skipHideRegScreen = false) {
-    triggerGoogleTranslate('en');
+    triggerGoogleTranslate(patientLangId);
     // Collect registration data
     const hospNameEl = document.getElementById('hosp-name');
     if (hospNameEl && hospNameEl.value) hospitalProfile.name = hospNameEl.value.trim();
@@ -1411,7 +1411,7 @@ function verifyOTPAndRegister() {
 }
 
 function goToVerification() {
-    triggerGoogleTranslate('en');
+    triggerGoogleTranslate(patientLangId);
     const hospRegScreen = document.getElementById('hospital-register-screen');
     const verifyScreen = document.getElementById('hospital-verification-screen');
     if (hospRegScreen && verifyScreen) {
