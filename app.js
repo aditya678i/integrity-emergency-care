@@ -648,18 +648,9 @@ function renderDashboard() {
 
     if (!nameEl || !emptyState || !icuList) return;
 
-    // Set hospital name with marquee if long
+    // Set hospital name
     const name = hospitalProfile.name || 'My Hospital';
-    nameEl.classList.remove('marquee-active');
     nameEl.textContent = name;
-    // Duplicate text for seamless loop if marquee needed
-    setTimeout(() => {
-        const container = nameEl.parentElement;
-        if (nameEl.scrollWidth > container.clientWidth) {
-            nameEl.textContent = name + '   •   ' + name;
-            nameEl.classList.add('marquee-active');
-        }
-    }, 50);
 
     if (typeEl) typeEl.textContent = hospitalProfile.type;
 
