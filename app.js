@@ -1323,12 +1323,53 @@ function handleForgotCodeGenerate() {
     // Update local storage
     localStorage.setItem('hospitalAdminCode', code);
 
-    // Show result
-    const newCodeInput = document.getElementById('new-generated-code');
-    if (newCodeInput) newCodeInput.value = code;
+    // Animate button
+    const btn = document.getElementById('btn-generate-forgot-code');
+    const height = btn.offsetHeight;
     
-    document.getElementById('forgot-code-result').style.display = 'block';
-    document.getElementById('btn-generate-forgot-code').style.display = 'none';
+    // Prepare button for transition
+    btn.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    btn.style.whiteSpace = 'nowrap';
+    btn.style.overflow = 'hidden';
+    
+    // Start animation (shrink and hide text)
+    btn.style.color = 'transparent';
+    btn.style.width = height + 'px';
+    btn.style.borderRadius = '50%';
+    btn.style.padding = '0';
+    btn.style.margin = '32px auto 0 auto';
+    
+    setTimeout(() => {
+        // Show tick
+        btn.innerHTML = `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="transform: scale(0); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin: 0 auto; display: block;"><path d="M20 6L9 17l-5-5"/></svg>`;
+        
+        // Trigger reflow
+        void btn.offsetWidth;
+        
+        // Pop the tick
+        const svg = btn.querySelector('svg');
+        if(svg) svg.style.transform = 'scale(1)';
+        
+        setTimeout(() => {
+            // Show result
+            const newCodeInput = document.getElementById('new-generated-code');
+            if (newCodeInput) newCodeInput.value = code;
+            
+            const resultDiv = document.getElementById('forgot-code-result');
+            resultDiv.style.opacity = '0';
+            resultDiv.style.display = 'block';
+            resultDiv.style.transition = 'opacity 0.4s ease';
+            
+            // Trigger reflow
+            void resultDiv.offsetWidth;
+            resultDiv.style.opacity = '1';
+            
+            // Hide button after a short delay
+            setTimeout(() => {
+                btn.style.display = 'none';
+            }, 800);
+        }, 500);
+    }, 400);
 }
 
 function copyNewAdminCode() {
