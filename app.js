@@ -1646,29 +1646,34 @@ const ALL_EMERGENCY_CONDITIONS = [
     { id: 'poisoning', title: 'Poisoning', sub: 'Toxin Ingestion, Overdose, etc.' }
 ];
 
-function openConditionsModal() {
+function toggleConditionsDropdown() {
     const listEl = document.getElementById('icu-conditions-list');
-    if (!listEl) return;
+    const dropdown = document.getElementById('add-icu-conditions-dropdown');
+    const icon = document.getElementById('add-icu-conditions-icon');
     
-    // Generate list
-    listEl.innerHTML = ALL_EMERGENCY_CONDITIONS.map(cond => {
-        const isChecked = currentICUConditions.includes(cond.title) ? 'checked' : '';
-        return `
-            <label style="display: flex; align-items: flex-start; gap: 12px; font-family: var(--font); cursor: pointer; padding: 4px 0;">
-                <input type="checkbox" value="${cond.title}" class="icu-condition-checkbox" style="width: 22px; height: 22px; margin-top: 2px;" ${isChecked}>
-                <div>
-                    <div style="font-weight: 800; font-size: 1.15rem; color: #000;">${cond.title}</div>
-                    <div style="font-size: 0.95rem; color: #666;">(${cond.sub})</div>
-                </div>
-            </label>
-        `;
-    }).join('');
+    if (!listEl || !dropdown) return;
     
-    document.getElementById('icu-conditions-modal').style.display = 'flex';
-}
-
-function closeConditionsModal() {
-    document.getElementById('icu-conditions-modal').style.display = 'none';
+    if (dropdown.style.display === 'none') {
+        // Generate list
+        listEl.innerHTML = ALL_EMERGENCY_CONDITIONS.map(cond => {
+            const isChecked = currentICUConditions.includes(cond.title) ? 'checked' : '';
+            return `
+                <label style="display: flex; align-items: flex-start; gap: 12px; font-family: var(--font); cursor: pointer; padding: 4px 0;">
+                    <input type="checkbox" value="${cond.title}" class="icu-condition-checkbox" style="width: 20px; height: 20px; margin-top: 2px;" onchange="saveConditions()" ${isChecked}>
+                    <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #000;">${cond.title}</div>
+                        <div style="font-size: 0.85rem; color: #666;">(${cond.sub})</div>
+                    </div>
+                </label>
+            `;
+        }).join('');
+        
+        dropdown.style.display = 'block';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+        dropdown.style.display = 'none';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
 }
 
 function saveConditions() {
@@ -1687,7 +1692,5 @@ function saveConditions() {
             textEl.textContent = `${currentICUConditions.length} Conditions Selected`;
         }
     }
-    
-    closeConditionsModal();
 }
 

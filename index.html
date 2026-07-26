@@ -531,9 +531,14 @@
                         <!-- Emergency Conditions Treated -->
                         <div style="margin-bottom: 24px;">
                             <div style="background: #F5F5F5; border-radius: 12px; padding: 12px; margin: 0 16px;">
-                                <div style="background: #fff; border-radius: 12px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid #E0E0E0;" onclick="openConditionsModal()">
+                                <div style="background: #fff; border-radius: 12px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid #E0E0E0;" onclick="toggleConditionsDropdown()">
                                     <span id="add-icu-conditions-text" style="font-family: var(--font); font-size: 1.05rem; font-weight: 800; color: #000;">Emergency Conditions Treated</span>
-                                    <i class="fas fa-chevron-down" style="color: #000;"></i>
+                                    <i id="add-icu-conditions-icon" class="fas fa-chevron-down" style="color: #000; transition: transform 0.3s;"></i>
+                                </div>
+                                <div id="add-icu-conditions-dropdown" style="display: none; background: #fff; border-radius: 12px; margin-top: 8px; padding: 16px; border: 1.5px solid #E0E0E0; max-height: 250px; overflow-y: auto;">
+                                    <div id="icu-conditions-list" style="display: flex; flex-direction: column; gap: 12px;">
+                                        <!-- Populated via JS -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -891,9 +896,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=87"></script>
-    <script src="patient-hospitals.js?v=87"></script>
-    <script src="app.js?v=87"></script>
+    <script src="location-picker.js?v=88"></script>
+    <script src="patient-hospitals.js?v=88"></script>
+    <script src="app.js?v=88"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {
@@ -962,19 +967,7 @@
             </div>
     </div>
 
-    <!-- ICU Conditions Modal -->
-    <div id="icu-conditions-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: flex-end;">
-        <div style="background: #fff; width: 100%; max-height: 80vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0; font-family: var(--font); font-size: 1.25rem; font-weight: 800;">Emergency Conditions Treated</h3>
-                <i class="fas fa-times" style="font-size: 1.5rem; color: #333; cursor: pointer;" onclick="closeConditionsModal()"></i>
-            </div>
-            <div id="icu-conditions-list" style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
-                <!-- Populated via JS -->
-            </div>
-            <button class="hosp-register-btn" onclick="saveConditions()" style="margin-top: 0; width: 100%;">Done</button>
-        </div>
-    </div>
+
 
 </body>
 </html>
