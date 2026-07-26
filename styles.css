@@ -484,7 +484,7 @@ body {
     padding: 16px 24px;
     background: #F5F5F5;
     border: none;
-    border-radius: 999px;
+    border-radius: 10px;
     font-family: var(--font);
     font-size: 0.95rem;
     font-weight: 600;
@@ -517,7 +517,7 @@ body {
 /* Address textarea group */
 .hosp-address-group {
     background: #F5F5F5;
-    border-radius: 24px;
+    border-radius: 10px;
     height: 130px;
     overflow: hidden;
 }
@@ -525,7 +525,7 @@ body {
     position: relative;
     z-index: 2;
     background: transparent !important;
-    border-radius: 24px !important;
+    border-radius: 10px !important;
     resize: none;
     height: 100% !important;
     padding: 18px 24px !important;
