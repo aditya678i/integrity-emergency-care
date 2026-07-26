@@ -488,7 +488,7 @@
                     <div class="ci-scroll" style="padding-top: 8px;">
                         
                         <!-- Grey Box 1: ICU Bed Name & Information -->
-                        <div style="background: #F5F5F5; border-radius: 12px; padding: 20px 16px; margin-bottom: 24px;">
+                        <div style="background: #F5F5F5; border-radius: 12px; padding: 20px 16px; margin: 0 16px 24px 16px;">
                             <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px;">ICU Bed Name</div>
                             <div class="icu-update-row" style="justify-content: center; padding: 0 0 16px 0; background: transparent;">
                                 <input type="text" id="add-icu-name" class="icu-update-contact-input" style="width: 100%; color: #333;" placeholder="e.g. General ICU">
@@ -551,9 +551,9 @@
                             </div>
                         </div>
 
-                        <!-- Ambulance Number -->
+                        <!-- Ambulance Contact -->
                         <div style="margin-bottom: 24px;">
-                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px; padding: 0 16px;">Ambulance Number</div>
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px; padding: 0 16px;">Ambulance Contact</div>
                             <div style="background: #F5F5F5; border-radius: 12px; padding: 8px 20px; margin: 0 16px; display: flex; align-items: center; justify-content: center;">
                                 <input type="tel" id="add-icu-ambulance" class="icu-update-contact-input" placeholder="9876XXXXXX" maxlength="10" style="width: 175px; color: #333; background: #fff; border: 1.5px solid #E0E0E0; border-radius: 30px; padding: 10px 20px; font-weight: 600; text-align: center;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
@@ -896,9 +896,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=89"></script>
-    <script src="patient-hospitals.js?v=89"></script>
-    <script src="app.js?v=89"></script>
+    <script src="location-picker.js?v=90"></script>
+    <script src="patient-hospitals.js?v=90"></script>
+    <script src="app.js?v=90"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {
