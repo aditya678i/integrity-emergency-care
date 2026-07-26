@@ -747,42 +747,64 @@ function renderDashboard() {
     }
 }
 
+function timeAgo(timestamp) {
+    if (!timestamp) return 'Just now';
+    const seconds = Math.floor((Date.now() - timestamp) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " mins ago";
+    return "Just now";
+}
+
 function buildICUCard(icu, index) {
     const names = Array.isArray(icu.names) ? icu.names.join(' + ') : icu.name;
+    const updateTimeStr = timeAgo(icu.updatedAt);
     return `
     <div style="margin-bottom: 32px;">
         <!-- Title -->
-        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin: 0 0 12px 16px;">
+        <h3 style="color: #000; font-family: var(--font); font-size: 1.3rem; font-weight: 800; text-transform: uppercase; margin: 0 0 12px 16px;">
             ${names}
         </h3>
         <!-- Card -->
-        <div style="background: #FDECEA; border-radius: 24px; padding: 28px 24px 24px 24px;">
-            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px;">
+        <div style="background: #F5F5F5; border-radius: 10px; padding: 28px 24px 24px 24px;">
+            <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds</div>
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.totalBeds || '0'}</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.totalBeds || '0'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant</div>
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.vacantBeds || '0'}</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.vacantBeds || '0'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant<br>(with ventilator)</div>
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.ventBeds || '0'}</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant<br>(with ventilator)</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.ventBeds || '0'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant<br>(without ventilator)</div>
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.noVentBeds || '0'}</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Total ICU Beds Vacant<br>(without ventilator)</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.noVentBeds || '0'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Emergency phone No</div>
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.contact || '-'}</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Emergency No.</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.contact || '-'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Ambulance Number</div>
-                    <div style="color: #C0202A; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.ambulanceNumber || '-'}</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Ambulance Number</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.ambulanceNumber || '-'}</div>
                 </div>
             </div>
+            
+            <div style="text-align: left; margin-bottom: 20px; font-family: var(--font); font-size: 0.9rem; font-weight: 600; color: #666;">
+                Last updated: ${updateTimeStr}
+            </div>
+
             <button onclick="editICUFromDash(${index})" style="width: 100%; background: #C0202A; color: #fff; font-family: var(--font); font-size: 1.25rem; font-weight: 600; padding: 14px 24px; border: none; border-radius: 20px; cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent;" onmousedown="this.style.opacity='0.7'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
                 Update
             </button>
@@ -1026,7 +1048,8 @@ function addICUAndGoBack() {
         totalBeds:  getCount('add-icu-total'),
         vacantBeds: getCount('add-icu-vacant'),
         ventBeds:   getCount('add-icu-vent'),
-        noVentBeds: getCount('add-icu-novent')
+        noVentBeds: getCount('add-icu-novent'),
+        updatedAt: Date.now()
     };
 
     hospitalICUs.push(icuObj);
@@ -1152,6 +1175,7 @@ function confirmICUUpdate() {
     icu.noVentBeds = getCount('upd-icu-novent');
     icu.contact = contact;
     icu.ambulanceNumber = ambulanceNumber;
+    icu.updatedAt = Date.now();
     
     persistHospitalData();
 
