@@ -360,17 +360,15 @@
                 </div>
             </div>
 
-            <!-- SCREEN 6: CHANGE INFO -->
+            <!-- SCREEN 6: CHANGE INFO (HOSPITAL PROFILE) -->
             <div id="change-info-screen" class="screen-view">
                 <div class="ci-inner">
                     <!-- Header -->
-                    <div style="padding: 12px 24px 16px 24px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <div class="hosp-back-btn" onclick="goBackToDashboard()" style="width: 36px; height: 36px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
-                                <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                            </div>
+                    <div style="padding: 12px 24px 16px 24px; position: relative; text-align: center;">
+                        <div class="hosp-back-btn" onclick="goBackToDashboard()" style="width: 36px; height: 36px; position: absolute; left: 24px; top: 12px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                         </div>
-                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0;">Change Your Hospital Info</h2>
+                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0; font-weight: 800;">Hospital Profile</h2>
                     </div>
 
                     <!-- Scrollable form content -->
@@ -378,24 +376,28 @@
                         <div class="hosp-form" style="margin-top: 10px;">
                             
                             <!-- Large Centered Photo Upload Box -->
-                            <div class="ci-large-upload-box" id="ci-photo-preview" onclick="document.getElementById('ci-photo-input').click()">
-                                <div class="ci-upload-content" id="ci-upload-content">
-                                    <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                    <span>Upload Your Hospital Logo / Photo</span>
+                            <div class="ci-large-upload-box" id="ci-photo-preview" onclick="document.getElementById('ci-photo-input').click()" style="background: #F5F5F5; border: none; border-radius: 12px; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                                <div class="ci-upload-content" id="ci-upload-content" style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="background: #C0202A; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="#fff" stroke-width="3" fill="none"><path d="M12 5v14M5 12h14"/></svg>
+                                    </div>
+                                    <span style="font-family: var(--font); font-size: 1rem; font-weight: 600; color: #000;">Upload Your Photo</span>
                                 </div>
                                 <input type="file" id="ci-photo-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
                             </div>
 
                             <!-- Hospital Name -->
-                            <div class="hosp-input-group">
-                                <input class="hosp-input" type="text" placeholder="Hospital Name" id="ci-hosp-name">
+                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Hospital Name</label>
+                                <input type="text" id="ci-hosp-name" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">
                             </div>
     
                             <!-- Hospital Type -->
-                            <div class="hosp-input-group custom-multiselect">
-                                <div class="hosp-input hosp-select multiselect-display" id="ci-hosp-type-display" onclick="toggleMultiSelect(event, 'ci-hosp-type-options')">Hospital Type</div>
-                                <svg onclick="toggleMultiSelect(event, 'ci-hosp-type-options')" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                                <div class="multiselect-options" id="ci-hosp-type-options">
+                            <div class="profile-input-box" onclick="toggleMultiSelect(event, 'ci-hosp-type-options')" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; position: relative;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Hospital Type</label>
+                                <div id="ci-hosp-type-display" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">Hospital Type</div>
+                                <svg class="svg-icon profile-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%);"><path d="M6 9l6 6 6-6"/></svg>
+                                <div class="multiselect-options" id="ci-hosp-type-options" style="top: 100%; left: 0; right: 0; margin-top: 4px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                                     <label class="multiselect-option"><input type="checkbox" value="Government" onchange="updateCiMultiSelect()"> Government</label>
                                     <label class="multiselect-option"><input type="checkbox" value="Private" onchange="updateCiMultiSelect()"> Private</label>
                                     <label class="multiselect-option"><input type="checkbox" value="Trust / Charitable" onchange="updateCiMultiSelect()"> Trust / Charitable</label>
@@ -407,52 +409,55 @@
                             </div>
     
                             <!-- Email Address -->
-                            <div class="hosp-input-group">
-                                <input class="hosp-input" type="email" placeholder="Hospital Email Address" id="ci-hosp-email">
+                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Hospital Email Address</label>
+                                <input type="email" id="ci-hosp-email" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">
                             </div>
     
                             <!-- Location Group -->
-                            <div class="hosp-location-group">
-                                <!-- State -->
-                                <div class="hosp-input-group custom-select">
-                                    <div class="hosp-input hosp-select custom-select-display" id="ci-hosp-state-display" onclick="toggleCustomSelect('ci-hosp-state-options', event)">State</div>
-                                    <svg onclick="toggleCustomSelect('ci-hosp-state-options', event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                                    <div class="custom-select-options" id="ci-hosp-state-options">
-                                        <!-- Dynamically filled -->
-                                    </div>
+                            <!-- State -->
+                            <div class="profile-input-box" onclick="toggleCustomSelect('ci-hosp-state-options', event)" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; position: relative;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">State</label>
+                                <div id="ci-hosp-state-display" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">State</div>
+                                <svg class="svg-icon profile-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%);"><path d="M6 9l6 6 6-6"/></svg>
+                                <div class="custom-select-options" id="ci-hosp-state-options" style="top: 100%; left: 0; right: 0; margin-top: 4px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <!-- Dynamically filled -->
                                 </div>
-    
-                                <!-- City -->
-                                <div class="hosp-input-group custom-select">
-                                    <div class="hosp-input hosp-select custom-select-display" id="ci-hosp-city-display" onclick="toggleCustomSelect('ci-hosp-city-options', event)">City</div>
-                                    <svg onclick="toggleCustomSelect('ci-hosp-city-options', event)" style="cursor:pointer;" class="svg-icon hosp-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                                    <div class="custom-select-options" id="ci-hosp-city-options">
-                                        <!-- Dynamically filled -->
-                                    </div>
+                            </div>
+
+                            <!-- City -->
+                            <div class="profile-input-box" onclick="toggleCustomSelect('ci-hosp-city-options', event)" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; position: relative;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">City</label>
+                                <div id="ci-hosp-city-display" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">City</div>
+                                <svg class="svg-icon profile-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%);"><path d="M6 9l6 6 6-6"/></svg>
+                                <div class="custom-select-options" id="ci-hosp-city-options" style="top: 100%; left: 0; right: 0; margin-top: 4px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <!-- Dynamically filled -->
                                 </div>
-    
-                                <!-- Pincode -->
-                                <div class="hosp-input-group">
-                                    <input class="hosp-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Pincode" id="ci-hosp-pin">
-                                </div>
+                            </div>
+
+                            <!-- Pincode -->
+                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; position: relative;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Pincode</label>
+                                <input type="text" id="ci-hosp-pin" inputmode="numeric" pattern="[0-9]*" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">
+                                <svg class="svg-icon profile-select-arrow" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%);"><path d="M6 9l6 6 6-6"/></svg>
                             </div>
     
                             <!-- Address -->
-                            <div class="hosp-input-group hosp-address-group">
-                                <textarea class="hosp-input hosp-textarea" placeholder="Address" id="ci-hosp-address"></textarea>
-                                <div class="address-lines">
-                                    <div class="address-line line-1"></div>
-                                    <div class="address-line line-2"></div>
-                                    <div class="address-line line-3"></div>
-                                </div>
+                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Address</label>
+                                <textarea id="ci-hosp-address" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0; resize: none; min-height: 48px; border-bottom: 1px solid rgba(192, 32, 42, 0.2);"></textarea>
+                                <div style="border-bottom: 1px solid rgba(192, 32, 42, 0.2); margin-top: 24px;"></div>
                             </div>
                             
                             <!-- ICU Section -->
-                            <div id="ci-icu-section" class="manage-icu-card" style="margin-top: 20px;">
-                                <div class="manage-icu-card-title">Manage ICU Beds</div>
+                            <div id="ci-icu-section" style="background: #F5F5F5; border-radius: 12px; padding: 16px; margin-top: 24px; margin-bottom: 24px;">
+                                <div style="font-family: var(--font); font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 16px;">Manage ICU Beds</div>
                                 <div id="ci-icu-list" class="temp-icu-list"></div>
-                                <button class="add-icu-solid-btn" onclick="goToAddICU('change-info')">
-                                    <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Add New ICU Bed
+                                <button class="add-icu-outline-btn" onclick="goToAddICU('change-info')" style="width: 100%; background: transparent; color: #C0202A; border: 1.5px solid #C0202A; padding: 12px; border-radius: 20px; font-family: var(--font); font-size: 1rem; font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer;">
+                                    <div style="background: #C0202A; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" width="10" height="10" stroke="#fff" stroke-width="3" fill="none"><path d="M12 5v14M5 12h14"/></svg>
+                                    </div>
+                                    Add New ICU Bed
                                 </button>
                             </div>
                         </div>
@@ -871,9 +876,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=65"></script>
-    <script src="patient-hospitals.js?v=65"></script>
-    <script src="app.js?v=65"></script>
+    <script src="location-picker.js?v=66"></script>
+    <script src="patient-hospitals.js?v=66"></script>
+    <script src="app.js?v=66"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {

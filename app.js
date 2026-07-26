@@ -567,11 +567,34 @@ function persistHospitalData() {
 function goToDashboard(skipHideRegScreen = false) {
     triggerGoogleTranslate('en');
     // Collect registration data
-    hospitalProfile.name = document.getElementById('hosp-name').value.trim() || 'My Hospital';
+    const hospNameEl = document.getElementById('hosp-name');
+    if (hospNameEl && hospNameEl.value) hospitalProfile.name = hospNameEl.value.trim();
+    if (!hospitalProfile.name) hospitalProfile.name = 'My Hospital';
+    
     const typeDisplay = document.getElementById('hosp-type-display');
-    hospitalProfile.type = (typeDisplay && typeDisplay.classList.contains('has-values'))
-        ? typeDisplay.textContent : '';
-        
+    if (typeDisplay && typeDisplay.classList.contains('has-values')) {
+        hospitalProfile.type = typeDisplay.textContent;
+    }
+    
+    const emailEl = document.getElementById('hosp-reg-email');
+    if (emailEl && emailEl.value) {
+        hospitalProfile.email = emailEl.value.trim(); // Save email to profile
+    } else {
+        hospitalProfile.email = localStorage.getItem('hospitalRegEmail') || '';
+    }
+
+    const stateDisplay = document.getElementById('hosp-state-display');
+    if (stateDisplay && stateDisplay.classList.contains('has-values')) hospitalProfile.state = stateDisplay.textContent;
+    
+    const cityDisplay = document.getElementById('hosp-city-display');
+    if (cityDisplay && cityDisplay.classList.contains('has-values')) hospitalProfile.city = cityDisplay.textContent;
+
+    const pinEl = document.getElementById('hosp-pin');
+    if (pinEl && pinEl.value) hospitalProfile.pin = pinEl.value.trim();
+
+    const addressEl = document.getElementById('hosp-address');
+    if (addressEl && addressEl.value) hospitalProfile.address = addressEl.value.trim();
+
     const adminCodeInput = document.getElementById('hosp-admin-code');
     if (adminCodeInput && adminCodeInput.value) {
         localStorage.setItem('hospitalAdminCode', adminCodeInput.value);
@@ -605,35 +628,76 @@ function goToChangeInfo() {
         dashScreen.classList.remove('active-view');
         ciScreen.classList.add('active-view');
     }
-    // Clear all fields so it starts empty as requested
-    const fieldsToClear = [
-        'ci-hosp-name', 'ci-hosp-reg-num', 'ci-hosp-pin', 'ci-hosp-address'
-    ];
-    fieldsToClear.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
     
+    // Pre-populate fields from hospitalProfile
+    const hospNameEl = document.getElementById('ci-hosp-name');
+    if (hospNameEl) hospNameEl.value = hospitalProfile.name && hospitalProfile.name !== 'My Hospital' ? hospitalProfile.name : '';
+
+    const emailEl = document.getElementById('ci-hosp-email');
+    if (emailEl) emailEl.value = hospitalProfile.email || localStorage.getItem('hospitalRegEmail') || '';
+
     const typeDisplay = document.getElementById('ci-hosp-type-display');
-    if (typeDisplay) { typeDisplay.textContent = 'Hospital Type'; typeDisplay.classList.remove('has-values'); }
     const typeOpts = document.getElementById('ci-hosp-type-options');
-    if (typeOpts) { typeOpts.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false); }
-    
+    if (typeDisplay && typeOpts) {
+        typeOpts.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        if (hospitalProfile.type) {
+            typeDisplay.textContent = hospitalProfile.type;
+            typeDisplay.classList.add('has-values');
+            const types = hospitalProfile.type.split(', ');
+            types.forEach(t => {
+                const cb = typeOpts.querySelector(`input[value="${t}"]`);
+                if (cb) cb.checked = true;
+            });
+        } else {
+            typeDisplay.textContent = 'Hospital Type';
+            typeDisplay.classList.remove('has-values');
+        }
+    }
+
     const stateDisplay = document.getElementById('ci-hosp-state-display');
-    if (stateDisplay) { stateDisplay.textContent = 'State'; stateDisplay.classList.remove('has-values'); }
-    
+    if (stateDisplay) {
+        if (hospitalProfile.state) {
+            stateDisplay.textContent = hospitalProfile.state;
+            stateDisplay.classList.add('has-values');
+        } else {
+            stateDisplay.textContent = 'State';
+            stateDisplay.classList.remove('has-values');
+        }
+    }
+
     const cityDisplay = document.getElementById('ci-hosp-city-display');
-    if (cityDisplay) { cityDisplay.textContent = 'City'; cityDisplay.classList.remove('has-values'); }
-    
+    if (cityDisplay) {
+        if (hospitalProfile.city) {
+            cityDisplay.textContent = hospitalProfile.city;
+            cityDisplay.classList.add('has-values');
+        } else {
+            cityDisplay.textContent = 'City';
+            cityDisplay.classList.remove('has-values');
+        }
+    }
+
+    const pinEl = document.getElementById('ci-hosp-pin');
+    if (pinEl) pinEl.value = hospitalProfile.pin || '';
+
+    const addressEl = document.getElementById('ci-hosp-address');
+    if (addressEl) addressEl.value = hospitalProfile.address || '';
+
     const preview = document.getElementById('ci-photo-preview');
-    if (preview) {
-        preview.innerHTML = `
-            <div class="ci-upload-content" id="ci-upload-content">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                <span>Upload Your Hospital Logo / Photo</span>
-            </div>
-            <input type="file" id="ci-photo-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
-        `;
+    const content = document.getElementById('ci-upload-content');
+    if (hospitalProfile.photo) {
+        if (preview && content) {
+            preview.style.backgroundImage = `url(${hospitalProfile.photo})`;
+            preview.style.backgroundSize = 'cover';
+            preview.style.backgroundPosition = 'center';
+            preview.style.border = 'none';
+            content.style.display = 'none';
+        }
+    } else {
+        if (preview && content) {
+            preview.style.backgroundImage = '';
+            preview.style.border = 'none';
+            content.style.display = 'flex';
+        }
     }
     
     renderCIICUList();
@@ -723,8 +787,8 @@ function saveChangeInfo() {
         hospitalProfile.type = typeDisplay.textContent;
     }
     
-    const regNumEl = document.getElementById('ci-hosp-reg-num');
-    if (regNumEl && regNumEl.value.trim()) hospitalProfile.regNum = regNumEl.value.trim();
+    const emailEl = document.getElementById('ci-hosp-email');
+    if (emailEl && emailEl.value.trim()) hospitalProfile.email = emailEl.value.trim();
     
     const stateDisplay = document.getElementById('ci-hosp-state-display');
     if (stateDisplay && stateDisplay.classList.contains('has-values')) {
@@ -753,14 +817,13 @@ function handlePhotoUpload(event) {
     reader.onload = (e) => {
         hospitalProfile.photo = e.target.result;
         const preview = document.getElementById('ci-photo-preview');
-        if (preview) {
-            let img = preview.querySelector('img');
-            if (!img) {
-                img = document.createElement('img');
-                preview.appendChild(img);
-            }
-            img.src = e.target.result;
-            img.alt = "Hospital Logo";
+        const content = document.getElementById('ci-upload-content');
+        if (preview && content) {
+            preview.style.backgroundImage = `url(${e.target.result})`;
+            preview.style.backgroundSize = 'cover';
+            preview.style.backgroundPosition = 'center';
+            preview.style.border = 'none';
+            content.style.display = 'none';
         }
     };
     reader.readAsDataURL(file);
@@ -1024,11 +1087,12 @@ function renderCIICUList() {
     
     list.innerHTML = hospitalICUs.map((icu, i) => {
         const names = Array.isArray(icu.names) ? icu.names.join(' + ') : icu.name;
-        // Optionally style the first item's border to match reference exactly, or leave as default
         return `
-        <div class="temp-icu-card">
-            <span class="temp-icu-card-name">${i + 1}. ${names}</span>
-            <button class="temp-icu-del" onclick="deleteICU(${i})"><svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+        <div style="background: #fff; border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+            <span style="font-family: var(--font); font-size: 1.05rem; font-weight: 500; color: #000;">${i + 1}. ${names}</span>
+            <button onclick="deleteICU(${i})" style="background: #C0202A; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;">
+                <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="4" fill="none"><path d="M5 12h14"/></svg>
+            </button>
         </div>`;
     }).join('');
 }
