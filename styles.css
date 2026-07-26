@@ -249,7 +249,7 @@ body {
    SCREEN 3 — EMERGENCY TYPE
    ===================================================== */
 #emergency-type-screen {
-    background: linear-gradient(180deg, #E6F3FB 0%, #F5FAFD 15%, #FFFFFF 30%, #FFFFFF 100%);
+    background: #FFFFFF;
     display: flex;
     flex-direction: column;
     padding: 0 24px 40px 24px;
@@ -1570,7 +1570,7 @@ body {
    SCREEN 4 - PATIENT HOSPITALS SCREEN
    ===================================================== */
 #patient-hospitals-screen {
-    background: linear-gradient(180deg, #E6F3FB 0%, #F5FAFD 15%, #FFFFFF 30%, #FFFFFF 100%);
+    background: #FFFFFF;
     display: flex;
     flex-direction: column;
     padding: 0 24px 40px 24px;
@@ -2046,3 +2046,299 @@ body {
     cursor: not-allowed;
     pointer-events: none;
 }
+
+/* --- REDESIGNED PATIENT HOSPITALS PAGE --- */
+.patient-hospitals-search {
+    display: flex;
+    align-items: center;
+    background-color: #E6F3FB;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 16px 20px;
+}
+.patient-hospitals-search .search-icon {
+    margin-right: 12px;
+    color: #000;
+}
+.hospital-search-input {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    color: #333;
+    width: 100%;
+    outline: none;
+    font-weight: 500;
+}
+.hospital-search-input::placeholder {
+    color: #8fa0af;
+}
+
+.patient-hospitals-tabs {
+    display: flex;
+    position: relative;
+    background-color: #E6F3FB;
+    border-radius: 12px;
+    margin: 0 20px 24px 20px;
+    padding: 4px;
+}
+.hosp-tab-slider {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    background-color: #7abeff;
+    border-radius: 8px;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1;
+}
+.patient-hospitals-tabs[data-active="private"] .hosp-tab-slider {
+    transform: translateX(100%);
+}
+.hosp-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s;
+}
+
+.patient-hospitals-total-beds {
+    background-color: #E6F3FB;
+    border-radius: 12px;
+    margin: 0 20px 24px 20px;
+    padding: 16px 20px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.total-beds-badge {
+    position: absolute;
+    top: -12px;
+    right: -8px;
+    background-color: #e6ffed;
+    border: 1.5px solid #22c55e;
+    color: #16a34a;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+.total-beds-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000;
+    max-width: 60%;
+    line-height: 1.2;
+}
+.total-beds-count {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #3B82F6;
+}
+
+/* Redesigned Hospital Card */
+.patient-hosp-card {
+    background-color: #E6F3FB !important;
+    border: 1px solid #7abeff !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    margin: 0 20px 24px 20px !important;
+}
+.hosp-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.hosp-card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #000;
+}
+.hosp-card-distance {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+.hosp-card-subtitle {
+    font-size: 1.1rem;
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+.hosp-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+.hosp-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.hosp-btn-call {
+    flex: 1;
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.hosp-btn-map {
+    flex: 1;
+    background-color: #d1e8ff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.icu-availability-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.icu-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000;
+}
+.icu-fraction {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000;
+}
+.icu-white-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    margin-bottom: 16px;
+}
+.icu-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.icu-col:first-child {
+    border-right: 1px solid #f3f4f6;
+}
+.icu-col-title {
+    color: #3B82F6;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.icu-col-value {
+    color: #3B82F6;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.hosp-btn-book {
+    width: 100%;
+    background-color: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 0;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.hosp-last-updated {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+
+.patient-location-header {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px 20px 0 20px;
+}
+.loc-icon-pin {
+    margin-right: 12px;
+    margin-top: 2px;
+}
+.loc-info {
+    flex: 1;
+}
+.loc-city {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #000;
+}
+.loc-full-address {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 600;
+    margin-top: 2px;
+}
+.loc-edit-icon {
+    margin-left: 12px;
+    margin-top: 2px;
+}
+
+
+/* CSS Tab Filtering */
+#patient-hospitals-list[data-active="govt"] .type-private {
+    display: none !important;
+}
+#patient-hospitals-list[data-active="private"] .type-govt {
+    display: none !important;
+}
+
+
+.total-beds-badge {
+    overflow: hidden;
+}
+.total-beds-badge::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
+    animation: shine 2.5s infinite;
+    transform: skewX(-20deg);
+}
+@keyframes shine {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+

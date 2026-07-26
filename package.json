@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "svg-path-bbox": "^2.1.0"
+  }
+}

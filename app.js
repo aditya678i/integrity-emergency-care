@@ -356,22 +356,29 @@ function goToPatientHospitals(emergencyType = 'Other') {
         if (hospitalListContainer) {
             hospitalListContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #888;">Fetching nearest hospitals...</div>';
         }
+        const totalBedsEl = document.getElementById('total-nearby-beds');
+        if (totalBedsEl) {
+            totalBedsEl.textContent = '...';
+        }
         
         requestPatientLocation();
     }
 }
 
 function requestPatientLocation() {
-    const locAddress = document.querySelector('.patient-location-pill .loc-address');
-    if (!locAddress) return;
+    const locCity = document.querySelector('.patient-location-header .loc-city');
+    const locAddress = document.querySelector('.patient-location-header .loc-full-address');
+    if (!locCity || !locAddress) return;
 
     if (navigator.geolocation) {
-        locAddress.textContent = "Requesting location...";
+        locCity.textContent = "Requesting...";
+        locAddress.textContent = "Waiting for permission...";
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                locAddress.textContent = "Fetching location...";
+                locCity.textContent = "Fetching...";
+                locAddress.textContent = "Getting address details...";
                 
                 // Sync with location picker if it exists
                 if (typeof currentPickerLat !== 'undefined') {
@@ -388,24 +395,27 @@ function requestPatientLocation() {
                     .then(res => res.json())
                     .then(data => {
                         if (data && data.display_name) {
-                            // Extract a shorter address if possible (suburb/city)
-                            const addressParts = [];
-                            if (data.address.suburb) addressParts.push(data.address.suburb);
-                            if (data.address.city) addressParts.push(data.address.city);
-                            else if (data.address.state_district) addressParts.push(data.address.state_district);
+                            // Extract state for the big text
+                            const state = data.address.state || data.address.state_district || data.address.city || data.address.town || data.address.county || data.address.region || "Unknown State";
+                            locCity.textContent = state;
                             
-                            locAddress.textContent = addressParts.length > 0 ? addressParts.join(', ') : data.display_name;
+                            // Extract full address for the small text
+                            locAddress.textContent = data.display_name;
                         } else {
+                            locCity.textContent = "Location";
                             locAddress.textContent = "Unknown location";
                         }
                     })
                     .catch(err => {
                         console.error('Reverse geocoding error:', err);
+                        locCity.textContent = "Error";
                         locAddress.textContent = "Location details unavailable";
                     });
             },
             (error) => {
                 console.error('Geolocation error:', error);
+                locCity.textContent = "Location Denied";
+                locAddress.textContent = "Using fallback location";
                 
                 // Fallback to default location or previously picked location
                 const lat = typeof currentPickerLat !== 'undefined' ? currentPickerLat : 28.6139;
@@ -420,20 +430,13 @@ function requestPatientLocation() {
                     .then(res => res.json())
                     .then(data => {
                         if (data && data.display_name) {
-                            const addressParts = [];
-                            if (data.address.suburb) addressParts.push(data.address.suburb);
-                            if (data.address.city) addressParts.push(data.address.city);
-                            else if (data.address.state_district) addressParts.push(data.address.state_district);
-                            locAddress.textContent = addressParts.length > 0 ? addressParts.join(', ') : data.display_name;
-                        } else {
-                            locAddress.textContent = "Default Location";
+                            const state = data.address.state || data.address.state_district || data.address.city || data.address.town || data.address.county || data.address.region || "Unknown State";
+                            locCity.textContent = state;
+                            locAddress.textContent = data.display_name;
                         }
-                    })
-                    .catch(() => {
-                        locAddress.textContent = "Default Location";
                     });
             },
-            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            { timeout: 10000 }
         );
     } else {
         // Geolocation not supported fallback
@@ -1778,4 +1781,57 @@ function saveUpdateConditions() {
         }
     }
 }
+
+function openSearchScreen() {
+    const hospitalsScreen = document.getElementById("patient-hospitals-screen");
+    const searchScreen = document.getElementById("search-hospitals-screen");
+    
+    if (hospitalsScreen && searchScreen) {
+        hospitalsScreen.classList.remove("active-view");
+        searchScreen.classList.add("active-view");
+        
+        // Auto focus the input so mobile keyboard pops up
+        setTimeout(() => {
+            const searchInput = document.getElementById("active-hospital-search");
+            if (searchInput) searchInput.focus();
+        }, 100);
+    }
+}
+
+function closeSearchScreen() {
+    const hospitalsScreen = document.getElementById("patient-hospitals-screen");
+    const searchScreen = document.getElementById("search-hospitals-screen");
+    
+    if (hospitalsScreen && searchScreen) {
+        searchScreen.classList.remove("active-view");
+        hospitalsScreen.classList.add("active-view");
+        
+        const searchInput = document.getElementById("active-hospital-search");
+        if (searchInput) {
+            searchInput.value = "";
+            document.getElementById('search-results-container').innerHTML = '';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('active-hospital-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length > 0) {
+                const results = window.demoHospitals.filter(h => h.name.toLowerCase().includes(query));
+                // Add fake distances
+                results.forEach(hosp => {
+                    if (!hosp.distance) hosp.distance = Number((Math.random() * (4.8 - 0.5) + 0.5).toFixed(1));
+                });
+                if (typeof renderDetailedHospitalCards === 'function') {
+                    renderDetailedHospitalCards(results);
+                }
+            } else {
+                document.getElementById('search-results-container').innerHTML = '';
+            }
+        });
+    }
+});
 
