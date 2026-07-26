@@ -929,13 +929,6 @@ function closeVerificationModal() {
 
 // Navigate: To Add ICU Bed
 function goToAddICU(source = 'change-info') {
-    if (localStorage.getItem('verificationPending') === 'true') {
-        const modal = document.getElementById('verification-pending-modal');
-        if (modal) {
-            modal.style.display = 'flex';
-        }
-        return; // prevent navigation
-    }
 
     addICUSource = source;
     
