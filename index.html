@@ -575,17 +575,17 @@
                         <div class="hosp-back-btn" onclick="goBackToDashboardFromUpdate()" style="margin-bottom: 24px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
                             <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                         </div>
-                        <h2 style="color: #C0202A; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Update Hospital Information</h2>
-                        <p style="color: #FA9A9F; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Please update your hospital details below.All changes will be reflected to patients in real-time</p>
+                        <h2 style="color: #000; font-family: var(--font); font-size: 1.6rem; font-weight: 800; margin: 0 0 8px 0;">Update Hospital Information</h2>
+                        <p style="color: #666; font-family: var(--font); font-size: 0.95rem; margin: 0; line-height: 1.4; font-weight: 600;">Please update your hospital details below.All changes will be reflected to patients in real-time</p>
                     </div>
 
                     <!-- Scrollable content -->
                     <div class="ci-scroll" style="padding-top: 32px;">
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 0 0 16px 0;">ICU Bed Information</h3>
+                        <h3 style="color: #000; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 0 0 16px 24px;">ICU Bed Information</h3>
                         
                         <!-- Rows -->
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds</div>
+                        <div class="icu-update-row" style="background: #F5F5F5; border-radius: 10px; margin: 0 16px 16px 16px;">
+                            <div class="icu-update-label" style="color: #000;">Total ICU Beds</div>
                             <div class="icu-qty-widget">
                                 <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-total', -1)">-</button>
                                 <div class="icu-qty-val" id="upd-icu-total">0</div>
@@ -593,8 +593,8 @@
                             </div>
                         </div>
 
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant</div>
+                        <div class="icu-update-row" style="background: #F5F5F5; border-radius: 10px; margin: 0 16px 16px 16px;">
+                            <div class="icu-update-label" style="color: #000;">Total ICU Beds Vacant</div>
                             <div class="icu-qty-widget">
                                 <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-vacant', -1)">-</button>
                                 <div class="icu-qty-val" id="upd-icu-vacant">0</div>
@@ -602,8 +602,8 @@
                             </div>
                         </div>
 
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant<br>(with ventilator)</div>
+                        <div class="icu-update-row" style="background: #F5F5F5; border-radius: 10px; margin: 0 16px 16px 16px;">
+                            <div class="icu-update-label" style="color: #000;">Total ICU Beds Vacant<br>(with ventilator)</div>
                             <div class="icu-qty-widget">
                                 <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-vent', -1)">-</button>
                                 <div class="icu-qty-val" id="upd-icu-vent">0</div>
@@ -611,8 +611,8 @@
                             </div>
                         </div>
 
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant<br>(without ventilator)</div>
+                        <div class="icu-update-row" style="background: #F5F5F5; border-radius: 10px; margin: 0 16px 16px 16px;">
+                            <div class="icu-update-label" style="color: #000;">Total ICU Beds Vacant<br>(without ventilator)</div>
                             <div class="icu-qty-widget">
                                 <button class="icu-qty-minus" onclick="updateUpdateICUCount('upd-icu-novent', -1)">-</button>
                                 <div class="icu-qty-val" id="upd-icu-novent">0</div>
@@ -620,16 +620,35 @@
                             </div>
                         </div>
 
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Emergency Contact</h3>
-                        
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="tel" id="upd-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <!-- Emergency Conditions Treated -->
+                        <div style="margin-bottom: 24px;">
+                            <div style="background: #F5F5F5; border-radius: 10px; padding: 12px; margin: 0 16px;">
+                                <div style="background: #fff; border-radius: 10px; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border: 1.5px solid #E0E0E0;" onclick="toggleUpdateConditionsDropdown()">
+                                    <span id="upd-icu-conditions-text" style="font-family: var(--font); font-size: 1.05rem; font-weight: 800; color: #000;">Emergency Conditions Treated</span>
+                                    <i id="upd-icu-conditions-icon" class="fas fa-chevron-down" style="color: #000; transition: transform 0.3s;"></i>
+                                </div>
+                                <div id="upd-icu-conditions-dropdown" style="display: none; background: #fff; border-radius: 10px; margin-top: 8px; padding: 16px; border: 1.5px solid #E0E0E0; max-height: 250px; overflow-y: auto;">
+                                    <div id="upd-icu-conditions-list" style="display: flex; flex-direction: column; gap: 12px;">
+                                        <!-- Populated via JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div style="margin-bottom: 24px;">
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px; padding: 0 24px;">Emergency Contact</div>
+                            <div style="background: #F5F5F5; border-radius: 10px; padding: 8px 20px; margin: 0 16px; display: flex; align-items: center; justify-content: center;">
+                                <input type="tel" id="upd-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" style="width: 175px; color: #333; background: #fff; border: 1.5px solid #E0E0E0; border-radius: 30px; padding: 10px 20px; font-weight: 600; text-align: center;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            </div>
                         </div>
 
                         <!-- Ambulance Number -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Ambulance Number</h3>
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="tel" id="upd-icu-ambulance" class="icu-update-contact-input" placeholder="9876XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <div style="margin-bottom: 24px;">
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px; padding: 0 24px;">Ambulance Contact</div>
+                            <div style="background: #F5F5F5; border-radius: 10px; padding: 8px 20px; margin: 0 16px; display: flex; align-items: center; justify-content: center;">
+                                <input type="tel" id="upd-icu-ambulance" class="icu-update-contact-input" placeholder="9876XXXXXX" maxlength="10" style="width: 175px; color: #333; background: #fff; border: 1.5px solid #E0E0E0; border-radius: 30px; padding: 10px 20px; font-weight: 600; text-align: center;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            </div>
                         </div>
 
                         <!-- Confirm Button -->
@@ -896,9 +915,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=93"></script>
-    <script src="patient-hospitals.js?v=93"></script>
-    <script src="app.js?v=93"></script>
+    <script src="location-picker.js?v=94"></script>
+    <script src="patient-hospitals.js?v=94"></script>
+    <script src="app.js?v=94"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {

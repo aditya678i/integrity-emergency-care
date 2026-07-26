@@ -1141,6 +1141,18 @@ function editICUFromDash(index) {
     document.getElementById('upd-icu-contact').value = icu.contact || '';
     document.getElementById('upd-icu-ambulance').value = icu.ambulanceNumber || '';
 
+    currentUpdateICUConditions = Array.isArray(icu.conditions) ? [...icu.conditions] : [];
+    const textEl = document.getElementById('upd-icu-conditions-text');
+    if (textEl) {
+        if (currentUpdateICUConditions.length === 0) {
+            textEl.textContent = 'Emergency Conditions Treated';
+        } else if (currentUpdateICUConditions.length === 1) {
+            textEl.textContent = '1 Condition Selected';
+        } else {
+            textEl.textContent = `${currentUpdateICUConditions.length} Conditions Selected`;
+        }
+    }
+
     ['upd-icu-total', 'upd-icu-vacant', 'upd-icu-vent', 'upd-icu-novent'].forEach(id => syncMinusButtonColor(id));
 
     // Switch screen
@@ -1175,6 +1187,7 @@ function confirmICUUpdate() {
     icu.noVentBeds = getCount('upd-icu-novent');
     icu.contact = contact;
     icu.ambulanceNumber = ambulanceNumber;
+    icu.conditions = [...currentUpdateICUConditions];
     icu.updatedAt = Date.now();
     
     persistHospitalData();
@@ -1657,6 +1670,7 @@ function openLanguageMenu() {
 // ==========================================
 
 var currentICUConditions = [];
+var currentUpdateICUConditions = [];
 
 const ALL_EMERGENCY_CONDITIONS = [
     { id: 'brain', title: 'Brain', sub: 'Stroke, Seizure, Trauma, etc.' },
@@ -1714,6 +1728,53 @@ function saveConditions() {
             textEl.textContent = '1 Condition Selected';
         } else {
             textEl.textContent = `${currentICUConditions.length} Conditions Selected`;
+        }
+    }
+}
+
+function toggleUpdateConditionsDropdown() {
+    const listEl = document.getElementById('upd-icu-conditions-list');
+    const dropdown = document.getElementById('upd-icu-conditions-dropdown');
+    const icon = document.getElementById('upd-icu-conditions-icon');
+    
+    if (!listEl || !dropdown) return;
+    
+    if (dropdown.style.display === 'none') {
+        listEl.innerHTML = ALL_EMERGENCY_CONDITIONS.map(cond => {
+            const isChecked = currentUpdateICUConditions.includes(cond.title) ? 'checked' : '';
+            return `
+                <label style="display: flex; align-items: flex-start; gap: 12px; font-family: var(--font); cursor: pointer; padding: 4px 0;">
+                    <input type="checkbox" value="${cond.title}" class="upd-icu-condition-checkbox" style="width: 20px; height: 20px; margin-top: 2px; accent-color: #EF4444;" onchange="saveUpdateConditions()" ${isChecked}>
+                    <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #000;">${cond.title}</div>
+                        <div style="font-size: 0.85rem; color: #666;">(${cond.sub})</div>
+                    </div>
+                </label>
+            `;
+        }).join('');
+        
+        dropdown.style.display = 'block';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+    } else {
+        dropdown.style.display = 'none';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+function saveUpdateConditions() {
+    const checkboxes = document.querySelectorAll('.upd-icu-condition-checkbox');
+    currentUpdateICUConditions = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+        
+    const textEl = document.getElementById('upd-icu-conditions-text');
+    if (textEl) {
+        if (currentUpdateICUConditions.length === 0) {
+            textEl.textContent = 'Emergency Conditions Treated';
+        } else if (currentUpdateICUConditions.length === 1) {
+            textEl.textContent = '1 Condition Selected';
+        } else {
+            textEl.textContent = `${currentUpdateICUConditions.length} Conditions Selected`;
         }
     }
 }
