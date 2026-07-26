@@ -792,7 +792,7 @@ function buildICUCard(icu, index) {
                     <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.noVentBeds || '0'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
-                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Emergency No.</div>
+                    <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem; line-height: 1.3;">Emergency Number</div>
                     <div style="color: #000; font-family: var(--font); font-weight: 800; font-size: 1.05rem;">${icu.contact || '-'}</div>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
@@ -801,13 +801,13 @@ function buildICUCard(icu, index) {
                 </div>
             </div>
             
-            <div style="text-align: left; margin-bottom: 20px; font-family: var(--font); font-size: 0.9rem; font-weight: 600; color: #666;">
-                Last updated: ${updateTimeStr}
-            </div>
-
             <button onclick="editICUFromDash(${index})" style="width: 100%; background: #C0202A; color: #fff; font-family: var(--font); font-size: 1.25rem; font-weight: 600; padding: 14px 24px; border: none; border-radius: 20px; cursor: pointer; transition: opacity 0.2s; -webkit-tap-highlight-color: transparent;" onmousedown="this.style.opacity='0.7'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">
                 Update
             </button>
+            
+            <div style="text-align: right; margin-top: 16px; font-family: var(--font); font-size: 0.85rem; font-weight: 600; color: #888;">
+                Last updated: ${updateTimeStr}
+            </div>
         </div>
     </div>`;
 }
