@@ -449,7 +449,7 @@ body {
     font-family: var(--font);
     font-size: 1.45rem;
     font-weight: 800;
-    color: #C0202A;
+    color: #B22222;
     text-align: center;
     margin-bottom: 22px;
     line-height: 1.2;
@@ -482,13 +482,13 @@ body {
 .hosp-input {
     width: 100%;
     padding: 16px 24px;
-    background: #FDF1F3;
+    background: #F5F5F5;
     border: none;
     border-radius: 999px;
     font-family: var(--font);
     font-size: 0.95rem;
     font-weight: 600;
-    color: #B22222;
+    color: #333;
     outline: none;
     appearance: none;
     -webkit-appearance: none;
@@ -496,11 +496,11 @@ body {
     box-sizing: border-box;
     display: block;
 }
-.hosp-input::placeholder { color: #E8A8AC; font-weight: 500; }
-.hosp-input:focus { background: #FBE6E8; }
+.hosp-input::placeholder { color: #666; font-weight: 500; }
+.hosp-input:focus { background: #EAEAEA; }
 
 /* Select — extra right padding for arrow */
-.hosp-select { padding-right: 48px; cursor: pointer; color: #E8A8AC; }
+.hosp-select { padding-right: 48px; cursor: pointer; color: #666; }
 .hosp-select option { color: #111; }
 
 /* Red arrow icon overlaid on selects */
@@ -509,14 +509,14 @@ body {
     right: 22px;
     top: 50%;
     transform: translateY(-50%);
-    color: #9A141A;
+    color: #111;
     font-size: 0.9rem;
     pointer-events: none;
 }
 
 /* Address textarea group */
 .hosp-address-group {
-    background: #FDF1F3;
+    background: #F5F5F5;
     border-radius: 24px;
     height: 130px;
     overflow: hidden;
@@ -540,7 +540,7 @@ body {
 .address-line {
     position: absolute;
     height: 1px;
-    background-color: #F4C2C5;
+    background-color: #CCC;
 }
 .address-line.line-1 { top: 44px; left: 24px; right: 24px; }
 .address-line.line-2 { top: 76px; left: 24px; right: 24px; }
@@ -550,7 +550,7 @@ body {
 .hosp-register-btn {
     width: 100%;
     padding: 16px;
-    background: #B4181F;
+    background: #B22222;
     border: none;
     border-radius: 999px;
     font-family: var(--font);
@@ -578,10 +578,10 @@ body {
     text-overflow: ellipsis;
     user-select: none;
     line-height: 1.2;
-    color: #E8A8AC;
+    color: #666;
 }
 .multiselect-display.has-values {
-    color: #B22222;
+    color: #333;
 }
 .multiselect-options {
     position: absolute;
@@ -628,9 +628,9 @@ body {
     text-overflow: ellipsis;
     user-select: none;
     line-height: 1.2;
-    color: #E8A8AC;
+    color: #666;
 }
-.custom-select-display.has-values { color: #B22222; }
+.custom-select-display.has-values { color: #333; }
 .custom-select-options {
     position: absolute;
     top: calc(100% + 8px);
@@ -1992,8 +1992,8 @@ body {
 .hosp-input:-webkit-autofill:hover, 
 .hosp-input:-webkit-autofill:focus, 
 .hosp-input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #FDF1F3 inset !important;
-    -webkit-text-fill-color: #B22222 !important;
+    -webkit-box-shadow: 0 0 0 30px #F5F5F5 inset !important;
+    -webkit-text-fill-color: #333 !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -2003,8 +2003,8 @@ body {
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    background: #FBE6E8;
-    color: #C0202A;
+    background: #FFFFFF;
+    color: #555;
     border: none;
     border-radius: 999px;
     padding: 8px 16px;
@@ -2015,7 +2015,7 @@ body {
 }
 
 .btn-otp:hover {
-    background: #F7D2D6;
+    background: #F8F8F8;
 }
 
 .hosp-register-btn.disabled {
