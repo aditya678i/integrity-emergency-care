@@ -1348,11 +1348,13 @@ function sendOTP() {
 }
 
 function verifyOTPAndRegister() {
+    /* TEMPORARILY DISABLED
     const enteredOTP = document.getElementById('hosp-reg-otp').value.trim();
     if (enteredOTP !== currentMockOTP) {
         alert('Invalid OTP. Please try again.');
         return;
     }
+    */
     
     // Save email explicitly to localStorage
     const emailInput = document.getElementById('hosp-reg-email');
@@ -1453,6 +1455,7 @@ function goToHospitalLogin() {
 }
 
 function loginWithAdminCode() {
+    /* TEMPORARILY DISABLED
     const input = document.getElementById('login-admin-code');
     if (!input || !input.value.trim()) {
         alert('Please enter your Admin Code.');
@@ -1460,6 +1463,7 @@ function loginWithAdminCode() {
     }
     const storedCode = localStorage.getItem('hospitalAdminCode');
     if (storedCode && input.value.trim().toUpperCase() === storedCode) {
+    */
         const hospLoginScreen = document.getElementById('hospital-login-screen');
         const dashScreen = document.getElementById('hospital-dashboard-screen');
         if (hospLoginScreen && dashScreen) {
@@ -1467,9 +1471,11 @@ function loginWithAdminCode() {
             dashScreen.classList.add('active-view');
             renderDashboard();
         }
+    /* TEMPORARILY DISABLED
     } else {
         alert('Code is illegal or not registered in our database.');
     }
+    */
 }
 
 function goBackToHospitalRegister() {
