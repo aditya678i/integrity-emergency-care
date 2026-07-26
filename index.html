@@ -262,24 +262,26 @@
             </div>
             <!-- SCREEN 4.5: HOSPITAL VERIFICATION -->
             <div id="hospital-verification-screen" class="screen-view">
-                <div class="dash-inner" style="padding-top: 48px;">
-                    <!-- Header -->
-                    <div class="dash-header">
-                        <div class="hosp-back-btn" onclick="goToHospitalRegister()" style="width: 36px; height: 36px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
-                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                        </div>
+                <div class="hosp-reg-inner">
+                    <!-- Stylish Back button -->
+                    <div class="hosp-back-btn" onclick="goToHospitalRegister()">
+                        <svg class="svg-icon" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                     </div>
-                    <div style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 24px; text-align: center;">
+
+                    <!-- Gray Box Title -->
+                    <div style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 24px; text-align: left;">
                         <h2 style="color: #B22222; font-family: var(--font); font-size: 1.4rem; font-weight: 800; margin: 0;">Hospital Verification</h2>
                     </div>
-                    <h1 class="hosp-reg-title" style="margin-bottom: 16px; color: #000; font-size: 1.6rem; line-height: 1.2;">Upload your Registration<br>Certificate or License</h1>
-                    <p style="font-family: var(--font); font-size: 0.95rem; color: #555; line-height: 1.5; margin-bottom: 24px;">To activate your account, please upload your official government issued Hospital clinic or Nursing Home registration Certificate. We need this document to verify a facilities operational status.</p>
+
+                    <!-- Main Title & Desc -->
+                    <h1 class="hosp-reg-title" style="margin-bottom: 16px; color: #000; font-size: 1.6rem; line-height: 1.2; text-align: left;">Upload your Registration Certificate or License</h1>
+                    <p style="font-family: var(--font); font-size: 0.95rem; color: #555; line-height: 1.5; margin-bottom: 24px; text-align: left;">To activate your account, please upload your official government issued Hospital clinic or Nursing Home registration Certificate. We need this document to verify a facilities operational status.</p>
                     
                     <!-- Upload Area -->
                     <div id="hosp-upload-area" onclick="document.getElementById('hosp-cert-upload').click()" style="background: #F5F5F5; border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; margin-bottom: 24px; transition: background 0.2s;">
                         <input type="file" id="hosp-cert-upload" style="display: none;" onchange="handleCertUpload(event)" accept="image/*,.pdf">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <div style="background: #B22222; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <div style="background: #B22222; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
                             </div>
                             <div style="font-family: var(--font); font-size: 1rem; font-weight: 600; color: #000; text-align: left; line-height: 1.2;">Upload Your<br>Certificate or Licence</div>
@@ -287,8 +289,8 @@
                         <div id="upload-file-name" style="margin-top: 12px; font-family: var(--font); font-size: 0.9rem; color: #B22222; font-weight: 600; display: none;"></div>
                     </div>
 
-                    <p style="font-family: var(--font); font-size: 0.9rem; color: #555; line-height: 1.5; margin-bottom: 32px;"><strong>Note:</strong> Our team will verify your document within <strong>24 Hours</strong> once verified your full Hospital profile and ICU bed management features will be unlocked.</p>
-                    <p style="font-family: var(--font); font-size: 1.05rem; color: #000; font-weight: 700; line-height: 1.4; margin-bottom: 40px;">While we verify you can complete your<br>hospital profile details.</p>
+                    <p style="font-family: var(--font); font-size: 0.9rem; color: #555; line-height: 1.5; margin-bottom: 32px; text-align: left;"><strong>Note:</strong> Our team will verify your document within <strong>24 Hours</strong> once verified your full Hospital profile and ICU bed management features will be unlocked.</p>
+                    <p style="font-family: var(--font); font-size: 1.05rem; color: #000; font-weight: 700; line-height: 1.4; margin-bottom: 40px; text-align: left;">While we verify you can complete your hospital profile details.</p>
 
                     <!-- Continue Button -->
                     <button id="btn-verify-continue" class="hosp-register-btn" type="button" onclick="continueToDashboardFromVerify()" style="opacity: 0.5; pointer-events: none; margin-bottom: 32px;">Continue</button>
