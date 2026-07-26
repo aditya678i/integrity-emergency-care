@@ -556,7 +556,7 @@ function persistHospitalData() {
 }
 
 // ── Dashboard Navigation ──────────────────────────────
-function goToDashboard() {
+function goToDashboard(skipHideRegScreen = false) {
     triggerGoogleTranslate('en');
     // Collect registration data
     hospitalProfile.name = document.getElementById('hosp-name').value.trim() || 'My Hospital';
@@ -574,7 +574,7 @@ function goToDashboard() {
     const hospRegScreen = document.getElementById('hospital-register-screen');
     const dashScreen = document.getElementById('hospital-dashboard-screen');
     if (hospRegScreen && dashScreen) {
-        hospRegScreen.classList.remove('active-view');
+        if (!skipHideRegScreen) hospRegScreen.classList.remove('active-view');
         dashScreen.classList.add('active-view');
     }
     renderDashboard();
@@ -659,6 +659,12 @@ function renderDashboard() {
     if (hospitalICUs.length === 0) {
         emptyState.style.display = 'flex';
         icuList.innerHTML = '';
+        
+        // Show lock icon if verification is pending
+        const lockIcon = document.getElementById('verification-lock-icon');
+        if (lockIcon) {
+            lockIcon.style.display = localStorage.getItem('verificationPending') === 'true' ? 'flex' : 'none';
+        }
     } else {
         emptyState.style.display = 'none';
         icuList.innerHTML = hospitalICUs.map((icu, i) => buildICUCard(icu, i)).join('');
@@ -767,8 +773,23 @@ let deletedICUData = null;
 let deletedICUIndex = -1;
 let addICUSource = 'change-info';
 
+function closeVerificationModal() {
+    const modal = document.getElementById('verification-pending-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
 // Navigate: To Add ICU Bed
 function goToAddICU(source = 'change-info') {
+    if (localStorage.getItem('verificationPending') === 'true') {
+        const modal = document.getElementById('verification-pending-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+        return; // prevent navigation
+    }
+
     addICUSource = source;
     
     // Hide possible origin screens
@@ -1198,9 +1219,55 @@ function verifyOTPAndRegister() {
         localStorage.setItem('hospitalRegEmail', emailInput.value.trim());
     }
     
-    // If successful, proceed to dashboard
+    // If successful, proceed to verification screen
     alert('OTP Verified successfully!');
-    goToDashboard();
+    goToVerification();
+}
+
+function goToVerification() {
+    triggerGoogleTranslate('en');
+    const hospRegScreen = document.getElementById('hospital-register-screen');
+    const verifyScreen = document.getElementById('hospital-verification-screen');
+    if (hospRegScreen && verifyScreen) {
+        hospRegScreen.classList.remove('active-view');
+        verifyScreen.classList.add('active-view');
+    }
+}
+
+function handleCertUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        // Show file name
+        const fileNameDiv = document.getElementById('upload-file-name');
+        if (fileNameDiv) {
+            fileNameDiv.textContent = 'Uploaded: ' + file.name;
+            fileNameDiv.style.display = 'block';
+        }
+        
+        // Enable Continue button
+        const continueBtn = document.getElementById('btn-verify-continue');
+        if (continueBtn) {
+            continueBtn.style.opacity = '1';
+            continueBtn.style.pointerEvents = 'auto';
+            continueBtn.style.background = '#B22222';
+            continueBtn.style.color = '#fff';
+        }
+    }
+}
+
+function continueToDashboardFromVerify() {
+    // Set pending verification flag
+    localStorage.setItem('verificationPending', 'true');
+    
+    const verifyScreen = document.getElementById('hospital-verification-screen');
+    const dashScreen = document.getElementById('hospital-dashboard-screen');
+    
+    if (verifyScreen && dashScreen) {
+        verifyScreen.classList.remove('active-view');
+        
+        // Reuse goToDashboard logic to collect admin code, etc
+        goToDashboard(true); // true means skip hiding register screen since it's already hidden
+    }
 }
 
 // ---------------------------------------------------------
