@@ -141,7 +141,10 @@ async function initDropdowns() {
                 const opt = document.createElement('div');
                 opt.className = 'custom-select-option';
                 opt.textContent = state;
-                opt.onclick = () => selectState(state);
+                opt.onclick = () => {
+                    selectState(state);
+                    if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
+                };
                 stateOptionsEl.appendChild(opt);
             });
         }
@@ -155,7 +158,10 @@ async function initDropdowns() {
                 const opt = document.createElement('div');
                 opt.className = 'custom-select-option';
                 opt.textContent = state;
-                opt.onclick = () => selectCiState(state);
+                opt.onclick = () => {
+                    selectCiState(state);
+                    if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
+                };
                 ciStateOptionsEl.appendChild(opt);
             });
         }
@@ -195,7 +201,10 @@ function selectState(state) {
         const opt = document.createElement('div');
         opt.className = 'custom-select-option';
         opt.textContent = city;
-        opt.onclick = () => selectCity(city);
+        opt.onclick = () => {
+            selectCity(city);
+            if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
+        };
         cityOptionsEl.appendChild(opt);
     });
 }
@@ -250,7 +259,10 @@ function selectCiState(state) {
         const opt = document.createElement('div');
         opt.className = 'custom-select-option';
         opt.textContent = city;
-        opt.onclick = () => selectCiCity(city);
+        opt.onclick = () => {
+            selectCiCity(city);
+            if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
+        };
         cityOptionsEl.appendChild(opt);
     });
 }
@@ -501,6 +513,7 @@ function updateMultiSelect() {
         display.textContent = 'Hospital Type';
         display.classList.remove('has-values');
     }
+    if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
 }
 
 function updateCiMultiSelect() {
@@ -520,6 +533,7 @@ function updateCiMultiSelect() {
         display.textContent = 'Hospital Type';
         display.classList.remove('has-values');
     }
+    if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
 }
 
 // Close multiselect when clicking outside
@@ -1384,10 +1398,8 @@ function sendOTP() {
     // Show OTP input section
     document.getElementById('otp-section').style.display = 'block';
     
-    // Enable the register button
-    const registerBtn = document.getElementById('btn-hosp-register');
-    registerBtn.classList.remove('disabled');
-    registerBtn.disabled = false;
+    // Check overall form validity
+    if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
 
     // Show mock alert for the user
     alert(`Mock Email Sent to ${email}\n\nYour OTP is: ${currentMockOTP}\n\n(Note: In a real app, this would be sent via EmailJS or a backend server.)`);
@@ -1474,6 +1486,8 @@ function generateAdminCode() {
         input.value = code;
         const copyBtn = document.getElementById('btn-copy-code');
         if (copyBtn) copyBtn.style.display = 'inline-flex';
+        
+        if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
         
         const generateBtn = document.getElementById('btn-generate-code');
         if (generateBtn) generateBtn.style.display = 'none';
@@ -1834,4 +1848,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const hospInputs = ['hosp-name', 'hosp-reg-email', 'hosp-reg-otp', 'hosp-pin', 'hosp-address', 'hosp-admin-code'];
+    hospInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => {
+            if (typeof window.checkHospFormValidity === 'function') window.checkHospFormValidity();
+        });
+    });
+});
+
+window.checkHospFormValidity = function() {
+    const nameEl = document.getElementById('hosp-name');
+    const typeEl = document.getElementById('hosp-type-display');
+    const emailEl = document.getElementById('hosp-reg-email');
+    const stateEl = document.getElementById('hosp-state-display');
+    const cityEl = document.getElementById('hosp-city-display');
+    const pinEl = document.getElementById('hosp-pin');
+    const addressEl = document.getElementById('hosp-address');
+    const adminCodeEl = document.getElementById('hosp-admin-code');
+    const otpEl = document.getElementById('hosp-reg-otp');
+    
+    if (!nameEl || !typeEl || !emailEl || !stateEl || !cityEl || !pinEl || !addressEl || !adminCodeEl || !otpEl) return;
+
+    const name = nameEl.value.trim();
+    const type = typeEl.textContent;
+    const email = emailEl.value.trim();
+    const state = stateEl.textContent;
+    const city = cityEl.textContent;
+    const pin = pinEl.value.trim();
+    const address = addressEl.value.trim();
+    const adminCode = adminCodeEl.value.trim();
+    const otp = otpEl.value.trim();
+    
+    const otpSection = document.getElementById('otp-section');
+    const otpVisible = otpSection && otpSection.style.display !== 'none';
+    
+    const isValid = name !== '' && 
+                    type !== 'Hospital Type' && 
+                    email !== '' && 
+                    state !== 'State' && 
+                    city !== 'City' && 
+                    pin.length === 6 &&
+                    address !== '' &&
+                    adminCode !== '' &&
+                    otpVisible && 
+                    otp.length === 4;
+
+    const registerBtn = document.getElementById('btn-hosp-register');
+    if (registerBtn) {
+        if (isValid) {
+            registerBtn.classList.remove('disabled');
+            registerBtn.disabled = false;
+        } else {
+            registerBtn.classList.add('disabled');
+            registerBtn.disabled = true;
+        }
+    }
+};
 
