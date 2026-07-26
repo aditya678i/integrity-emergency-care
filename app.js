@@ -290,8 +290,16 @@ function goToHospitalRegister() {
     triggerGoogleTranslate('en');
     const roleScreen = document.getElementById('role-screen');
     const hospitalScreen = document.getElementById('hospital-register-screen');
-    if (roleScreen && hospitalScreen) {
-        roleScreen.classList.remove('active-view');
+    const verifyScreen = document.getElementById('hospital-verification-screen');
+    const loginScreen = document.getElementById('hospital-login-screen');
+    const changeInfoScreen = document.getElementById('change-info-screen');
+    
+    if (roleScreen) roleScreen.classList.remove('active-view');
+    if (verifyScreen) verifyScreen.classList.remove('active-view');
+    if (loginScreen) loginScreen.classList.remove('active-view');
+    if (changeInfoScreen) changeInfoScreen.classList.remove('active-view');
+    
+    if (hospitalScreen) {
         hospitalScreen.classList.add('active-view');
     }
 }
