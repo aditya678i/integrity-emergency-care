@@ -477,68 +477,74 @@
             <div id="add-icu-screen" class="screen-view">
                 <div class="ci-inner">
                     <!-- Header -->
-                    <div style="padding: 12px 24px 16px 24px;">
+                    <div style="padding: 12px 24px 16px 24px; color: #000;">
                         <div class="hosp-back-btn" onclick="goBackToChangeInfoFromAddICU()" style="margin-bottom: 20px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
                             <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                         </div>
-                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0;">Add New ICU Bed</h2>
+                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0; color: #000;">Add New ICU Bed</h2>
                     </div>
 
                     <!-- Scrollable content -->
                     <div class="ci-scroll" style="padding-top: 8px;">
-                        <!-- ICU Bed Information -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 0 0 16px 0;">ICU Bed Information</h3>
                         
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-total', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-total">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-total', 1)">+</button>
+                        <!-- Grey Box 1: ICU Bed Name & Information -->
+                        <div style="background: #F5F5F5; border-radius: 12px; padding: 20px 16px; margin-bottom: 24px;">
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px;">ICU Bed Name</div>
+                            <div class="icu-update-row" style="justify-content: center; padding: 0 0 24px 0; background: transparent;">
+                                <input type="text" id="add-icu-name" class="icu-update-contact-input" style="width: 100%; color: #333;" placeholder="e.g. General ICU">
+                            </div>
+
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 16px;">ICU Bed Information</div>
+                            
+                            <div class="icu-update-row">
+                                <div class="icu-update-label">Total ICU Beds</div>
+                                <div class="icu-qty-widget">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-total', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-total">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-total', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="icu-update-row">
+                                <div class="icu-update-label">Total ICU Beds Vacant</div>
+                                <div class="icu-qty-widget">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vacant', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-vacant">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vacant', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="icu-update-row">
+                                <div class="icu-update-label">Total ICU Beds Vacant<br>(with ventilator)</div>
+                                <div class="icu-qty-widget">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vent', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-vent">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vent', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="icu-update-row" style="border-bottom: none;">
+                                <div class="icu-update-label">Total ICU Beds Vacant<br>(without ventilator)</div>
+                                <div class="icu-qty-widget">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-novent', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-novent">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-novent', 1)">+</button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vacant', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-vacant">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vacant', 1)">+</button>
+                        <!-- Grey Box 2: Emergency Contact & Ambulance -->
+                        <div style="background: #F5F5F5; border-radius: 12px; padding: 20px 16px; margin-bottom: 24px;">
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px;">Emergency Contact</div>
+                            <div class="icu-update-row" style="justify-content: center; padding: 0 0 24px 0; background: transparent;">
+                                <input type="tel" id="add-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" style="width: 100%; color: #333;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
-                        </div>
 
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant<br>(with ventilator)</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vent', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-vent">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vent', 1)">+</button>
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 12px;">Ambulance Number</div>
+                            <div class="icu-update-row" style="justify-content: center; padding: 0; background: transparent;">
+                                <input type="tel" id="add-icu-ambulance" class="icu-update-contact-input" placeholder="9876XXXXXX" maxlength="10" style="width: 100%; color: #333;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
-                        </div>
-
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant<br>(without ventilator)</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-novent', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-novent">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-novent', 1)">+</button>
-                            </div>
-                        </div>
-
-                        <!-- Emergency Contact -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Emergency Contact</h3>
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="tel" id="add-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                        </div>
-
-                        <!-- Ambulance Number -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Ambulance Number</h3>
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="tel" id="add-icu-ambulance" class="icu-update-contact-input" placeholder="9876XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
 
                         <!-- Add ICU Bed Button -->
-                        <button class="hosp-register-btn" type="button" style="margin-top:24px;" onclick="addICUAndGoBack()">
+                        <button class="hosp-register-btn" type="button" style="margin-top:0;" onclick="addICUAndGoBack()">
                             Add ICU Bed
                         </button>
                     </div>
@@ -874,9 +880,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=79"></script>
-    <script src="patient-hospitals.js?v=79"></script>
-    <script src="app.js?v=79"></script>
+    <script src="location-picker.js?v=80"></script>
+    <script src="patient-hospitals.js?v=80"></script>
+    <script src="app.js?v=80"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {

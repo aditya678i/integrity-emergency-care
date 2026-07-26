@@ -1470,7 +1470,7 @@ body {
     outline: none;
 }
 .icu-update-contact-input::placeholder {
-    color: #f1b3b6;
+    color: #888;
 }
 
 /* Hide Google Translate UI */

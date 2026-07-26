@@ -1000,8 +1000,11 @@ function updateICUCount(id, delta) {
 // Add ICU from Add ICU Bed screen
 function addICUAndGoBack() {
     const nameEl = document.getElementById('add-icu-name');
-    const name = nameEl && nameEl.value.trim() ? nameEl.value.trim() : 'General ICU';
-    // Validation removed as name input is removed
+    const name = nameEl ? nameEl.value.trim() : '';
+    if (!name) {
+        alert('Please enter an ICU Bed Name.');
+        return;
+    }
 
     const getCount = (id) => parseInt(document.getElementById(id)?.textContent) || 0;
     const contactEl = document.getElementById('add-icu-contact');
