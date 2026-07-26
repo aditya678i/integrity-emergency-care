@@ -453,9 +453,8 @@
                                 <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Address</label>
                                 <textarea id="ci-hosp-address" class="custom-scrollbar" oninput="autoExpandTextarea(this)" style="width: 100%; background: repeating-linear-gradient(transparent, transparent 31px, #d1d5db 31px, #d1d5db 32px); background-attachment: local; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0; resize: none; height: 64px; min-height: 64px; line-height: 32px; overflow-y: auto; box-sizing: border-box;"></textarea>
                             </div>
-                            
                             <!-- ICU Section -->
-                            <div id="ci-icu-section" style="background: #F5F5F5; border-radius: 12px; padding: 16px; margin-top: 0px; margin-bottom: 24px;">
+                            <div id="ci-icu-section" style="background: #F5F5F5; border-radius: 12px; padding: 16px; margin-top: 0px; margin-bottom: 0px;">
                                 <div style="font-family: var(--font); font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 16px;">Manage ICU Beds</div>
                                 <div id="ci-icu-list" class="temp-icu-list"></div>
                                 <button class="add-icu-outline-btn" onclick="goToAddICU('change-info')" style="width: 100%; background: transparent; color: #C0202A; border: 1.5px solid #C0202A; padding: 12px; border-radius: 20px; font-family: var(--font); font-size: 1rem; font-weight: 600; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer;">
@@ -468,7 +467,7 @@
                         </div>
 
                         <!-- Save button -->
-                        <button class="hosp-register-btn" type="button" style="margin-top:24px;" onclick="saveChangeInfo()">Save Changes</button>
+                        <button class="hosp-register-btn" type="button" style="margin-top:6px;" onclick="saveChangeInfo()">Save Changes</button>
                     </div>
                 </div>
             </div>
@@ -881,9 +880,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=73"></script>
-    <script src="patient-hospitals.js?v=73"></script>
-    <script src="app.js?v=73"></script>
+    <script src="location-picker.js?v=74"></script>
+    <script src="patient-hospitals.js?v=74"></script>
+    <script src="app.js?v=74"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {
