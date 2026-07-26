@@ -1325,7 +1325,7 @@ function handleForgotCodeGenerate() {
 
     // Animate button
     const btn = document.getElementById('btn-generate-forgot-code');
-    const height = btn.offsetHeight;
+    const btnHeight = btn.offsetHeight;
     
     // Prepare button for transition
     btn.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -1334,10 +1334,19 @@ function handleForgotCodeGenerate() {
     
     // Start animation (shrink and hide text)
     btn.style.color = 'transparent';
-    btn.style.width = height + 'px';
+    btn.style.width = btnHeight + 'px';
+    btn.style.height = btnHeight + 'px';
+    btn.style.minWidth = btnHeight + 'px';
     btn.style.borderRadius = '50%';
     btn.style.padding = '0';
     btn.style.margin = '32px auto 0 auto';
+    
+    // Update click handler for the tick button
+    btn.onclick = function() {
+        goBackToHospitalLogin();
+        const loginInput = document.getElementById('login-admin-code');
+        if (loginInput) loginInput.value = code;
+    };
     
     setTimeout(() => {
         // Show tick
@@ -1364,10 +1373,14 @@ function handleForgotCodeGenerate() {
             void resultDiv.offsetWidth;
             resultDiv.style.opacity = '1';
             
-            // Hide button after a short delay
-            setTimeout(() => {
-                btn.style.display = 'none';
-            }, 800);
+            // Add pulse effect to the button to encourage clicking
+            btn.style.animation = 'pulse-tick 2s infinite ease-in-out';
+            if(!document.getElementById('pulse-style')) {
+                const style = document.createElement('style');
+                style.id = 'pulse-style';
+                style.innerHTML = `@keyframes pulse-tick { 0% { box-shadow: 0 0 0 0 rgba(178,34,34,0.4); } 70% { box-shadow: 0 0 0 10px rgba(178,34,34,0); } 100% { box-shadow: 0 0 0 0 rgba(178,34,34,0); } }`;
+                document.head.appendChild(style);
+            }
         }, 500);
     }, 400);
 }
