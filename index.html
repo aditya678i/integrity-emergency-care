@@ -477,75 +477,136 @@
             <div id="add-icu-screen" class="screen-view">
                 <div class="ci-inner">
                     <!-- Header -->
-                    <div style="padding: 12px 24px 16px 24px;">
-                        <div class="hosp-back-btn" onclick="goBackToChangeInfoFromAddICU()" style="margin-bottom: 20px; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
-                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    <div style="padding: 12px 24px 16px 24px; display: flex; align-items: center; gap: 12px;">
+                        <div class="hosp-back-btn" onclick="goBackToChangeInfoFromAddICU()" style="margin-bottom: 0; margin-left: -8px; cursor: pointer; -webkit-tap-highlight-color: transparent;">
+                            <svg class="svg-icon" viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                         </div>
-                        <h2 class="ci-title" style="font-size: 1.6rem; margin: 0;">Add New ICU Bed</h2>
+                        <h2 class="ci-title" style="font-size: 1.4rem; font-weight: 800; color: #000; margin: 0;">Add New ICU</h2>
                     </div>
 
                     <!-- Scrollable content -->
                     <div class="ci-scroll" style="padding-top: 8px;">
-                        <!-- ICU Bed Name -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 0 0 16px 0;">ICU Bed Name</h3>
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="text" id="add-icu-name" class="icu-update-contact-input" style="width: 100%;" placeholder="e.g. General ICU">
-                        </div>
-
-                        <!-- ICU Bed Information -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">ICU Bed Information</h3>
                         
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-total', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-total">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-total', 1)">+</button>
+                        <!-- First Grey Box: ICU Information -->
+                        <div style="background: #F5F5F5; border-radius: 12px; padding: 20px 16px; margin-bottom: 24px;">
+                            
+                            <!-- ICU Beds Name -->
+                            <div style="margin-bottom: 24px;">
+                                <div style="font-family: var(--font); font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 8px;">ICU Beds Name</div>
+                                <input type="text" id="add-icu-name" style="width: 100%; border: none; background: transparent; border-bottom: 1.5px solid #ddd; padding: 4px 0; font-family: var(--font); font-size: 1rem; outline: none;" placeholder="e.g. General ICU">
+                            </div>
+
+                            <!-- Emergency Contact -->
+                            <div style="margin-bottom: 24px;">
+                                <div style="font-family: var(--font); font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 8px;">Emergency Contact</div>
+                                <input type="tel" id="add-icu-contact" style="width: 100%; border: none; background: transparent; border-bottom: 1.5px solid #ddd; padding: 4px 0; font-family: var(--font); font-size: 1rem; outline: none;" placeholder="9536XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            </div>
+
+                            <!-- Ambulance Phone Number -->
+                            <div style="margin-bottom: 32px;">
+                                <div style="font-family: var(--font); font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 8px;">Ambulance Phone Number</div>
+                                <input type="tel" id="add-icu-ambulance" style="width: 100%; border: none; background: transparent; border-bottom: 1.5px solid #ddd; padding: 4px 0; font-family: var(--font); font-size: 1rem; outline: none;" placeholder="9876XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            </div>
+
+                            <!-- Total ICU Beds -->
+                            <div class="icu-update-row" style="padding: 0; margin-bottom: 24px; background: transparent;">
+                                <div class="icu-update-label" style="font-size: 1.05rem; font-weight: 700; color: #000; padding: 0;">Total ICU Beds</div>
+                                <div class="icu-qty-widget" style="background: #fff;">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-total', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-total">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-total', 1)">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Total ICU Beds Vacant -->
+                            <div class="icu-update-row" style="padding: 0; margin-bottom: 24px; background: transparent;">
+                                <div class="icu-update-label" style="font-size: 1.05rem; font-weight: 700; color: #000; padding: 0;">Total ICU Beds Vacant</div>
+                                <div class="icu-qty-widget" style="background: #fff;">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vacant', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-vacant">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vacant', 1)">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Vacant with vent -->
+                            <div class="icu-update-row" style="padding: 0; margin-bottom: 24px; background: transparent;">
+                                <div class="icu-update-label" style="font-size: 1.05rem; font-weight: 700; color: #000; padding: 0;">Total ICU Beds Vacant<br>(with ventilator)</div>
+                                <div class="icu-qty-widget" style="background: #fff;">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vent', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-vent">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vent', 1)">+</button>
+                                </div>
+                            </div>
+
+                            <!-- Vacant without vent -->
+                            <div class="icu-update-row" style="padding: 0; margin-bottom: 8px; background: transparent;">
+                                <div class="icu-update-label" style="font-size: 1.05rem; font-weight: 700; color: #000; padding: 0;">Total ICU Beds Vacant<br>(without ventilator)</div>
+                                <div class="icu-qty-widget" style="background: #fff;">
+                                    <button class="icu-qty-minus" onclick="updateICUCount('add-icu-novent', -1)">-</button>
+                                    <div class="icu-qty-val" id="add-icu-novent">0</div>
+                                    <button class="icu-qty-plus" onclick="updateICUCount('add-icu-novent', 1)">+</button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vacant', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-vacant">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vacant', 1)">+</button>
+                        <!-- Second Grey Box: Emergency Conditions Treated -->
+                        <div style="background: #F5F5F5; border-radius: 12px; padding: 20px 16px; margin-bottom: 24px;">
+                            <div style="font-family: var(--font); font-size: 1.15rem; font-weight: 800; color: #000; margin-bottom: 16px;">Emergency Conditions Treated</div>
+                            
+                            <!-- Scrollable White Box -->
+                            <div class="custom-scrollbar" style="background: #fff; border-radius: 12px; max-height: 220px; overflow-y: auto; padding: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Brain" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Brain (Stroke, Seizure, etc)</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Lungs" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Lungs (Asthma attack, fluid lungs)</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Pregnancy" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Pregnancy</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Burns" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Burns</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Heart" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Heart (Cardiac arrest, Heart attack)</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Accident" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Accident (Trauma, Severe injury)</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Bleeding" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Bleeding (Severe hemorrhage)</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; cursor: pointer;">
+                                    <input type="checkbox" value="Unconscious" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Unconscious (Coma, Fainting)</span>
+                                </label>
+
+                                <label style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 0; cursor: pointer;">
+                                    <input type="checkbox" value="Poisoning" style="margin-top: 4px; width: 16px; height: 16px; accent-color: #000;">
+                                    <span style="font-family: var(--font); font-size: 0.95rem; color: #222;">Poisoning (Overdose, Toxic exposure)</span>
+                                </label>
+
                             </div>
-                        </div>
-
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant<br>(with ventilator)</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-vent', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-vent">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-vent', 1)">+</button>
-                            </div>
-                        </div>
-
-                        <div class="icu-update-row">
-                            <div class="icu-update-label">Total ICU Beds Vacant<br>(without ventilator)</div>
-                            <div class="icu-qty-widget">
-                                <button class="icu-qty-minus" onclick="updateICUCount('add-icu-novent', -1)">-</button>
-                                <div class="icu-qty-val" id="add-icu-novent">0</div>
-                                <button class="icu-qty-plus" onclick="updateICUCount('add-icu-novent', 1)">+</button>
-                            </div>
-                        </div>
-
-                        <!-- Emergency Contact -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Emergency Contact</h3>
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="tel" id="add-icu-contact" class="icu-update-contact-input" placeholder="9536XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                        </div>
-
-                        <!-- Ambulance Number -->
-                        <h3 style="color: #C0202A; font-family: var(--font); font-size: 1.35rem; font-weight: 800; margin: 32px 0 16px 0;">Ambulance Number</h3>
-                        <div class="icu-update-row" style="justify-content: center; padding: 12px 16px;">
-                            <input type="tel" id="add-icu-ambulance" class="icu-update-contact-input" placeholder="9876XXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
 
                         <!-- Add ICU Bed Button -->
-                        <button class="hosp-register-btn" type="button" style="margin-top:24px;" onclick="addICUAndGoBack()">
-                            Add ICU Bed
+                        <button class="hosp-register-btn" type="button" style="margin-top:8px; margin-bottom: 32px; background: #C0202A; color: white;" onclick="addICUAndGoBack()">
+                            Add
                         </button>
                     </div>
                 </div>
@@ -880,9 +941,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=76"></script>
-    <script src="patient-hospitals.js?v=76"></script>
-    <script src="app.js?v=76"></script>
+    <script src="location-picker.js?v=77"></script>
+    <script src="patient-hospitals.js?v=77"></script>
+    <script src="app.js?v=77"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {
