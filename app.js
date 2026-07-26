@@ -1335,7 +1335,7 @@ function loginWithAdminCode() {
             renderDashboard();
         }
     } else {
-        alert('Invalid Admin Code or no registered hospital found on this device. Please check and try again.');
+        alert('Code is illegal or not registered in our database.');
     }
 }
 
