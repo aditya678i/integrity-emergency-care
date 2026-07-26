@@ -409,9 +409,21 @@
                             </div>
     
                             <!-- Email Address -->
-                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; position: relative;">
                                 <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Hospital Email Address</label>
-                                <input type="email" id="ci-hosp-email" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="email" id="ci-hosp-email" oninput="checkEmailChange()" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0;">
+                                    <button id="ci-btn-send-otp" type="button" onclick="sendCIOTP()" style="display: none; background: #C0202A; color: #fff; border: none; padding: 6px 12px; border-radius: 16px; font-family: var(--font); font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;">Send OTP</button>
+                                </div>
+                            </div>
+                            
+                            <!-- CI OTP Input (Hidden by default) -->
+                            <div id="ci-otp-section" class="profile-input-box" style="display: none; background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                                <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Enter 4-digit OTP</label>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <input type="text" id="ci-hosp-otp" maxlength="4" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 1.1rem; color: #000; padding: 0; letter-spacing: 8px; font-weight: bold;">
+                                    <button id="ci-btn-verify-otp" type="button" onclick="verifyCIOTP()" style="background: #000; color: #fff; border: none; padding: 6px 12px; border-radius: 16px; font-family: var(--font); font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap;">Verify</button>
+                                </div>
                             </div>
     
                             <!-- Location Group -->
@@ -443,10 +455,13 @@
                             </div>
     
                             <!-- Address -->
-                            <div class="profile-input-box" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
+                            <div class="profile-input-box hosp-address-group" style="background: #F5F5F5; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;">
                                 <label style="display: block; font-family: var(--font); font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 6px;">Address</label>
-                                <textarea id="ci-hosp-address" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0; resize: none; min-height: 48px; border-bottom: 1px solid rgba(192, 32, 42, 0.2);"></textarea>
-                                <div style="border-bottom: 1px solid rgba(192, 32, 42, 0.2); margin-top: 24px;"></div>
+                                <textarea id="ci-hosp-address" class="hosp-input hosp-textarea" style="width: 100%; background: transparent; border: none; outline: none; font-family: var(--font); font-size: 0.95rem; color: #555; padding: 0; resize: none; min-height: 48px;"></textarea>
+                                <div class="address-lines">
+                                    <div class="address-line line-1" style="border-bottom: 1.5px solid #d1d5db;"></div>
+                                    <div class="address-line line-2" style="border-bottom: 1.5px solid #d1d5db;"></div>
+                                </div>
                             </div>
                             
                             <!-- ICU Section -->
@@ -876,9 +891,9 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="location-picker.js?v=66"></script>
-    <script src="patient-hospitals.js?v=66"></script>
-    <script src="app.js?v=66"></script>
+    <script src="location-picker.js?v=67"></script>
+    <script src="patient-hospitals.js?v=67"></script>
+    <script src="app.js?v=67"></script>
     <script>
         // Force clear caches and unregister service workers for development
         if ('serviceWorker' in navigator) {

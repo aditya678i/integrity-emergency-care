@@ -635,6 +635,19 @@ function goToChangeInfo() {
 
     const emailEl = document.getElementById('ci-hosp-email');
     if (emailEl) emailEl.value = hospitalProfile.email || localStorage.getItem('hospitalRegEmail') || '';
+    
+    ciEmailVerified = false;
+    const sendOtpBtn = document.getElementById('ci-btn-send-otp');
+    if (sendOtpBtn) {
+        sendOtpBtn.style.display = 'none';
+        sendOtpBtn.textContent = 'Send OTP';
+        sendOtpBtn.style.background = '#C0202A';
+        sendOtpBtn.disabled = false;
+    }
+    const otpSection = document.getElementById('ci-otp-section');
+    if (otpSection) otpSection.style.display = 'none';
+    const otpInput = document.getElementById('ci-hosp-otp');
+    if (otpInput) otpInput.value = '';
 
     const typeDisplay = document.getElementById('ci-hosp-type-display');
     const typeOpts = document.getElementById('ci-hosp-type-options');
@@ -777,7 +790,68 @@ function buildICUCard(icu, index) {
     </div>`;
 }
 
-// ── Change Info: Save ─────────────────────────────────
+// ── Change Info: Save & Email OTP ─────────────────────────────────
+let ciEmailVerified = false;
+
+function checkEmailChange() {
+    const emailEl = document.getElementById('ci-hosp-email');
+    const sendOtpBtn = document.getElementById('ci-btn-send-otp');
+    const otpSection = document.getElementById('ci-otp-section');
+    const originalEmail = hospitalProfile.email || localStorage.getItem('hospitalRegEmail') || '';
+    
+    if (emailEl && sendOtpBtn) {
+        if (emailEl.value.trim() !== originalEmail) {
+            sendOtpBtn.style.display = 'block';
+            sendOtpBtn.textContent = 'Send OTP';
+            sendOtpBtn.style.background = '#C0202A';
+            sendOtpBtn.disabled = false;
+            ciEmailVerified = false;
+        } else {
+            sendOtpBtn.style.display = 'none';
+            if (otpSection) otpSection.style.display = 'none';
+            ciEmailVerified = false;
+        }
+    }
+}
+
+function sendCIOTP() {
+    const email = document.getElementById('ci-hosp-email').value.trim();
+    if (!email) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+    const sendOtpBtn = document.getElementById('ci-btn-send-otp');
+    if (sendOtpBtn) {
+        sendOtpBtn.textContent = 'Sent!';
+        sendOtpBtn.disabled = true;
+    }
+    const otpSection = document.getElementById('ci-otp-section');
+    if (otpSection) otpSection.style.display = 'block';
+    
+    // Simulate OTP sent
+    setTimeout(() => {
+        alert("OTP for verification is: 1234");
+    }, 500);
+}
+
+function verifyCIOTP() {
+    const otpInput = document.getElementById('ci-hosp-otp');
+    if (otpInput && otpInput.value === '1234') {
+        ciEmailVerified = true;
+        const otpSection = document.getElementById('ci-otp-section');
+        if (otpSection) otpSection.style.display = 'none';
+        
+        const sendOtpBtn = document.getElementById('ci-btn-send-otp');
+        if (sendOtpBtn) {
+            sendOtpBtn.textContent = 'Verified ✓';
+            sendOtpBtn.style.background = '#4CAF50';
+        }
+        alert("Email verified successfully! You can now log in with this email.");
+    } else {
+        alert("Invalid OTP. Please try again.");
+    }
+}
+
 function saveChangeInfo() {
     const nameEl = document.getElementById('ci-hosp-name');
     if (nameEl && nameEl.value.trim()) hospitalProfile.name = nameEl.value.trim();
@@ -788,7 +862,18 @@ function saveChangeInfo() {
     }
     
     const emailEl = document.getElementById('ci-hosp-email');
-    if (emailEl && emailEl.value.trim()) hospitalProfile.email = emailEl.value.trim();
+    if (emailEl) {
+        const newEmail = emailEl.value.trim();
+        const originalEmail = hospitalProfile.email || localStorage.getItem('hospitalRegEmail') || '';
+        if (newEmail !== originalEmail) {
+            if (!ciEmailVerified) {
+                alert("Please verify your new email address using OTP before saving.");
+                return; // Stop saving
+            }
+            hospitalProfile.email = newEmail;
+            localStorage.setItem('hospitalRegEmail', newEmail);
+        }
+    }
     
     const stateDisplay = document.getElementById('ci-hosp-state-display');
     if (stateDisplay && stateDisplay.classList.contains('has-values')) {
