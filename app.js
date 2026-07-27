@@ -1459,6 +1459,8 @@ function handleCertUpload(event) {
 function continueToDashboardFromVerify() {
     // Set pending verification flag
     localStorage.setItem('verificationPending', 'true');
+    // Set registered flag so the code is active for login
+    localStorage.setItem('hospitalRegistered', 'true');
     
     const verifyScreen = document.getElementById('hospital-verification-screen');
     const dashScreen = document.getElementById('hospital-dashboard-screen');
@@ -1497,11 +1499,23 @@ function generateAdminCode() {
 function copyAdminCode() {
     const input = document.getElementById('hosp-admin-code');
     if (input && input.value) {
-        navigator.clipboard.writeText(input.value).then(() => {
-            alert('Admin Code copied to clipboard: ' + input.value);
-        }).catch(err => {
-            alert('Failed to copy: ' + err);
-        });
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert('Admin Code copied to clipboard: ' + input.value);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        } else {
+            input.select();
+            input.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                alert('Admin Code copied to clipboard: ' + input.value);
+            } catch (err) {
+                alert('Failed to copy: ' + err);
+            }
+            window.getSelection().removeAllRanges();
+        }
     }
 }
 
@@ -1515,15 +1529,20 @@ function goToHospitalLogin() {
 }
 
 function loginWithAdminCode() {
-    /* TEMPORARILY DISABLED
     const input = document.getElementById('login-admin-code');
     if (!input || !input.value.trim()) {
         alert('Please enter your Admin Code.');
         return;
     }
     const storedCode = localStorage.getItem('hospitalAdminCode');
+    const isRegistered = localStorage.getItem('hospitalRegistered') === 'true';
+    
     if (storedCode && input.value.trim().toUpperCase() === storedCode) {
-    */
+        if (!isRegistered) {
+            alert('This Hospital Code is not registered in our database yet. Please complete your hospital registration before logging in.');
+            return;
+        }
+        
         const hospLoginScreen = document.getElementById('hospital-login-screen');
         const dashScreen = document.getElementById('hospital-dashboard-screen');
         if (hospLoginScreen && dashScreen) {
@@ -1531,11 +1550,9 @@ function loginWithAdminCode() {
             dashScreen.classList.add('active-view');
             renderDashboard();
         }
-    /* TEMPORARILY DISABLED
     } else {
         alert('Code is illegal or not registered in our database.');
     }
-    */
 }
 
 function goBackToHospitalRegister() {
@@ -1669,11 +1686,23 @@ function handleForgotCodeGenerate() {
 function copyNewAdminCode() {
     const input = document.getElementById('new-generated-code');
     if (input && input.value) {
-        navigator.clipboard.writeText(input.value).then(() => {
-            alert('New Admin Code copied to clipboard: ' + input.value);
-        }).catch(err => {
-            alert('Failed to copy: ' + err);
-        });
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(input.value).then(() => {
+                alert('New Admin Code copied to clipboard: ' + input.value);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        } else {
+            input.select();
+            input.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                alert('New Admin Code copied to clipboard: ' + input.value);
+            } catch (err) {
+                alert('Failed to copy: ' + err);
+            }
+            window.getSelection().removeAllRanges();
+        }
     }
 }
 
@@ -1908,3 +1937,13 @@ window.checkHospFormValidity = function() {
     }
 };
 
+
+
+function logOutHospital() {
+    const currentScreen = document.getElementById('change-info-screen');
+    const roleScreen = document.getElementById('role-screen');
+    if (currentScreen && roleScreen) {
+        currentScreen.classList.remove('active-view');
+        roleScreen.classList.add('active-view');
+    }
+}

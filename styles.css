@@ -261,7 +261,7 @@ body {
 .back-btn {
     position: absolute;
     top: 12px; /* Just below status bar */
-    left: 2px;
+    left: 1px;
     width: 36px;
     height: 36px;
     display: flex;
@@ -2054,7 +2054,7 @@ body {
     background-color: #E6F3FB;
     border-radius: 12px;
     padding: 12px 16px;
-    margin: 16px 2px;
+    margin: 16px 1px;
 }
 .patient-hospitals-search .search-icon {
     margin-right: 12px;
@@ -2078,7 +2078,7 @@ body {
     position: relative;
     background-color: #E6F3FB;
     border-radius: 12px;
-    margin: 0 2px 24px 2px;
+    margin: 0 1px 24px 1px;
     padding: 4px;
 }
 .hosp-tab-slider {
@@ -2112,7 +2112,7 @@ body {
 .patient-hospitals-total-beds {
     background-color: #E6F3FB;
     border-radius: 12px;
-    margin: 0 2px 24px 2px;
+    margin: 0 1px 24px 1px;
     padding: 16px 20px;
     position: relative;
     display: flex;
@@ -2150,7 +2150,7 @@ body {
     border: 1px solid #7abeff !important;
     border-radius: 16px !important;
     padding: 20px !important;
-    margin: 0 2px 24px 2px !important;
+    margin: 0 1px 24px 1px !important;
 }
 .hosp-card-header {
     display: flex;
@@ -2287,7 +2287,7 @@ body {
 .patient-location-header {
     display: flex;
     align-items: flex-start;
-    padding: 20px 2px 0 2px;
+    padding: 20px 1px 0 1px;
 }
 .loc-icon-pin {
     margin-right: 12px;

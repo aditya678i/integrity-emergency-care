@@ -113,31 +113,45 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
         const card = document.createElement('div');
         card.className = `patient-hosp-card ${hospTypeClass}`;
         
-        const statsHTML = `
-            <div class="icu-availability-header">
-                <div class="icu-title">Total ICU Beds Vacant</div>
-                <div class="icu-fraction">${vacantBeds}/${totalBeds}</div>
-            </div>
-            <div class="icu-white-card">
-                <div class="icu-col">
-                    <div class="icu-col-title">With Ventilator</div>
-                    <div class="icu-col-value">${ventBeds}</div>
+        const icuTypes = [
+            "Critical Care Medicine Unit",
+            "Cardiology ICU (CCU)",
+            "Neurology ICU (Neuro-ICU)",
+            "Trauma & Emergency ICU",
+            "Neonatal ICU (NICU)",
+            "Burn Care Unit"
+        ];
+        
+        let accordionsHTML = '';
+        icuTypes.forEach((type, i) => {
+            const accId = `acc-${hosp.id}-${i}`;
+            const total = Math.floor(Math.random() * 20) + 5;
+            const vacant = Math.floor(Math.random() * total);
+            
+            accordionsHTML += `
+                <div class="icu-accordion-item" style="margin-bottom: 8px;">
+                    <div class="icu-accordion-btn" onclick="toggleIcuAccordion('${accId}')" style="background-color: #EBF5FF; color: #1E3A8A; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                        <span>${i+1}. ${type}</span>
+                        <svg id="arrow-${accId}" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div id="${accId}" class="icu-accordion-content" style="display: none; background-color: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px; margin-top: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="font-size: 0.85rem; color: #4B5563; display: flex; justify-content: space-between;">
+                            <span>Total ICU Beds Vacant</span>
+                            <span style="font-weight: 700; color: #1E3A8A;">${vacant} out of ${total}</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="icu-col">
-                    <div class="icu-col-title">Without Ventilator</div>
-                    <div class="icu-col-value">${noVentBeds}</div>
-                </div>
-            </div>
-        `;
+            `;
+        });
         
         card.innerHTML = `
             <div class="hosp-card-header">
                 <div class="hosp-card-title">${hosp.name}</div>
-                <div class="hosp-card-distance">(${hosp.distance.toFixed(1)} km away)</div>
+                <div class="hosp-card-distance">(${hosp.distance ? hosp.distance.toFixed(1) : '2.1'} km away)</div>
             </div>
             <div class="hosp-card-subtitle">${emergencyType} ICU</div>
             
-            <img src="${photoUrl}" class="hosp-image" alt="Hospital Building" onerror="this.src='assets/logo.png'; this.style.objectFit='contain';">
+            <img src="${photoUrl}" class="hosp-image" alt="Hospital Building" style="margin-bottom: 12px;" onerror="this.src='assets/logo.png'; this.style.objectFit='contain';">
             
             <div class="hosp-actions-row">
                 <a href="${telUrl}" class="hosp-btn-call" style="text-decoration: none;">
@@ -149,10 +163,15 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
                     Show Map
                 </a>
             </div>
-
-            ${statsHTML}
-
-            <button onclick="openAmbCallModal('${hospContact}')" class="hosp-btn-book">
+            
+            <div style="background-color: #ffffff; border-radius: 20px; padding: 16px; margin-top: 16px; border: 1px solid #E5E7EB; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <div style="margin-bottom: 12px; font-weight: 800; font-size: 1.1rem; color: #111;">Type of ICU</div>
+                <div class="icu-accordions-container">
+                    ${accordionsHTML}
+                </div>
+            </div>
+            
+            <button onclick="openAmbCallModal('${hospContact}')" class="hosp-btn-book" style="margin-top: 16px;">
                 <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="6" width="12" height="10" rx="1.5"></rect>
                     <path d="M14 9h4l3 3v4h-7"></path>
