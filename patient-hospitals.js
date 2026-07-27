@@ -55,17 +55,21 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
     const container = document.getElementById('patient-hospitals-list');
     container.innerHTML = '';
     
+    // We get currentPatientEmergencyType from app.js (e.g., 'Heart', 'Bleeding')
     const emergencyType = (typeof currentPatientEmergencyType !== 'undefined') ? currentPatientEmergencyType : 'Other';
+
     let totalAllVacantBeds = 0;
 
-    const hospitalImages = [
-        "assets/hospitals/hosp1.jpeg", "assets/hospitals/hosp2.jpeg", "assets/hospitals/hosp3.jpeg",
-        "assets/hospitals/hosp4.jpeg", "assets/hospitals/hosp5.jpeg", "assets/hospitals/hosp6.jpeg",
-        "assets/hospitals/hosp7.jpeg", "assets/hospitals/hosp8.jpeg", "assets/hospitals/hosp9.jpeg",
-        "assets/hospitals/hosp10.jpeg", "assets/hospitals/hosp11.jpeg", "assets/hospitals/hosp12.jpeg",
-        "assets/hospitals/hosp13.jpeg", "assets/hospitals/hosp14.jpeg", "assets/hospitals/hosp15.jpeg",
-        "assets/hospitals/hosp16.jpeg", "assets/hospitals/hosp17.jpeg", "assets/hospitals/hosp18.jpeg"
-    ];
+    osmHospitals.forEach(hosp => {
+        hosp.totalBeds = Math.floor(Math.random() * 30) + 10;
+        hosp.vacantBeds = Math.floor(Math.random() * hosp.totalBeds);
+        hosp.ventBeds = Math.floor(Math.random() * (hosp.vacantBeds + 1));
+        hosp.noVentBeds = hosp.vacantBeds - hosp.ventBeds;
+    });
+
+    if (emergencyType !== 'Other') {
+        osmHospitals.sort((a, b) => b.vacantBeds - a.vacantBeds);
+    }
 
     osmHospitals.forEach((hosp, index) => {
         const nameLower = hosp.name.toLowerCase();
@@ -73,89 +77,111 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
                        nameLower.includes('municipal') || nameLower.includes('state') || 
                        nameLower.includes('aiims') || nameLower.includes('safdarjung') ||
                        nameLower.includes('public');
-        hosp.hospTypeClass = isGovt ? 'type-govt' : 'type-private';
+        const hospTypeClass = isGovt ? 'type-govt' : 'type-private';
         
-        hosp.totalBeds = Math.floor(Math.random() * 30) + 10;
-        hosp.vacantBeds = Math.floor(Math.random() * hosp.totalBeds);
-        hosp.ventBeds = Math.floor(Math.random() * (hosp.vacantBeds + 1));
-        hosp.noVentBeds = hosp.vacantBeds - hosp.ventBeds;
+        // Using pre-generated mock data
+        const totalBeds = hosp.totalBeds;
+        const vacantBeds = hosp.vacantBeds;
+        const ventBeds = hosp.ventBeds;
+        const noVentBeds = hosp.noVentBeds;
         
-        hosp.photoUrl = hospitalImages[(index + hosp.id) % hospitalImages.length];
+        totalAllVacantBeds += vacantBeds;
         
-        const updateTimes = ['15 min', '43 min', '1 hour', '2 hours', '45 min', '30 min', '10 min', '5 min', '20 min'];
-        hosp.randomTime = updateTimes[Math.floor(Math.random() * updateTimes.length)];
-        
-        const icuTypes = [
-            "Critical Care Medicine Unit", "Cardiology ICU (CCU)", "Neurology ICU (Neuro-ICU)",
-            "Trauma & Emergency ICU", "Neonatal ICU (NICU)", "Burn Care Unit"
+        // Array of realistic hospital image URLs
+        const hospitalImages = [
+            "assets/hospitals/hosp1.jpeg",
+            "assets/hospitals/hosp2.jpeg",
+            "assets/hospitals/hosp3.jpeg",
+            "assets/hospitals/hosp4.jpeg",
+            "assets/hospitals/hosp5.jpeg",
+            "assets/hospitals/hosp6.jpeg",
+            "assets/hospitals/hosp7.jpeg",
+            "assets/hospitals/hosp8.jpeg",
+            "assets/hospitals/hosp9.jpeg",
+            "assets/hospitals/hosp10.jpeg",
+            "assets/hospitals/hosp11.jpeg",
+            "assets/hospitals/hosp12.jpeg",
+            "assets/hospitals/hosp13.jpeg",
+            "assets/hospitals/hosp14.jpeg",
+            "assets/hospitals/hosp15.jpeg",
+            "assets/hospitals/hosp16.jpeg",
+            "assets/hospitals/hosp17.jpeg",
+            "assets/hospitals/hosp18.jpeg"
         ];
         
-        hosp.detailedBeds = icuTypes.map(type => {
-            const total = Math.floor(Math.random() * 20) + 5;
-            const vacant = Math.floor(Math.random() * total);
-            return { type, total, vacant };
-        });
-        hosp.totalDetailedVacant = hosp.detailedBeds.reduce((sum, bed) => sum + bed.vacant, 0);
-    });
-
-    if (emergencyType !== 'Other') {
-        osmHospitals.sort((a, b) => b.vacantBeds - a.vacantBeds);
-    }
-
-    osmHospitals.forEach(hosp => {
-        totalAllVacantBeds += hosp.vacantBeds;
+        // Randomly pick a realistic hospital photo based on index to keep it consistent
+        const photoUrl = hospitalImages[(index + hosp.id) % hospitalImages.length];
         
-        const mapUrl = https://www.google.com/maps/dir/?api=1&origin= + userLat + , + userLon + &destination= + hosp.lat + , + hosp.lon;
+        const updateTimes = ['15 min', '43 min', '1 hour', '2 hours', '45 min', '30 min', '10 min', '5 min', '20 min'];
+        const randomTime = updateTimes[Math.floor(Math.random() * updateTimes.length)];
+        
+        const mapUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLon}&destination=${hosp.lat},${hosp.lon}`;
         const hospContact = '112';
-        const telUrl = 	el: + hospContact;
+        const telUrl = `tel:${hospContact}`;
         
         const card = document.createElement('div');
-        card.className = patient-hosp-card  + hosp.hospTypeClass;
+        card.className = `patient-hosp-card ${hospTypeClass}`;
         
         if (emergencyType === 'Other') {
+            const icuTypes = [
+                "Critical Care Medicine Unit",
+                "Cardiology ICU (CCU)",
+                "Neurology ICU (Neuro-ICU)",
+                "Trauma & Emergency ICU",
+                "Neonatal ICU (NICU)",
+                "Burn Care Unit"
+            ];
+            
             let accordionsHTML = '';
-            hosp.detailedBeds.forEach((bed, i) => {
-                const accId = cc- + hosp.id + - + i;
-                accordionsHTML += 
+            icuTypes.forEach((type, i) => {
+                const accId = `acc-${hosp.id}-${i}`;
+                const total = Math.floor(Math.random() * 20) + 5;
+                const vacant = Math.floor(Math.random() * total);
+                
+                accordionsHTML += `
                     <div class="icu-accordion-item" style="margin-bottom: 8px;">
-                        <div class="icu-accordion-btn" onclick="toggleIcuAccordion(' + accId + ')" style="background-color: #EBF5FF; color: #1E3A8A; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                            <span> + (i+1) + .  + bed.type + </span>
-                            <svg id="arrow- + accId + " viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <div class="icu-accordion-btn" onclick="toggleIcuAccordion('${accId}')" style="background-color: #EBF5FF; color: #1E3A8A; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <span>${i+1}. ${type}</span>
+                            <svg id="arrow-${accId}" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                         </div>
-                        <div id=" + accId + " class="icu-accordion-content" style="display: none; background-color: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px; margin-top: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div id="${accId}" class="icu-accordion-content" style="display: none; background-color: #fff; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px; margin-top: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
                             <div style="font-size: 0.85rem; color: #4B5563; display: flex; justify-content: space-between;">
                                 <span>Total ICU Beds Vacant</span>
-                                <span style="font-weight: 700; color: #1E3A8A;"> + bed.vacant +  out of  + bed.total + </span>
+                                <span style="font-weight: 700; color: #1E3A8A;">${vacant} out of ${total}</span>
                             </div>
                         </div>
                     </div>
-                ;
+                `;
             });
             
-            card.innerHTML = 
+            card.innerHTML = `
                 <div class="hosp-card-header">
-                    <div class="hosp-card-title"> + hosp.name + </div>
-                    <div class="hosp-card-distance">( + (hosp.distance ? hosp.distance.toFixed(1) : '2.1') +  km away)</div>
+                    <div class="hosp-card-title">${hosp.name}</div>
+                    <div class="hosp-card-distance">(${hosp.distance ? hosp.distance.toFixed(1) : '2.1'} km away)</div>
                 </div>
-                <div class="hosp-card-subtitle"> + emergencyType +  ICU</div>
-                <img src=" + hosp.photoUrl + " class="hosp-image" alt="Hospital Building" style="margin-bottom: 12px;" onerror="this.src='assets/logo.png'; this.style.objectFit='contain';">
+                <div class="hosp-card-subtitle">${emergencyType} ICU</div>
+                
+                <img src="${photoUrl}" class="hosp-image" alt="Hospital Building" style="margin-bottom: 12px;" onerror="this.src='assets/logo.png'; this.style.objectFit='contain';">
+                
                 <div class="hosp-actions-row">
-                    <a href=" + telUrl + " class="hosp-btn-call" style="text-decoration: none;">
+                    <a href="${telUrl}" class="hosp-btn-call" style="text-decoration: none;">
                         <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                         Call hospital
                     </a>
-                    <a href=" + mapUrl + " target="_blank" class="hosp-btn-map" style="text-decoration: none;">
+                    <a href="${mapUrl}" target="_blank" class="hosp-btn-map" style="text-decoration: none;">
                         <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         Show Map
                     </a>
                 </div>
+                
                 <div style="background-color: #ffffff; border-radius: 20px; padding: 16px; margin-top: 16px; border: 1px solid #E5E7EB; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                     <div style="margin-bottom: 12px; font-weight: 800; font-size: 1.1rem; color: #111;">Type of ICU</div>
                     <div class="icu-accordions-container">
-                         + accordionsHTML + 
+                        ${accordionsHTML}
                     </div>
                 </div>
-                <button onclick="openAmbCallModal(' + hospContact + ')" class="hosp-btn-book" style="margin-top: 16px;">
+                
+                <button onclick="openAmbCallModal('${hospContact}')" class="hosp-btn-book" style="margin-top: 16px;">
                     <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="6" width="12" height="10" rx="1.5"></rect>
                         <path d="M14 9h4l3 3v4h-7"></path>
@@ -165,47 +191,51 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
                     </svg>
                     Book Ambulance
                 </button>
-                <div class="hosp-last-updated">Last Updated :  + hosp.randomTime +  ago</div>
-            ;
+                <div class="hosp-last-updated">Last Updated : ${randomTime} ago</div>
+            `;
         } else {
-            const statsHTML = 
+            const statsHTML = `
                 <div class="icu-availability-header">
                     <div class="icu-title">Total ICU Beds Vacant</div>
-                    <div class="icu-fraction"> + hosp.vacantBeds + / + hosp.totalBeds + </div>
+                    <div class="icu-fraction">${vacantBeds}/${totalBeds}</div>
                 </div>
                 <div class="icu-white-card">
                     <div class="icu-col">
                         <div class="icu-col-title">With Ventilator</div>
-                        <div class="icu-col-value"> + hosp.ventBeds + </div>
+                        <div class="icu-col-value">${ventBeds}</div>
                     </div>
                     <div class="icu-col">
                         <div class="icu-col-title">Without Ventilator</div>
-                        <div class="icu-col-value"> + hosp.noVentBeds + </div>
+                        <div class="icu-col-value">${noVentBeds}</div>
                     </div>
                 </div>
-            ;
+            `;
             
-            card.innerHTML = 
+            card.innerHTML = `
                 <div class="hosp-card-header">
-                    <div class="hosp-card-title"> + hosp.name + </div>
-                    <div class="hosp-card-distance">( + (hosp.distance ? hosp.distance.toFixed(1) : '2.1') +  km away)</div>
+                    <div class="hosp-card-title">${hosp.name}</div>
+                    <div class="hosp-card-distance">(${hosp.distance ? hosp.distance.toFixed(1) : '2.1'} km away)</div>
                 </div>
-                <div class="hosp-card-subtitle"> + emergencyType +  ICU</div>
-                <img src=" + hosp.photoUrl + " class="hosp-image" alt="Hospital Building" onerror="this.src='assets/logo.png'; this.style.objectFit='contain';">
+                <div class="hosp-card-subtitle">${emergencyType} ICU</div>
+                
+                <img src="${photoUrl}" class="hosp-image" alt="Hospital Building" onerror="this.src='assets/logo.png'; this.style.objectFit='contain';">
+                
                 <div class="hosp-actions-row">
-                    <a href=" + telUrl + " class="hosp-btn-call" style="text-decoration: none;">
+                    <a href="${telUrl}" class="hosp-btn-call" style="text-decoration: none;">
                         <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                         Call hospital
                     </a>
-                    <a href=" + mapUrl + " target="_blank" class="hosp-btn-map" style="text-decoration: none;">
+                    <a href="${mapUrl}" target="_blank" class="hosp-btn-map" style="text-decoration: none;">
                         <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         Show Map
                     </a>
                 </div>
+                
                 <div class="icu-availability-card">
-                     + statsHTML + 
+                    ${statsHTML}
                 </div>
-                <button onclick="openAmbCallModal(' + hospContact + ')" class="hosp-btn-book">
+                
+                <button onclick="openAmbCallModal('${hospContact}')" class="hosp-btn-book">
                     <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="6" width="12" height="10" rx="1.5"></rect>
                         <path d="M14 9h4l3 3v4h-7"></path>
@@ -215,8 +245,8 @@ function renderHospitalCards(osmHospitals, userLat, userLon) {
                     </svg>
                     Book Ambulance
                 </button>
-                <div class="hosp-last-updated">Last Updated :  + hosp.randomTime +  ago</div>
-            ;
+                <div class="hosp-last-updated">Last Updated : ${randomTime} ago</div>
+            `;
         }
         
         container.appendChild(card);
@@ -380,5 +410,4 @@ window.renderDetailedHospitalCards = function(hospitals) {
         container.appendChild(card);
     });
 };
-
 
