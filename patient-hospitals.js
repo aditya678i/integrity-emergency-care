@@ -47,10 +47,8 @@ async function fetchNearbyHospitals(lat, lon) {
     // Sort by mock distance ascending
     premiumHospitals.sort((a, b) => a.distance - b.distance);
 
-    // Give a short delay to simulate network load
-    setTimeout(() => {
-        renderHospitalCards(premiumHospitals, lat, lon);
-    }, 600);
+    // Render immediately without delay
+    renderHospitalCards(premiumHospitals, lat, lon);
 }
 
 function renderHospitalCards(osmHospitals, userLat, userLon) {
